@@ -1,7 +1,6 @@
 import Stripe from "stripe";
 import { neon } from "@neondatabase/serverless";
 import sgMail from "@sendgrid/mail";
-import axios from "axios";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -31,6 +30,13 @@ export default async (req) => {
   }
   const sig = req.headers.get("stripe-signature");
   const rawBody = await getRawBody(req.body);
+  // Debug logging for troubleshooting signature verification
+  console.log("[webhook] endpointSecret:", endpointSecret);
+  console.log("[webhook] signature header:", sig);
+  console.log(
+    "[webhook] rawBody type:",
+    rawBody && rawBody.constructor && rawBody.constructor.name,
+  );
   let event;
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
