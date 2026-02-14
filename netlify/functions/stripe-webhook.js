@@ -58,15 +58,62 @@ export default async (req) => {
         expiryDate.getUTCDate() + Number(validity_days) - 1,
       );
       expiryDate.setUTCHours(18, 29, 59, 999);
-      // Upsert purchase
+
+      // PassKit smart link generation
+      let smartLink = null;
+      let passkitPassId = null;
+      try {
+        const axios = (await import("axios")).default;
+        const DISTRIBUTION_ID = "5cb4m9";
+        const API_URL =
+          "https://api.pub1.passkit.io/distribution/smartpasslink";
+        const SMARTPASS_SECRET =
+          process.env.SMARTPASS_SECRET ||
+          "Iqwj_wfzVrdw7xRMu-HIMxRhaob6seRM8yRz01a1arAyhqVHmnMdPXoX0COUEFtVtQj1ErCjNGwKLS3k9itJx0CufoSvOLY5VpXtsFtJMv4w3v_LdYbq_27Sa5GhYR2x94d6yX5A6jhwFboSB9gwcScT6Yns0HORlF4pBROp2EF6Zu5cuum3p8kKYMic3qR2KEIeUBaF4m-Z_Uga6ANycn-njwXGM45HUg0krc2n3_ZT_3WPHRakEcDaf5FjYgpeIQcCOCVgmHJz_NIfq8ncHXHh2TcEmQGy9naM8O_0aQNqlTJPrZkl53KrKvhv_7eB";
+        const smartPassFields = {
+          "members.program.name": "Ahangama Pass 2026",
+          "members.member.points": "120",
+          "members.tier.name": "Base",
+          "members.member.status": "ACTIVE",
+          "members.member.externalId": `AHG-USER-${stripeSessionId}`,
+          "person.displayName": name || "Ahangama Pass Holder",
+          "person.surname": "",
+          "person.emailAddress": email || "",
+          "person.mobileNumber": phone || "",
+          "universal.info": "Valid at all participating Ahangama Pass venues.",
+          "universal.expiryDate": `${expiryDate.getUTCFullYear()}-12-31T23:59:59Z`,
+        };
+        const response = await axios.post(
+          API_URL,
+          {
+            projectDistributionUrl: {
+              url: `https://pub1.pskt.io/c/${DISTRIBUTION_ID}`,
+              title: "Ahangama Pass",
+            },
+            fields: smartPassFields,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${SMARTPASS_SECRET}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        smartLink = response.data?.url || response.data || null;
+        passkitPassId = response.data?.passId || response.data?.id || null;
+      } catch (err) {
+        console.error("[webhook] PassKit smart link error:", err.message);
+      }
+
+      // Upsert purchase with smart link
       try {
         await sql`
           INSERT INTO purchases (
-            stripe_session_id, customer_email, customer_phone, pass_type, price_usd, start_date, expiry_date, status, created_at, pass_holder_name
+            stripe_session_id, customer_email, customer_phone, pass_type, price_usd, start_date, expiry_date, status, created_at, pass_holder_name, smart_link_url, passkit_pass_id
           ) VALUES (
-            ${stripeSessionId}, ${email}, ${phone}, ${pass_type}, 0, ${start_date}, ${expiryDate.toISOString()}, 'paid', NOW(), ${name || "-"}
+            ${stripeSessionId}, ${email}, ${phone}, ${pass_type}, 0, ${start_date}, ${expiryDate.toISOString()}, 'paid', NOW(), ${name || "-"}, ${smartLink}, ${passkitPassId}
           )
-          ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', pass_holder_name = ${name || "-"}
+          ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', pass_holder_name = ${name || "-"}, smart_link_url = ${smartLink}, passkit_pass_id = ${passkitPassId}
         `;
       } catch (err) {
         console.error("[webhook] DB insert error:", err.message, err);

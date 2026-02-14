@@ -77,6 +77,33 @@ function Success() {
         <li>
           <b>Phone:</b> {session.customer_phone}
         </li>
+        <li>
+          <b>PassKit Pass ID:</b> {session.passkit_pass_id || "-"}
+        </li>
+        <li>
+          <b>Smart Link URL:</b>{" "}
+          {session.smart_link_url ? (
+            <a
+              href={session.smart_link_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                marginTop: 8,
+                background: "#007bff",
+                color: "#fff",
+                padding: "0.5em 1.5em",
+                borderRadius: 8,
+                textDecoration: "none",
+                fontWeight: 600,
+              }}
+            >
+              View PassKit Smart Link
+            </a>
+          ) : (
+            "-"
+          )}
+        </li>
       </ul>
       <a
         href={smartLink}

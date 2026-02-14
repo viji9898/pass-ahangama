@@ -26,6 +26,7 @@ export default async (req) => {
     id: purchase.stripe_session_id || purchase.stripeSessionId,
     status: purchase.status,
     smart_link_url: purchase.smart_link_url || purchase.smartLinkUrl,
+    passkit_pass_id: purchase.passkit_pass_id || purchase.passkitPassId,
     start_date: purchase.start_date || purchase.startDate,
     expiry_date: purchase.expiry_date || purchase.expiryDate,
     pass_type: purchase.pass_type || purchase.passType,
