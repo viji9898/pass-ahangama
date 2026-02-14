@@ -80,48 +80,28 @@ function Success() {
         <li>
           <b>PassKit Pass ID:</b> {session.passkit_pass_id || "-"}
         </li>
-        <li>
-          <b>Smart Link URL:</b>{" "}
-          {session.smart_link_url ? (
-            <a
-              href={session.smart_link_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                marginTop: 8,
-                background: "#007bff",
-                color: "#fff",
-                padding: "0.5em 1.5em",
-                borderRadius: 8,
-                textDecoration: "none",
-                fontWeight: 600,
-              }}
-            >
-              View PassKit Smart Link
-            </a>
-          ) : (
-            "-"
-          )}
-        </li>
       </ul>
-      <a
-        href={smartLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          display: "inline-block",
-          marginTop: 24,
-          background: "#25D366",
-          color: "#fff",
-          padding: "0.75em 2em",
-          borderRadius: 8,
-          textDecoration: "none",
-          fontWeight: 600,
-        }}
-      >
-        Share on WhatsApp
-      </a>
+      {session.smart_link_url ? (
+        <a
+          href={session.smart_link_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-block",
+            marginTop: 8,
+            background: "#007bff",
+            color: "#fff",
+            padding: "0.5em 1.5em",
+            borderRadius: 8,
+            textDecoration: "none",
+            fontWeight: 600,
+          }}
+        >
+          View Pass
+        </a>
+      ) : (
+        "-"
+      )}
     </div>
   );
 }
