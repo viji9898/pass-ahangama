@@ -20,7 +20,7 @@ function buffer(req) {
 export default async (req, res) => {
   if (req.method !== "POST") {
     console.log("[webhook] Not a POST request");
-    return res.status(405).end();
+    return new Response("Not a POST request", { status: 405 });
   }
   const sig = req.headers["stripe-signature"];
   const buf = await buffer(req);
@@ -34,7 +34,7 @@ export default async (req, res) => {
     console.log("[webhook] Event received:", event.type);
   } catch (err) {
     console.error("[webhook] Signature verification failed:", err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
   if (event.type === "checkout.session.completed") {
@@ -151,5 +151,8 @@ export default async (req, res) => {
     // TODO: Airtable sync here (set airtable_sync_status)
     // TODO: Airtable sync here (set airtable_sync_status)
   }
-  res.status(200).json({ received: true });
+  return new Response(JSON.stringify({ received: true }), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  });
 };
