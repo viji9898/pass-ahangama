@@ -43,6 +43,8 @@ export const purchases = pgTable("purchases", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
+
+  passHolderName: text("pass_holder_name"),
 });
 
 /* ===========================

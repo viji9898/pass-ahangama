@@ -30,7 +30,25 @@ function Success() {
   if (!session) return null;
 
   // Smart link: e.g., WhatsApp with order info
-  const smartLink = `https://wa.me/?text=I%20purchased%20a%20${session.pass_type}%20pass%20starting%20${session.start_date}.%20Order%20ID:%20${session.id}`;
+  const smartLink = `https://wa.me/?text=I%20purchased%20a%20${session.pass_type}%20pass%20from%20${formatDate(session.start_date)}%20to%20${formatDate(session.expiry_date)}.%20Order%20ID:%20${session.id}`;
+
+  // Helper to format date as YYYY-MM-DD
+  function formatDate(dateStr) {
+    if (!dateStr) return "-";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return d.toISOString().split("T")[0];
+  }
+
+  // Calculate validity (days) from start and end dates (inclusive)
+  function calcValidityDays(start, end) {
+    if (!start || !end) return "-";
+    const d1 = new Date(start);
+    const d2 = new Date(end);
+    if (isNaN(d1) || isNaN(d2)) return "-";
+    // Add 1 to include both start and end dates
+    return Math.round((d2 - d1) / (1000 * 60 * 60 * 24)) + 1;
+  }
 
   return (
     <div style={{ maxWidth: 500, margin: "3em auto", textAlign: "center" }}>
@@ -45,10 +63,13 @@ function Success() {
           <b>Pass Type:</b> {session.pass_type}
         </li>
         <li>
-          <b>Start Date:</b> {session.start_date}
+          <b>Start Date:</b> {formatDate(session.start_date)}
         </li>
         <li>
-          <b>Validity (days):</b> {session.validity_days}
+          <b>End Date:</b> {formatDate(session.expiry_date)}
+        </li>
+        <li>
+          <b>Pass Holder Name:</b> {session.pass_holder_name || "-"}
         </li>
         <li>
           <b>Email:</b> {session.customer_email}

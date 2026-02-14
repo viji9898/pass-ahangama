@@ -1,0 +1,1 @@
+ALTER TABLE "purchases" ADD COLUMN "pass_holder_name" text;

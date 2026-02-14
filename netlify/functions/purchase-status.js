@@ -32,5 +32,6 @@ export default async (req) => {
     validity_days: purchase.validity_days || purchase.validityDays,
     customer_email: purchase.customer_email || purchase.customerEmail,
     customer_phone: purchase.customer_phone || purchase.customerPhone,
+    pass_holder_name: purchase.pass_holder_name || purchase.passHolderName,
   });
 };
