@@ -13,9 +13,13 @@
     "db:studio": "netlify dev:exec drizzle-kit studio"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "@sendgrid/mail": "^8.1.6",
     "drizzle-orm": "^0.45.1",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "stripe": "^20.3.1",
+    "react-router-dom": "^6.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
