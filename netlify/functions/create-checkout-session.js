@@ -1,9 +1,9 @@
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_LIVE);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST);
 
 const PASS_CONFIG = {
-  pass_15: { days: 15, priceEnv: "STRIPE_PRICE_15" },
+  pass_15: { days: 15, priceEnv: "STRIPE_PRICE_15_TEST" },
   pass_30: { days: 30, priceEnv: "STRIPE_PRICE_30" },
   pass_90: { days: 90, priceEnv: "STRIPE_PRICE_90" },
 };
