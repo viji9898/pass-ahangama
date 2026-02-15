@@ -115,6 +115,7 @@ function App() {
               fontWeight: 700,
               color: "#8B4513",
               fontSize: 13,
+              marginBottom: 16,
             }}
           >
             Ahangama Pass
