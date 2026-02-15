@@ -139,7 +139,7 @@ function App() {
                 padding: "0.7em 1em",
                 borderRadius: 8,
                 border: "1px solid #ccc",
-                width: "100%",
+
                 boxSizing: "border-box",
                 fontSize: 18,
               }}
