@@ -36,7 +36,11 @@ async function generateSmartPass(fields) {
   }
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST);
+const stripe = new Stripe(
+  process.env.NODE_ENV === "development"
+    ? process.env.STRIPE_SECRET_KEY_TEST
+    : process.env.STRIPE_SECRET_KEY_LIVE,
+);
 
 const PASS_CONFIG = {
   pass_15: { days: 15, priceEnv: "STRIPE_PRICE_15_TEST" },

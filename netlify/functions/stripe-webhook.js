@@ -11,7 +11,11 @@ function generatePassCode(sessionId, length = 12) {
     .slice(0, length);
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST);
+const stripe = new Stripe(
+  process.env.NODE_ENV === "development"
+    ? process.env.STRIPE_SECRET_KEY_TEST
+    : process.env.STRIPE_SECRET_KEY_LIVE
+);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const sql = neon(process.env.NETLIFY_DATABASE_URL);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
