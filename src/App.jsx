@@ -97,20 +97,33 @@ function App() {
             textAlign: "center",
           }}
         >
-          <h2 style={{ margin: 0, fontWeight: 700, color: "#8B4513" }}>
-            Ahangama Pass
-          </h2>
-          <p
+          <img
+            src="/src/assets/ahangama_pass_logo.jpg"
+            title="Ahangama Pass & Guide to Perks, Privileges and Discounts, Experiences"
+            alt="Ahangama Pass Logo"
             style={{
-              color: "#6d4c2b",
-              margin: "0.5em 0 2em 0",
-              fontSize: 16,
-              textAlign: "center",
+              width: 120,
+              height: "auto",
+              marginBottom: 16,
+              borderRadius: 12,
+              boxShadow: "0 2px 8px #0002",
+            }}
+          />
+          <h1
+            style={{
+              margin: 0,
+              fontWeight: 700,
+              color: "#8B4513",
+              fontSize: 20,
             }}
           >
-            Unlock exclusive experiences, perks, and discounts in Ahangama.
+            Ahangama Pass
             <br />
-          </p>
+            <small style={{ fontSize: 12 }}>
+              {` Guide to Perks, Privileges and Discounts, Experiences`}
+            </small>
+          </h1>
+
           <div style={{ marginBottom: 16 }}>
             <label
               htmlFor="start-date"
