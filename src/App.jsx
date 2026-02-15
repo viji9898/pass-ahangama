@@ -294,7 +294,7 @@ function App() {
             textAlign: "center",
           }}
         >
-          &copy; {new Date().getFullYear()} Ahangama Pass
+          &copy; {new Date().getFullYear()} Ahangama Pass - Viji -
         </div>
       </div>
     </div>
