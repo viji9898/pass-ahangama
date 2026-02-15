@@ -88,17 +88,29 @@ export default async (req) => {
       const { email, phone, name } = customer_details || {};
       const { pass_type, start_date, validity_days } = metadata || {};
       const startDate = new Date(start_date);
+      // Expiry date is start date + validity_days - 1 (inclusive)
       const expiryDate = new Date(startDate);
-      expiryDate.setUTCDate(
-        expiryDate.getUTCDate() + Number(validity_days) - 1,
-      );
-      expiryDate.setUTCHours(18, 29, 59, 999);
+      if (!isNaN(expiryDate) && validity_days) {
+        expiryDate.setUTCDate(
+          expiryDate.getUTCDate() + Number(validity_days) - 1,
+        );
+        expiryDate.setUTCHours(23, 59, 59, 999); // End of day UTC
+      }
 
       // PassKit smart link generation
       let smartLink = null;
       // Generate passkitPassId from session id
       const passkitPassId = generatePassCode(stripeSessionId, 12);
       console.log("Generated pass code:", passkitPassId);
+      // Format expiry for PassKit as ISO-8601 with timezone offset (Asia/Colombo +05:30)
+      function toColomboIsoString(date) {
+        // Asia/Colombo is UTC+5:30
+        const offsetMs = 5.5 * 60 * 60 * 1000;
+        const local = new Date(date.getTime() + offsetMs);
+        const pad = (n) => String(n).padStart(2, "0");
+        return `${local.getFullYear()}-${pad(local.getMonth() + 1)}-${pad(local.getDate())}T${pad(local.getHours())}:${pad(local.getMinutes())}:${pad(local.getSeconds())}+05:30`;
+      }
+      const passkitExpiryIso = toColomboIsoString(expiryDate);
       try {
         const axios = (await import("axios")).default;
         const DISTRIBUTION_ID = "5cb4m9";
@@ -118,7 +130,7 @@ export default async (req) => {
           "person.emailAddress": email || "",
           "person.mobileNumber": phone || "",
           "universal.info": "Valid at all participating Ahangama Pass venues.",
-          "universal.expiryDate": `${expiryDate.getUTCFullYear()}-12-31T23:59:59Z`,
+          "universal.expiryDate": passkitExpiryIso,
         };
         const response = await axios.post(
           API_URL,
