@@ -14,7 +14,7 @@ function generatePassCode(sessionId, length = 12) {
 const stripe = new Stripe(
   process.env.NODE_ENV === "development"
     ? process.env.STRIPE_SECRET_KEY_TEST
-    : process.env.STRIPE_SECRET_KEY_LIVE
+    : process.env.STRIPE_SECRET_KEY_LIVE,
 );
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const sql = neon(process.env.NETLIFY_DATABASE_URL);

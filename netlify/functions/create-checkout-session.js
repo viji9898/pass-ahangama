@@ -1,40 +1,4 @@
 import Stripe from "stripe";
-import axios from "axios";
-
-const DISTRIBUTION_ID = "5cb4m9";
-const API_URL = "https://api.pub1.passkit.io/distribution/smartpasslink";
-// ⚠️ NEVER hardcode this in production
-const SMARTPASS_SECRET =
-  "Iqwj_wfzVrdw7xRMu-HIMxRhaob6seRM8yRz01a1arAyhqVHmnMdPXoX0COUEFtVtQj1ErCjNGwKLS3k9itJx0CufoSvOLY5VpXtsFtJMv4w3v_LdYbq_27Sa5GhYR2x94d6yX5A6jhwFboSB9gwcScT6Yns0HORlF4pBROp2EF6Zu5cuum3p8kKYMic3qR2KEIeUBaF4m-Z_Uga6ANycn-njwXGM45HUg0krc2n3_ZT_3WPHRakEcDaf5FjYgpeIQcCOCVgmHJz_NIfq8ncHXHh2TcEmQGy9naM8O_0aQNqlTJPrZkl53KrKvhv_7eB";
-
-async function generateSmartPass(fields) {
-  try {
-    const response = await axios.post(
-      API_URL,
-      {
-        projectDistributionUrl: {
-          url: `https://pub1.pskt.io/c/${DISTRIBUTION_ID}`,
-          title: "Ahangama Pass",
-        },
-        fields,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${SMARTPASS_SECRET}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
-    return response.data;
-  } catch (err) {
-    if (err.response) {
-      console.error("❌ API Error:", err.response.status, err.response.data);
-    } else {
-      console.error("❌ Error:", err.message);
-    }
-    return null;
-  }
-}
 
 const stripe = new Stripe(
   process.env.NODE_ENV === "development"
@@ -125,23 +89,7 @@ export default async (req) => {
       },
     });
 
-    // Generate PassKit smart link
-    const smartPassFields = {
-      "members.program.name": "Ahangama Pass 2026",
-      "members.member.points": "120",
-      "members.tier.name": "Base",
-      "members.member.status": "ACTIVE",
-      "members.member.externalId": `AHG-USER-${session.id}`,
-      "person.displayName": "Ahangama Pass Holder",
-      "person.surname": "",
-      "person.emailAddress": "",
-      "person.mobileNumber": mobile || "",
-      "universal.info": "Valid at all participating Ahangama Pass venues.",
-      "universal.expiryDate": `${new Date(start).getUTCFullYear()}-12-31T23:59:59Z`,
-    };
-    const smartLink = await generateSmartPass(smartPassFields);
-
-    return json(200, { url: session.url, smartLink });
+    return json(200, { url: session.url });
   } catch (err) {
     console.error("create-checkout-session error:", err);
     return json(500, { error: err.message || "Unknown error" });
