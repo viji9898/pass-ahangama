@@ -13,7 +13,8 @@ export default async (req) => {
     session_id = req.query.session_id;
   } else if (req.url && req.url.includes("session_id=")) {
     // fallback for Netlify local/dev: parse from URL
-    const url = new URL(req.url, "http://localhost");
+    const baseUrl = process.env.SITE_URL || "http://localhost:8889";
+    const url = new URL(req.url, baseUrl);
     session_id = url.searchParams.get("session_id");
   }
   if (!session_id) return json(400, { error: "Missing session_id" });

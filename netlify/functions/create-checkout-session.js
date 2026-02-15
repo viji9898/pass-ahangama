@@ -106,7 +106,9 @@ export default async (req) => {
     if (!priceId) return json(500, { error: `${cfg.priceEnv} is missing` });
 
     // Use SITE_URL from env or fallback to localhost for serverless environment
-    const origin = process.env.SITE_URL || "http://localhost:8889";
+    const baseUrl = process.env.SITE_URL || "http://localhost:8889";
+    const url = new URL(req.url, baseUrl);
+    const origin = url.origin;
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
