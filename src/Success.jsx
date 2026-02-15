@@ -200,26 +200,48 @@ function Success() {
             }}
           >
             <li style={{ marginBottom: 8 }}>
-              <b>Pass Type:</b> {session.pass_type}
+              <b>Pass Type:</b>
+              <br />
+              {session.pass_type}
+            </li>
+            <li
+              style={{
+                marginBottom: 8,
+                display: "flex",
+                justifyContent: "center",
+                gap: 32,
+              }}
+            >
+              <div>
+                <b>Start Date:</b>
+                <br />
+                {formatDate(session.start_date)}
+              </div>
+              <div>
+                <b>End Date:</b>
+                <br />
+                {formatDate(session.expiry_date)}
+              </div>
             </li>
             <li style={{ marginBottom: 8 }}>
-              <b>Start Date:</b> {formatDate(session.start_date)}
+              <b>Pass Holder Name:</b>
+              <br />
+              {session.pass_holder_name || "-"}
             </li>
             <li style={{ marginBottom: 8 }}>
-              <b>End Date:</b> {formatDate(session.expiry_date)}
-            </li>
-            <li style={{ marginBottom: 8 }}>
-              <b>Pass Holder Name:</b> {session.pass_holder_name || "-"}
-            </li>
-            <li style={{ marginBottom: 8 }}>
-              <b>Email:</b> {session.customer_email}
+              <b>Email:</b>
+              <br />
+              {session.customer_email}
             </li>
             <li style={{ marginBottom: 8 }}>
               <b>Phone:</b>
+              <br />
               {session.customer_phone}
             </li>
             <li style={{ marginBottom: 8 }}>
-              <b>Pass ID:</b> {session.passkit_pass_id || "-"}
+              <b>Pass ID:</b>
+              <br />
+              {session.passkit_pass_id || "-"}
             </li>
           </ul>
           <div
