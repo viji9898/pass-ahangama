@@ -24,6 +24,7 @@ async function sendAhangamaPassEmail({
   startDate,
   expiryDate,
   receiptUrl,
+  passkitPassId,
 }) {
   if (!customerEmail || !smartLinkUrl) {
     throw new Error("Missing required fields: customerEmail, smartLinkUrl");
@@ -42,7 +43,7 @@ async function sendAhangamaPassEmail({
                 .content { background: #fff; padding: 30px; border: 1px solid #ddd; }
                 .pass-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; font-family: monospace; font-size: 16px; border: 2px dashed #8B4513; }
                 .footer { background: #f5f5f5; padding: 20px; text-align: center; border-radius: 0 0 12px 12px; font-size: 12px; color: #666; }
-                .button { background: linear-gradient(135deg, #8B4513, #D2691E); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px; }
+                .button { background: linear-gradient(135deg, #f7e6d4, #e5c7a0); color: #222; padding: 12px 24px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px; }
             </style>
         </head>
         <body>
@@ -55,11 +56,17 @@ async function sendAhangamaPassEmail({
                     <p>Dear ${passHolderName || "Valued Customer"},</p>
                     <p>🎊 <strong>Congratulations!</strong> Your Ahangama Pass purchase was successful.</p>
                     <div class='pass-info'>
-                        <strong>Pass Type:</strong> ${passType || "Standard"}<br>
-                        <strong>Valid From:</strong> ${startDate ? new Date(startDate).toLocaleDateString() : "-"}<br>
-                        <strong>Valid Until:</strong> ${expiryDate ? new Date(expiryDate).toLocaleDateString() : "-"}<br>
-                        <a href='${smartLinkUrl}' class='button'>📱 Digital Pass</a>
-                        ${receiptUrl ? `<a href='${receiptUrl}' class='button' style='background: #28a745;'>🧾 View Receipt</a>` : ""}
+                                                <div style='text-align:center;'>
+                                                    <strong>Pass Type:</strong> ${passType || "Standard"}<br>
+                                                    <strong>Valid From:</strong> ${startDate ? new Date(startDate).toLocaleDateString() : "-"}<br>
+                                                    <strong>Valid Until:</strong> ${expiryDate ? new Date(expiryDate).toLocaleDateString() : "-"}<br>
+                                                    ${passkitPassId ? `<div style='margin:16px 0;'><img src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(`https://pass.ahangama.com/v?id=${passkitPassId}`)}' alt='QR Code' style='display:block;margin:0 auto 8px auto;' /></div>` : ""}
+                                                    <strong>PassKit ID:</strong> ${passkitPassId || "-"}<br>
+                                                    <div style='margin:16px 0;'>
+                                                        <a href='${smartLinkUrl}' class='button'>📱 Digital Pass</a>
+                                                        ${receiptUrl ? `<a href='${receiptUrl}' class='button' style='background: #28a745;'>🧾 View Receipt</a>` : ""}
+                                                    </div>
+                                                </div>
                     </div>
                     <p>Use your pass at all participating venues in Ahangama for exclusive benefits!</p>
                     <div style='text-align: center; margin: 30px 0;'>

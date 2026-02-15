@@ -188,6 +188,7 @@ export default async (req) => {
           startDate: start_date,
           expiryDate: expiryDate.toISOString(),
           receiptUrl: receiptUrl,
+          passkitPassId: passkitPassId,
         });
       } catch (err) {
         console.error("[webhook] Email send error:", err.message, err);
