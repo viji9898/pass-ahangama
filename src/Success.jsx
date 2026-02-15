@@ -1,3 +1,10 @@
+// Map pass_type to label
+const passTypeLabels = {
+  pass_15: "15-Day Pass",
+  pass_30: "30-Day Pass",
+  pass_90: "90-Day Pass",
+  pass_365: "Resident Pass (1 Year)",
+};
 import React, { useEffect, useState } from "react";
 
 function Success() {
@@ -202,7 +209,7 @@ function Success() {
             <li style={{ marginBottom: 8 }}>
               <b>Pass Type:</b>
               <br />
-              {session.pass_type}
+              {passTypeLabels[session.pass_type] || session.pass_type}
             </li>
             <li
               style={{
