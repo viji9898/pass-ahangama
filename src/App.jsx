@@ -98,11 +98,11 @@ function App() {
           }}
         >
           <img
-            src="/src/assets/ahangama_pass_logo.jpg"
+            src="https://customer-apps-techhq.s3.eu-west-2.amazonaws.com/app-ahangama-demo/ahangama_pass_logo.png"
             title="Ahangama Pass & Guide to Perks, Privileges and Discounts, Experiences"
             alt="Ahangama Pass Logo"
             style={{
-              width: 120,
+              width: 200,
               height: "auto",
               marginBottom: 16,
               borderRadius: 12,
@@ -114,7 +114,7 @@ function App() {
               margin: 0,
               fontWeight: 700,
               color: "#8B4513",
-              fontSize: 20,
+              fontSize: 13,
             }}
           >
             Ahangama Pass
