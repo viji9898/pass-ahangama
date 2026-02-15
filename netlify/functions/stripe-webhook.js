@@ -128,7 +128,7 @@ export default async (req) => {
           "members.member.points": "120",
           "members.tier.name": "Base",
           "members.member.status": "ACTIVE",
-          "members.member.externalId": `${passkitPassId}`,
+          "members.member.externalId": `https://pass.ahangama.com/v?id=${passkitPassId}`,
           "person.displayName": name || "Ahangama Pass Holder",
           "person.surname": "",
           "person.emailAddress": email || "",
