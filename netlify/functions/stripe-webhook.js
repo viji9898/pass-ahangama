@@ -1,6 +1,15 @@
 import Stripe from "stripe";
 import { neon } from "@neondatabase/serverless";
 import sgMail from "@sendgrid/mail";
+import crypto from "crypto";
+
+function generatePassCode(sessionId, length = 12) {
+  return crypto
+    .createHash("sha256")
+    .update(sessionId)
+    .digest("hex")
+    .slice(0, length);
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -31,15 +40,16 @@ export default async (req) => {
   const sig = req.headers.get("stripe-signature");
   const rawBody = await getRawBody(req.body);
   // Debug logging for troubleshooting signature verification
-  console.log("[webhook] endpointSecret:", endpointSecret);
-  console.log("[webhook] signature header:", sig);
-  console.log(
-    "[webhook] rawBody type:",
-    rawBody && rawBody.constructor && rawBody.constructor.name,
-  );
+  // console.log("[webhook] endpointSecret:", endpointSecret);
+  // console.log("[webhook] signature header:", sig);
+  // console.log(
+  //   "[webhook] rawBody type:",
+  //   rawBody && rawBody.constructor && rawBody.constructor.name,
+  // );
   let event;
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    console.log(rawBody);
   } catch (err) {
     console.log(`⚠️  Webhook signature verification failed.`, err.message);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
@@ -48,6 +58,31 @@ export default async (req) => {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
+      console.log(
+        "[webhook] Stripe session object:",
+        JSON.stringify(session, null, 2),
+      );
+
+      // Fetch Stripe receipt URL from PaymentIntent
+      let receiptUrl = null;
+      // Retrieve full session with expanded payment_intent + charges
+      try {
+        const fullSession = await stripe.checkout.sessions.retrieve(
+          session.id,
+          {
+            expand: ["payment_intent.charges"],
+          },
+        );
+        const paymentIntent = fullSession.payment_intent;
+        const charge = paymentIntent?.charges?.data?.[0];
+        receiptUrl = charge?.receipt_url || null;
+        console.log("[webhook] Stripe receipt URL:", receiptUrl);
+      } catch (err) {
+        console.error(
+          "[webhook] Error expanding session for receipt_url:",
+          err.message,
+        );
+      }
       // Compute expiry date (end of day Asia/Colombo)
       const { id: stripeSessionId, customer_details, metadata } = session;
       const { email, phone, name } = customer_details || {};
@@ -61,7 +96,9 @@ export default async (req) => {
 
       // PassKit smart link generation
       let smartLink = null;
-      let passkitPassId = null;
+      // Generate passkitPassId from session id
+      const passkitPassId = generatePassCode(stripeSessionId, 12);
+      console.log("Generated pass code:", passkitPassId);
       try {
         const axios = (await import("axios")).default;
         const DISTRIBUTION_ID = "5cb4m9";
@@ -75,7 +112,7 @@ export default async (req) => {
           "members.member.points": "120",
           "members.tier.name": "Base",
           "members.member.status": "ACTIVE",
-          "members.member.externalId": `AHG-USER-${stripeSessionId}`,
+          "members.member.externalId": `${passkitPassId}`,
           "person.displayName": name || "Ahangama Pass Holder",
           "person.surname": "",
           "person.emailAddress": email || "",
@@ -99,8 +136,8 @@ export default async (req) => {
             },
           },
         );
+        console.log("[webhook] PassKit API response:", response.data);
         smartLink = response.data?.url || response.data || null;
-        passkitPassId = response.data?.passId || response.data?.id || null;
       } catch (err) {
         console.error("[webhook] PassKit smart link error:", err.message);
       }
@@ -109,14 +146,35 @@ export default async (req) => {
       try {
         await sql`
           INSERT INTO purchases (
-            stripe_session_id, customer_email, customer_phone, pass_type, price_usd, start_date, expiry_date, status, created_at, pass_holder_name, smart_link_url, passkit_pass_id
+            stripe_session_id, customer_email, customer_phone, pass_type, price_usd, start_date, expiry_date, status, created_at, pass_holder_name, smart_link_url, passkit_pass_id, receipt_url
           ) VALUES (
-            ${stripeSessionId}, ${email}, ${phone}, ${pass_type}, 0, ${start_date}, ${expiryDate.toISOString()}, 'paid', NOW(), ${name || "-"}, ${smartLink}, ${passkitPassId}
+            ${stripeSessionId}, ${email}, ${phone}, ${pass_type}, 0, ${start_date}, ${expiryDate.toISOString()}, 'paid', NOW(), ${name || "-"}, ${smartLink}, ${passkitPassId}, ${receiptUrl}
           )
-          ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', pass_holder_name = ${name || "-"}, smart_link_url = ${smartLink}, passkit_pass_id = ${passkitPassId}
+          ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', pass_holder_name = ${name || "-"}, smart_link_url = ${smartLink}, passkit_pass_id = ${passkitPassId}, receipt_url = ${receiptUrl}
         `;
       } catch (err) {
         console.error("[webhook] DB insert error:", err.message, err);
+      }
+
+      // Send email to customer
+      // Log values before sending email
+      console.log("[webhook] Email send debug:", {
+        customerEmail: email,
+        smartLinkUrl: smartLink,
+      });
+      try {
+        const emailModule = await import("./EmailComponent.js");
+        await emailModule.sendAhangamaPassEmail({
+          customerEmail: email,
+          passHolderName: name || "-",
+          smartLinkUrl: smartLink,
+          passType: pass_type || "Standard",
+          startDate: start_date,
+          expiryDate: expiryDate.toISOString(),
+          receiptUrl: receiptUrl,
+        });
+      } catch (err) {
+        console.error("[webhook] Email send error:", err.message, err);
       }
       break;
     }

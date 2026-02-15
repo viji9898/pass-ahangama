@@ -81,27 +81,46 @@ function Success() {
           <b>PassKit Pass ID:</b> {session.passkit_pass_id || "-"}
         </li>
       </ul>
-      {session.smart_link_url ? (
-        <a
-          href={session.smart_link_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: "inline-block",
-            marginTop: 8,
-            background: "#007bff",
-            color: "#fff",
-            padding: "0.5em 1.5em",
-            borderRadius: 8,
-            textDecoration: "none",
-            fontWeight: 600,
-          }}
-        >
-          View Pass
-        </a>
-      ) : (
-        "-"
-      )}
+      <div style={{ marginTop: 16 }}>
+        {session.smart_link_url && (
+          <a
+            href={session.smart_link_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              marginRight: 12,
+              background: "#007bff",
+              color: "#fff",
+              padding: "0.5em 1.5em",
+              borderRadius: 8,
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            View Pass
+          </a>
+        )}
+        {session.receipt_url && (
+          <a
+            href={session.receipt_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              background: "#28a745",
+              color: "#fff",
+              padding: "0.5em 1.5em",
+              borderRadius: 8,
+              textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >
+            View Receipt
+          </a>
+        )}
+        {!session.smart_link_url && !session.receipt_url && "-"}
+      </div>
     </div>
   );
 }

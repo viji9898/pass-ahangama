@@ -35,6 +35,7 @@ export const purchases = pgTable("purchases", {
 
   passkitPassId: text("passkit_pass_id"),
   smartLinkUrl: text("smart_link_url"),
+  receiptUrl: text("receipt_url"),
 
   emailSentAt: timestamp("email_sent_at", { withTimezone: true }),
 

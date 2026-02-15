@@ -34,5 +34,6 @@ export default async (req) => {
     customer_email: purchase.customer_email || purchase.customerEmail,
     customer_phone: purchase.customer_phone || purchase.customerPhone,
     pass_holder_name: purchase.pass_holder_name || purchase.passHolderName,
+    receipt_url: purchase.receipt_url || purchase.receiptUrl,
   });
 };
