@@ -42,11 +42,24 @@ const stripe = new Stripe(
     : process.env.STRIPE_SECRET_KEY_LIVE,
 );
 
+const isDev = process.env.NODE_ENV === "development";
 const PASS_CONFIG = {
-  pass_15: { days: 15, priceEnv: "STRIPE_PRICE_15_TEST" },
-  pass_30: { days: 30, priceEnv: "STRIPE_PRICE_30" },
-  pass_90: { days: 90, priceEnv: "STRIPE_PRICE_90" },
-  pass_365: { days: 365, priceEnv: "STRIPE_PRICE_365" },
+  pass_15: {
+    days: 15,
+    priceEnv: isDev ? "STRIPE_PRICE_15_TEST" : "STRIPE_PRICE_15",
+  },
+  pass_30: {
+    days: 30,
+    priceEnv: isDev ? "STRIPE_PRICE_30_TEST" : "STRIPE_PRICE_30",
+  },
+  pass_90: {
+    days: 90,
+    priceEnv: isDev ? "STRIPE_PRICE_90_TEST" : "STRIPE_PRICE_90",
+  },
+  pass_365: {
+    days: 365,
+    priceEnv: isDev ? "STRIPE_PRICE_365_TEST" : "STRIPE_PRICE_365",
+  },
 };
 
 function json(status, obj) {

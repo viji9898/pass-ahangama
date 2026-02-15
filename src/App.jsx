@@ -19,7 +19,7 @@ function App() {
     {
       label: "30-Day Pass",
       passType: "pass_30",
-      price: "USD 35",
+      price: "USD 30",
       desc: "Great for a month",
     },
     {
