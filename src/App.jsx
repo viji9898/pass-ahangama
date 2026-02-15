@@ -114,7 +114,12 @@ function App() {
           <div style={{ marginBottom: 16 }}>
             <label
               htmlFor="start-date"
-              style={{ color: "#6d4c2b", fontWeight: 500 }}
+              style={{
+                color: "#6d4c2b",
+                fontWeight: 500,
+                display: "block",
+                marginBottom: 4,
+              }}
             >
               Start Date:
             </label>
@@ -131,10 +136,12 @@ function App() {
               })()}
               required
               style={{
-                marginLeft: 8,
-                padding: "0.4em",
-                borderRadius: 6,
+                padding: "0.7em 1em",
+                borderRadius: 8,
                 border: "1px solid #ccc",
+                width: "100%",
+                boxSizing: "border-box",
+                fontSize: 18,
               }}
             />
           </div>
