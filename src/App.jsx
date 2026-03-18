@@ -13,25 +13,25 @@ function App() {
     {
       label: "15-Day Pass",
       passType: "pass_15",
-      price: "USD 18",
+      price: "USD 30",
       desc: "Best for short stays",
     },
     {
       label: "30-Day Pass",
       passType: "pass_30",
-      price: "USD 30",
+      price: "USD 50",
       desc: "Great for a month",
     },
     {
       label: "90-Day Pass",
       passType: "pass_90",
-      price: "USD 60",
+      price: "USD 100",
       desc: "For the full season",
     },
     {
       label: "Resident Pass (1 Year)",
       passType: "pass_365",
-      price: "USD 100",
+      price: "USD 250",
       desc: "For residents, valid 1 year",
     },
   ];
