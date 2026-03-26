@@ -441,6 +441,10 @@ const inputStyle = {
   boxSizing: "border-box",
   fontSize: 16,
   background: "#fff",
+  color: "#000",
+  caretColor: "#000",
+  WebkitTextFillColor: "#000",
+  colorScheme: "light",
 };
 
 const dateInputStyle = {
@@ -455,6 +459,9 @@ const dateInputStyle = {
   textOverflow: "ellipsis",
   lineHeight: 1.2,
   paddingRight: "0.75rem",
+  color: "#000",
+  WebkitTextFillColor: "#000",
+  colorScheme: "light",
 };
 
 const resultRowStyle = {
