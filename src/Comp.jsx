@@ -26,14 +26,19 @@ function Comp() {
     return date.toISOString().split("T")[0];
   }, []);
 
-  const [formData, setFormData] = React.useState({
-    passHolderName: "",
-    customerEmail: "",
-    customerPhone: "",
-    startDate: todayStr,
-    passType: passOptions[0].passType,
-    promoCode: "",
-  });
+  const initialFormData = React.useMemo(
+    () => ({
+      passHolderName: "",
+      customerEmail: "",
+      customerPhone: "",
+      startDate: todayStr,
+      passType: passOptions[0].passType,
+      promoCode: "",
+    }),
+    [todayStr],
+  );
+
+  const [formData, setFormData] = React.useState(initialFormData);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [result, setResult] = React.useState(null);
@@ -79,6 +84,12 @@ function Comp() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleIssueAnotherPass() {
+    setFormData(initialFormData);
+    setResult(null);
+    setError("");
   }
 
   return (
@@ -326,23 +337,45 @@ function Comp() {
               <strong>Pass ID</strong>
               <span>{result.passkitPassId}</span>
             </div>
-            <a
-              href={result.smartLinkUrl}
-              target="_blank"
-              rel="noreferrer"
+            <div
               style={{
-                display: "inline-block",
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 10,
                 marginTop: 14,
-                background: "#8B4513",
-                color: "#fff",
-                borderRadius: 12,
-                padding: "0.8rem 1rem",
-                textDecoration: "none",
-                fontWeight: 700,
               }}
             >
-              Open Digital Pass
-            </a>
+              <a
+                href={result.smartLinkUrl}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "inline-block",
+                  background: "#8B4513",
+                  color: "#fff",
+                  borderRadius: 12,
+                  padding: "0.8rem 1rem",
+                  textDecoration: "none",
+                  fontWeight: 700,
+                }}
+              >
+                Open Digital Pass
+              </a>
+              <button
+                type="button"
+                onClick={handleIssueAnotherPass}
+                style={{
+                  border: "1px solid #d9c7b5",
+                  background: "#fff",
+                  color: "#6d3412",
+                  borderRadius: 12,
+                  padding: "0.8rem 1rem",
+                  fontWeight: 700,
+                }}
+              >
+                Issue Another Complimentary Pass
+              </button>
+            </div>
           </div>
         )}
       </div>
