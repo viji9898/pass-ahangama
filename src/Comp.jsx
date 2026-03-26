@@ -339,6 +339,31 @@ function Comp() {
             </div>
             <div
               style={{
+                marginTop: 14,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(result.smartLinkUrl)}`}
+                alt="QR code for digital pass"
+                style={{
+                  width: 180,
+                  height: 180,
+                  borderRadius: 12,
+                  background: "#fff",
+                  padding: 8,
+                  boxSizing: "border-box",
+                }}
+              />
+              <div style={{ fontSize: 13, color: "#7e5a43", textAlign: "center" }}>
+                Scan to open the digital pass
+              </div>
+            </div>
+            <div
+              style={{
                 display: "flex",
                 flexWrap: "wrap",
                 gap: 10,
