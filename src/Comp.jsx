@@ -358,7 +358,9 @@ function Comp() {
                   boxSizing: "border-box",
                 }}
               />
-              <div style={{ fontSize: 13, color: "#7e5a43", textAlign: "center" }}>
+              <div
+                style={{ fontSize: 13, color: "#7e5a43", textAlign: "center" }}
+              >
                 Scan to open the digital pass
               </div>
             </div>
@@ -398,7 +400,7 @@ function Comp() {
                   fontWeight: 700,
                 }}
               >
-                Issue Another Complimentary Pass
+                Issue Another Pass
               </button>
             </div>
           </div>
