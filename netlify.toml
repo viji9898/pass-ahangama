@@ -10,6 +10,10 @@
   port = 8889
   targetPort = 5173
 
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/vite.svg"
+  status = 200
 
 [[redirects]]
   from = "/*"
