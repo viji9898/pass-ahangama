@@ -400,6 +400,7 @@ const fieldWrapperStyle = {
   ...labelStyle,
   width: "100%",
   minWidth: 0,
+  overflow: "hidden",
 };
 
 const inputStyle = {
@@ -418,6 +419,15 @@ const inputStyle = {
 const dateInputStyle = {
   ...inputStyle,
   display: "block",
+  width: "100%",
+  maxWidth: "100%",
+  minWidth: 0,
+  appearance: "none",
+  WebkitAppearance: "none",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  lineHeight: 1.2,
+  paddingRight: "0.75rem",
 };
 
 const resultRowStyle = {
