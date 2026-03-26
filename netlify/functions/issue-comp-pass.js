@@ -182,6 +182,7 @@ async function sendCompPassEmail({
             </div>
             <p>Use the digital pass link below to access your pass.</p>
             <p><a class="button" href="${smartLinkUrl}">Open Digital Pass</a></p>
+            <p>See the full Ahangama Pass venue list on Google Maps: <a href="https://maps.app.goo.gl/WtHWoZXyC9mT4q8r6">View all participating places</a>.</p>
             <p>Participating venues and support are available at <a href="https://ahangama.com">ahangama.com</a>.</p>
           </div>
           <div class="footer">

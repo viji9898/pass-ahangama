@@ -4,17 +4,17 @@ const passOptions = [
   {
     passType: "comp_7",
     label: "1 Week",
-    description: "7-day complimentary pass",
+    description: "",
   },
   {
     passType: "comp_14",
     label: "2 Weeks",
-    description: "14-day complimentary pass",
+    description: "",
   },
   {
     passType: "comp_30",
     label: "1 Month",
-    description: "30-day complimentary pass",
+    description: "",
   },
 ];
 
@@ -170,7 +170,7 @@ function Comp() {
             />
           </label>
 
-          <label style={labelStyle}>
+          <label style={fieldWrapperStyle}>
             Start Date
             <input
               type="date"
@@ -179,15 +179,21 @@ function Comp() {
               max={maxDate}
               value={formData.startDate}
               onChange={handleChange("startDate")}
-              style={inputStyle}
+              style={dateInputStyle}
             />
           </label>
 
           <div>
             <div style={{ ...labelStyle, marginBottom: 8 }}>
-              Purchase Option
+              Complimentary Pass Option
             </div>
-            <div style={{ display: "grid", gap: 10 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: 10,
+              }}
+            >
               {passOptions.map((option) => {
                 const active = option.passType === formData.passType;
                 return (
@@ -202,14 +208,15 @@ function Comp() {
                     }
                     style={{
                       width: "100%",
-                      textAlign: "left",
+                      minHeight: 112,
+                      textAlign: "center",
                       borderRadius: 16,
                       border: active
                         ? "2px solid #8B4513"
                         : "1px solid #d9c7b5",
                       background: active ? "#8B4513" : "#fffaf5",
                       color: active ? "#fff" : "#6d3412",
-                      padding: "0.95rem 1rem",
+                      padding: "0.95rem 0.75rem",
                     }}
                   >
                     <div style={{ fontWeight: 700, fontSize: 17 }}>
@@ -356,8 +363,16 @@ const labelStyle = {
   fontSize: 14,
 };
 
+const fieldWrapperStyle = {
+  ...labelStyle,
+  width: "100%",
+  minWidth: 0,
+};
+
 const inputStyle = {
   width: "100%",
+  maxWidth: "100%",
+  minWidth: 0,
   marginTop: 6,
   padding: "0.85rem 0.95rem",
   borderRadius: 14,
@@ -365,6 +380,11 @@ const inputStyle = {
   boxSizing: "border-box",
   fontSize: 16,
   background: "#fff",
+};
+
+const dateInputStyle = {
+  ...inputStyle,
+  display: "block",
 };
 
 const resultRowStyle = {

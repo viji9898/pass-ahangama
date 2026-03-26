@@ -71,6 +71,7 @@ async function sendAhangamaPassEmail({
                     <p>Use your pass at all participating venues in Ahangama for exclusive benefits!</p>
                     <div style='text-align: center; margin: 30px 0;'>
                         <a href='https://ahangama.com' class='button'>🗺️ View All Venues</a>
+                        <a href='https://maps.app.goo.gl/WtHWoZXyC9mT4q8r6' class='button' style='background: #f2efe9;'>📍 Google Maps List</a>
                         <a href='https://wa.me/94777908790?text=Hi!%20I%20need%20help%20with%20my%20Ahangama%20Pass.%20My%20Pass%20Id%20is%20${encodeURIComponent(passkitPassId || "-")}' class='button' style='background: #25d366; border-color: #25d366;'>💬 WhatsApp Support</a>
                     </div>
                     <p>Ready to explore Ahangama like a local? Your adventure starts now! 🌊</p>
