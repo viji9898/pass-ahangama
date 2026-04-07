@@ -20,7 +20,7 @@ export const handler = async (event) => {
     stripeEvent = stripe.webhooks.constructEvent(
       event.body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET,
+      process.env.STRIPE_WEBHOOK_SECRET_CHECKOUT,
     );
   } catch (err) {
     return {
