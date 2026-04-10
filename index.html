@@ -47,6 +47,23 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pass.ahangama.com/" />
+    <!-- Google Analytics Tags -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-HZ20D69WMB"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-HZ20D69WMB", {
+        send_page_view: true,
+        cookie_domain: "auto",
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
