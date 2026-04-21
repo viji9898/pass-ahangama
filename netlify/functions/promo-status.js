@@ -8,6 +8,7 @@ const stripe = new Stripe(
     : process.env.STRIPE_SECRET_KEY_LIVE,
 );
 const PASSKIT_SMARTPASS_SECRET = process.env.PASSKIT_SMARTPASS_SECRET;
+const PASS_EXTERNAL_BASE_URL = "https://pass.ahangama.com";
 
 function generatePassCode(seed, length = 12) {
   return crypto
@@ -60,7 +61,6 @@ async function createPromoSmartPassLink({
 }) {
   if (!PASSKIT_SMARTPASS_SECRET || !paidEndAt) return null;
 
-  const baseUrl = process.env.SITE_URL || "https://pass.ahangama.com";
   const response = await fetch(
     "https://api.pub1.passkit.io/distribution/smartpasslink",
     {
@@ -79,7 +79,7 @@ async function createPromoSmartPassLink({
           "members.member.points": "120",
           "members.tier.name": "Base",
           "members.member.status": "ACTIVE",
-          "members.member.externalId": `${baseUrl}/pv?id=${passkitPassId}`,
+          "members.member.externalId": `${PASS_EXTERNAL_BASE_URL}/pv?id=${passkitPassId}`,
           "person.displayName": passHolderName || "Ahangama Pass Holder",
           "person.surname": "",
           "person.emailAddress": customerEmail || "",

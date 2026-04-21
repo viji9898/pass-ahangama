@@ -14,6 +14,7 @@ const stripe = new Stripe(
 const endpointSecret = process.env.STRIPE_PROMO_WEBHOOK_SECRET;
 const sql = neon(process.env.NETLIFY_DATABASE_URL);
 const PASSKIT_SMARTPASS_SECRET = process.env.PASSKIT_SMARTPASS_SECRET;
+const PASS_EXTERNAL_BASE_URL = "https://pass.ahangama.com";
 
 export const config = { api: { bodyParser: false } };
 
@@ -121,7 +122,6 @@ async function createPromoSmartPassLink({
     throw new Error("PASSKIT_SMARTPASS_SECRET is missing");
   }
 
-  const baseUrl = process.env.SITE_URL || "https://pass.ahangama.com";
   const response = await fetch(
     "https://api.pub1.passkit.io/distribution/smartpasslink",
     {
@@ -140,7 +140,7 @@ async function createPromoSmartPassLink({
           "members.member.points": "120",
           "members.tier.name": "Base",
           "members.member.status": "ACTIVE",
-          "members.member.externalId": `${baseUrl}/pv?id=${passkitPassId}`,
+          "members.member.externalId": `${PASS_EXTERNAL_BASE_URL}/pv?id=${passkitPassId}`,
           "person.displayName": passHolderName || "Ahangama Pass Holder",
           "person.surname": "",
           "person.emailAddress": customerEmail || "",
