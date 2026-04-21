@@ -27,7 +27,12 @@ export default async (req) => {
     WHERE stripe_checkout_session_id = ${sessionId}
   `;
 
-  if (!subscription) return json(404, { error: "Not found" });
+  if (!subscription) {
+    return json(202, {
+      pending: true,
+      message: "Promo activation is still processing.",
+    });
+  }
 
   return json(200, {
     id:
@@ -41,7 +46,8 @@ export default async (req) => {
     passkit_pass_id: subscription.passkit_pass_id || subscription.passkitPassId,
     customer_email: subscription.customer_email || subscription.customerEmail,
     customer_phone: subscription.customer_phone || subscription.customerPhone,
-    pass_holder_name: subscription.pass_holder_name || subscription.passHolderName,
+    pass_holder_name:
+      subscription.pass_holder_name || subscription.passHolderName,
     start_date: subscription.start_date || subscription.startDate,
     trial_start_at: subscription.trial_start_at || subscription.trialStartAt,
     trial_end_at: subscription.trial_end_at || subscription.trialEndAt,

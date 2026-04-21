@@ -52,29 +52,69 @@ function Promo() {
     const params = new URLSearchParams(window.location.search);
     const checkoutState = params.get("checkout");
     const sessionId = params.get("session_id");
+    let retryTimeoutId;
+    let isActive = true;
 
     if (checkoutState === "cancelled") {
       setError("Promo checkout was cancelled.");
       return;
     }
 
-    if (checkoutState !== "success" || !sessionId) return;
+    if (checkoutState !== "success" || !sessionId) {
+      return () => {
+        isActive = false;
+        window.clearTimeout(retryTimeoutId);
+      };
+    }
 
     setSuccessLoading(true);
     setError("");
 
-    fetch(`/.netlify/functions/promo-status?session_id=${encodeURIComponent(sessionId)}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setError(data.error);
+    const loadPromoStatus = async (attempt = 0) => {
+      try {
+        const response = await fetch(
+          `/.netlify/functions/promo-status?session_id=${encodeURIComponent(sessionId)}`,
+        );
+        const data = await response.json();
+
+        if (!isActive) return;
+
+        if (response.status === 202 && data.pending) {
+          if (attempt >= 9) {
+            setError(
+              "Your promo is still being activated. Please refresh in a moment.",
+            );
+            setSuccessLoading(false);
+            return;
+          }
+
+          retryTimeoutId = window.setTimeout(() => {
+            loadPromoStatus(attempt + 1);
+          }, 1500);
+          return;
+        }
+
+        if (!response.ok || data.error) {
+          setError(data.error || "Failed to load promo status.");
+          setSuccessLoading(false);
           return;
         }
 
         setPromoStatus(data);
-      })
-      .catch(() => setError("Failed to load promo status."))
-      .finally(() => setSuccessLoading(false));
+        setSuccessLoading(false);
+      } catch {
+        if (!isActive) return;
+        setError("Failed to load promo status.");
+        setSuccessLoading(false);
+      }
+    };
+
+    loadPromoStatus();
+
+    return () => {
+      isActive = false;
+      window.clearTimeout(retryTimeoutId);
+    };
   }, []);
 
   const isSuccessView = Boolean(promoStatus) || successLoading;
@@ -134,7 +174,7 @@ function Promo() {
             src="https://customer-apps-techhq.s3.eu-west-2.amazonaws.com/app-ahangama-demo/ahangama_pass_logo.png"
             title="Ahangama Pass & Guide to Perks, Privileges and Discounts, Experiences"
             alt="Ahangama Pass Logo"
-              style={{
+            style={{
               width: 200,
               height: "auto",
               marginBottom: 16,
@@ -185,9 +225,7 @@ function Promo() {
                       <b>Trial Window:</b>
                       <br />
                       {formatDate(promoStatus.trial_start_at)} to{" "}
-                      {formatDate(
-                        subtractUtcDays(promoStatus.trial_end_at, 1),
-                      )}
+                      {formatDate(subtractUtcDays(promoStatus.trial_end_at, 1))}
                     </li>
                     <li style={{ marginBottom: 8 }}>
                       <b>Paid Access:</b>

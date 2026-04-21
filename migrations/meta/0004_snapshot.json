@@ -121,9 +121,7 @@
         "purchases_stripe_session_id_unique": {
           "name": "purchases_stripe_session_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "stripe_session_id"
-          ]
+          "columns": ["stripe_session_id"]
         }
       },
       "policies": {},
@@ -291,23 +289,17 @@
         "promo_subscriptions_stripe_checkout_session_id_unique": {
           "name": "promo_subscriptions_stripe_checkout_session_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "stripe_checkout_session_id"
-          ]
+          "columns": ["stripe_checkout_session_id"]
         },
         "promo_subscriptions_stripe_subscription_id_unique": {
           "name": "promo_subscriptions_stripe_subscription_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "stripe_subscription_id"
-          ]
+          "columns": ["stripe_subscription_id"]
         },
         "promo_subscriptions_passkit_pass_id_unique": {
           "name": "promo_subscriptions_passkit_pass_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "passkit_pass_id"
-          ]
+          "columns": ["passkit_pass_id"]
         }
       },
       "policies": {},
@@ -363,12 +355,8 @@
           "name": "redemptions_purchase_id_purchases_id_fk",
           "tableFrom": "redemptions",
           "tableTo": "purchases",
-          "columnsFrom": [
-            "purchase_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["purchase_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

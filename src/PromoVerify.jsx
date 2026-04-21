@@ -15,7 +15,9 @@ function PromoVerify() {
       return;
     }
 
-    fetch(`/.netlify/functions/verify-promo-pass?id=${encodeURIComponent(passId)}`)
+    fetch(
+      `/.netlify/functions/verify-promo-pass?id=${encodeURIComponent(passId)}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data.error) setError(data.error);

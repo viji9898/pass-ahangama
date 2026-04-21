@@ -1,7 +1,10 @@
 import crypto from "crypto";
 import Stripe from "stripe";
 import { neon } from "@neondatabase/serverless";
-import { sendPromoPaidEmail, sendPromoTrialEmail } from "./PromoEmailComponent.js";
+import {
+  sendPromoPaidEmail,
+  sendPromoTrialEmail,
+} from "./PromoEmailComponent.js";
 
 const stripe = new Stripe(
   process.env.NODE_ENV === "development"
@@ -92,7 +95,9 @@ async function retrieveSubscription(subscriptionId) {
 async function ensureSubscriptionCancelAt(subscriptionId, plannedCancelAtIso) {
   if (!subscriptionId || !plannedCancelAtIso) return null;
 
-  const cancelAtUnix = Math.floor(new Date(plannedCancelAtIso).getTime() / 1000);
+  const cancelAtUnix = Math.floor(
+    new Date(plannedCancelAtIso).getTime() / 1000,
+  );
   if (!Number.isFinite(cancelAtUnix)) return null;
 
   try {
@@ -140,7 +145,8 @@ async function createPromoSmartPassLink({
           "person.surname": "",
           "person.emailAddress": customerEmail || "",
           "person.mobileNumber": customerPhone || "",
-          "universal.info": "Promo access valid at participating Ahangama Pass venues.",
+          "universal.info":
+            "Promo access valid at participating Ahangama Pass venues.",
           "universal.expiryDate": toColomboIsoString(new Date(paidEndAt)),
         },
       }),
@@ -163,7 +169,8 @@ async function upsertCheckoutCompleted(session) {
     typeof session.subscription === "string" ? session.subscription : null;
   let subscription = await retrieveSubscription(subscriptionId);
 
-  const trialStartAt = metadata.trial_start_at || colomboMidnightUtcIso(metadata.start_date);
+  const trialStartAt =
+    metadata.trial_start_at || colomboMidnightUtcIso(metadata.start_date);
   const paidStartAt = metadata.first_charge_at || null;
   const paidEndAt = metadata.paid_end_date
     ? colomboEndOfDayUtcIso(metadata.paid_end_date)
@@ -190,18 +197,9 @@ async function upsertCheckoutCompleted(session) {
     WHERE stripe_checkout_session_id = ${session.id}
   `;
 
-  const passkitPassId = existing?.passkit_pass_id || generatePassCode(session.id);
-  let smartLinkUrl = existing?.smart_link_url || null;
-
-  if (!smartLinkUrl && paidEndAt) {
-    smartLinkUrl = await createPromoSmartPassLink({
-      passHolderName: customer.name || null,
-      customerEmail: customer.email || session.customer_email || "",
-      customerPhone: customer.phone || null,
-      passkitPassId,
-      paidEndAt,
-    });
-  }
+  const passkitPassId =
+    existing?.passkit_pass_id || generatePassCode(session.id);
+  const smartLinkUrl = existing?.smart_link_url || null;
 
   const result = await sql`
     INSERT INTO promo_subscriptions (
@@ -279,7 +277,48 @@ async function upsertCheckoutCompleted(session) {
       email_trial_sent_at
   `;
 
-  return result[0] || null;
+  const record = result[0] || null;
+
+  if (!record) return null;
+
+  if (!record.smart_link_url && paidEndAt) {
+    try {
+      const generatedSmartLinkUrl = await createPromoSmartPassLink({
+        passHolderName: customer.name || null,
+        customerEmail: customer.email || session.customer_email || "",
+        customerPhone: customer.phone || null,
+        passkitPassId,
+        paidEndAt,
+      });
+
+      if (generatedSmartLinkUrl) {
+        const updated = await sql`
+          UPDATE promo_subscriptions
+          SET
+            smart_link_url = ${generatedSmartLinkUrl},
+            updated_at = NOW()
+          WHERE stripe_checkout_session_id = ${session.id}
+          RETURNING
+            stripe_checkout_session_id,
+            customer_email,
+            pass_holder_name,
+            trial_start_at,
+            trial_end_at,
+            paid_start_at,
+            paid_end_at,
+            passkit_pass_id,
+            smart_link_url,
+            email_trial_sent_at
+        `;
+
+        return updated[0] || record;
+      }
+    } catch (error) {
+      console.error("promo webhook smart link creation error:", error);
+    }
+  }
+
+  return record;
 }
 
 async function updateFromInvoice(invoice, billingStatus, accessStatus) {
@@ -353,7 +392,10 @@ export default async (req) => {
   try {
     event = stripe.webhooks.constructEvent(rawBody, signature, endpointSecret);
   } catch (error) {
-    console.error("promo webhook signature verification failed:", error.message);
+    console.error(
+      "promo webhook signature verification failed:",
+      error.message,
+    );
     return new Response(`Webhook Error: ${error.message}`, { status: 400 });
   }
 
