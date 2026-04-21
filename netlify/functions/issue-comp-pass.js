@@ -67,7 +67,7 @@ function buildExpiryDate(startDate, validityDays) {
 
   const expiryDate = new Date(parsedStartDate);
   expiryDate.setUTCDate(expiryDate.getUTCDate() + validityDays - 1);
-  expiryDate.setUTCHours(23, 59, 59, 999);
+  expiryDate.setUTCHours(18, 29, 59, 999);
   return expiryDate;
 }
 
@@ -84,7 +84,7 @@ function toColomboIsoString(date) {
   const local = new Date(date.getTime() + offsetMs);
   const pad = (value) => String(value).padStart(2, "0");
 
-  return `${local.getFullYear()}-${pad(local.getMonth() + 1)}-${pad(local.getDate())}T${pad(local.getHours())}:${pad(local.getMinutes())}:${pad(local.getSeconds())}+05:30`;
+  return `${local.getUTCFullYear()}-${pad(local.getUTCMonth() + 1)}-${pad(local.getUTCDate())}T${pad(local.getUTCHours())}:${pad(local.getUTCMinutes())}:${pad(local.getUTCSeconds())}+05:30`;
 }
 
 async function createSmartPassLink({

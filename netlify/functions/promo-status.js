@@ -48,7 +48,7 @@ function toColomboIsoString(date) {
   const offsetMs = 5.5 * 60 * 60 * 1000;
   const local = new Date(date.getTime() + offsetMs);
   const pad = (value) => String(value).padStart(2, "0");
-  return `${local.getFullYear()}-${pad(local.getMonth() + 1)}-${pad(local.getDate())}T${pad(local.getHours())}:${pad(local.getMinutes())}:${pad(local.getSeconds())}+05:30`;
+  return `${local.getUTCFullYear()}-${pad(local.getUTCMonth() + 1)}-${pad(local.getUTCDate())}T${pad(local.getUTCHours())}:${pad(local.getUTCMinutes())}:${pad(local.getUTCSeconds())}+05:30`;
 }
 
 async function createPromoSmartPassLink({
@@ -72,20 +72,19 @@ async function createPromoSmartPassLink({
       body: JSON.stringify({
         projectDistributionUrl: {
           url: "https://pub1.pskt.io/c/5cb4m9",
-          title: "Ahangama Pass Promo",
+          title: "Ahangama Pass",
         },
         fields: {
-          "members.program.name": "Ahangama Pass Promo 2026",
+          "members.program.name": "Ahangama Pass 2026",
           "members.member.points": "120",
-          "members.tier.name": "Promo",
+          "members.tier.name": "Base",
           "members.member.status": "ACTIVE",
           "members.member.externalId": `${baseUrl}/pv?id=${passkitPassId}`,
-          "person.displayName": passHolderName || "Ahangama Promo Guest",
+          "person.displayName": passHolderName || "Ahangama Pass Holder",
           "person.surname": "",
           "person.emailAddress": customerEmail || "",
           "person.mobileNumber": customerPhone || "",
-          "universal.info":
-            "Promo access valid at participating Ahangama Pass venues.",
+          "universal.info": "Valid at all participating Ahangama Pass venues.",
           "universal.expiryDate": toColomboIsoString(new Date(paidEndAt)),
         },
       }),
@@ -99,6 +98,65 @@ async function createPromoSmartPassLink({
 
   const data = await response.json();
   return data?.url || null;
+}
+
+async function isSmartLinkHealthy(url) {
+  if (!url) return false;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        "user-agent": "Mozilla/5.0",
+      },
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+async function ensureWorkingPromoSmartLink(sql, subscription) {
+  const currentUrl = subscription.smart_link_url || subscription.smartLinkUrl;
+  if (currentUrl && (await isSmartLinkHealthy(currentUrl))) {
+    return subscription;
+  }
+
+  const passkitPassId =
+    subscription.passkit_pass_id ||
+    subscription.passkitPassId ||
+    generatePassCode(
+      subscription.stripe_checkout_session_id ||
+        subscription.stripeCheckoutSessionId,
+    );
+  const regeneratedSmartLinkUrl = await createPromoSmartPassLink({
+    passHolderName:
+      subscription.pass_holder_name || subscription.passHolderName,
+    customerEmail: subscription.customer_email || subscription.customerEmail,
+    customerPhone: subscription.customer_phone || subscription.customerPhone,
+    passkitPassId,
+    paidEndAt: subscription.paid_end_at || subscription.paidEndAt,
+  });
+
+  if (!regeneratedSmartLinkUrl) {
+    return subscription;
+  }
+
+  const [updated] = await sql`
+    UPDATE promo_subscriptions
+    SET
+      passkit_pass_id = COALESCE(passkit_pass_id, ${passkitPassId}),
+      smart_link_url = ${regeneratedSmartLinkUrl},
+      updated_at = NOW()
+    WHERE stripe_checkout_session_id = ${
+      subscription.stripe_checkout_session_id ||
+      subscription.stripeCheckoutSessionId
+    }
+    RETURNING *
+  `;
+
+  return updated || subscription;
 }
 
 function mapPromoRecord(subscription) {
@@ -156,7 +214,9 @@ async function hydratePromoSubscription(sql, sessionId) {
     ? colomboEndOfDayUtcIso(metadata.paid_end_date)
     : null;
   const cancelAt =
-    unixToIso(subscription?.cancel_at) || metadata.planned_cancel_at || paidEndAt;
+    unixToIso(subscription?.cancel_at) ||
+    metadata.planned_cancel_at ||
+    paidEndAt;
 
   if (!trialStartAt || !paidStartAt || !paidEndAt || !cancelAt) {
     return null;
@@ -168,8 +228,7 @@ async function hydratePromoSubscription(sql, sessionId) {
       : session.payment_status === "paid"
         ? "active_paid"
         : "checkout_created";
-  const accessStatus =
-    session.payment_status === "paid" ? "active" : "pending";
+  const accessStatus = session.payment_status === "paid" ? "active" : "pending";
 
   const passkitPassId = generatePassCode(session.id);
   let smartLinkUrl = null;
@@ -299,5 +358,10 @@ export default async (req) => {
     return json(200, mapPromoRecord(hydratedSubscription));
   }
 
-  return json(200, mapPromoRecord(subscription));
+  const repairedSubscription = await ensureWorkingPromoSmartLink(
+    sql,
+    subscription,
+  );
+
+  return json(200, mapPromoRecord(repairedSubscription));
 };

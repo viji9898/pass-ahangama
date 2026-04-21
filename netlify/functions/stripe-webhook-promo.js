@@ -79,7 +79,7 @@ function toColomboIsoString(date) {
   const offsetMs = 5.5 * 60 * 60 * 1000;
   const local = new Date(date.getTime() + offsetMs);
   const pad = (value) => String(value).padStart(2, "0");
-  return `${local.getFullYear()}-${pad(local.getMonth() + 1)}-${pad(local.getDate())}T${pad(local.getHours())}:${pad(local.getMinutes())}:${pad(local.getSeconds())}+05:30`;
+  return `${local.getUTCFullYear()}-${pad(local.getUTCMonth() + 1)}-${pad(local.getUTCDate())}T${pad(local.getUTCHours())}:${pad(local.getUTCMinutes())}:${pad(local.getUTCSeconds())}+05:30`;
 }
 
 async function retrieveSubscription(subscriptionId) {
@@ -133,20 +133,19 @@ async function createPromoSmartPassLink({
       body: JSON.stringify({
         projectDistributionUrl: {
           url: "https://pub1.pskt.io/c/5cb4m9",
-          title: "Ahangama Pass Promo",
+          title: "Ahangama Pass",
         },
         fields: {
-          "members.program.name": "Ahangama Pass Promo 2026",
+          "members.program.name": "Ahangama Pass 2026",
           "members.member.points": "120",
-          "members.tier.name": "Promo",
+          "members.tier.name": "Base",
           "members.member.status": "ACTIVE",
           "members.member.externalId": `${baseUrl}/pv?id=${passkitPassId}`,
-          "person.displayName": passHolderName || "Ahangama Promo Guest",
+          "person.displayName": passHolderName || "Ahangama Pass Holder",
           "person.surname": "",
           "person.emailAddress": customerEmail || "",
           "person.mobileNumber": customerPhone || "",
-          "universal.info":
-            "Promo access valid at participating Ahangama Pass venues.",
+          "universal.info": "Valid at all participating Ahangama Pass venues.",
           "universal.expiryDate": toColomboIsoString(new Date(paidEndAt)),
         },
       }),
