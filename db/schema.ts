@@ -49,6 +49,51 @@ export const purchases = pgTable("purchases", {
 });
 
 /* ===========================
+     Promo Subscriptions
+=========================== */
+
+export const promoSubscriptions = pgTable("promo_subscriptions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  stripeCheckoutSessionId: text("stripe_checkout_session_id")
+    .notNull()
+    .unique(),
+  stripeSubscriptionId: text("stripe_subscription_id").unique(),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeLatestInvoiceId: text("stripe_latest_invoice_id"),
+
+  customerEmail: text("customer_email").notNull(),
+  customerPhone: text("customer_phone"),
+  passHolderName: text("pass_holder_name"),
+
+  promoType: text("promo_type").notNull(),
+
+  startDate: timestamp("start_date", { withTimezone: true }).notNull(),
+  trialStartAt: timestamp("trial_start_at", { withTimezone: true }).notNull(),
+  trialEndAt: timestamp("trial_end_at", { withTimezone: true }).notNull(),
+  paidStartAt: timestamp("paid_start_at", { withTimezone: true }).notNull(),
+  paidEndAt: timestamp("paid_end_at", { withTimezone: true }).notNull(),
+  cancelAt: timestamp("cancel_at", { withTimezone: true }).notNull(),
+
+  billingStatus: text("billing_status").notNull().default("checkout_created"),
+  accessStatus: text("access_status").notNull().default("pending"),
+
+  passkitPassId: text("passkit_pass_id").unique(),
+  smartLinkUrl: text("smart_link_url"),
+  receiptUrl: text("receipt_url"),
+
+  emailTrialSentAt: timestamp("email_trial_sent_at", { withTimezone: true }),
+  emailPaidSentAt: timestamp("email_paid_sent_at", { withTimezone: true }),
+
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
+/* ===========================
      Redemptions
 =========================== */
 
