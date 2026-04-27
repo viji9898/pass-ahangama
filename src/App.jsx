@@ -2,6 +2,7 @@
 
 import React from "react";
 import "./App.css";
+import { getStoredAttribution } from "./attribution.js";
 
 function App() {
   const todayStr = new Date().toISOString().split("T")[0];
@@ -170,6 +171,7 @@ function App() {
                   setError("");
                   setLoading(true);
                   try {
+                    const attribution = getStoredAttribution() || {};
                     const res = await fetch(
                       "/.netlify/functions/create-checkout-session",
                       {
@@ -178,6 +180,16 @@ function App() {
                         body: JSON.stringify({
                           passType: pass.passType,
                           startDate,
+                          utm_source: attribution.utm_source || "",
+                          utm_medium: attribution.utm_medium || "",
+                          utm_campaign: attribution.utm_campaign || "",
+                          utm_content: attribution.utm_content || "",
+                          utm_term: attribution.utm_term || "",
+                          qr_venue: attribution.qr_venue || "",
+                          qr_surface: attribution.qr_surface || "",
+                          qr_creative: attribution.qr_creative || "",
+                          qr_landing_page: attribution.qr_landing_page || "",
+                          ga_client_id: attribution.ga_client_id || "",
                         }),
                       },
                     );

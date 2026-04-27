@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { neon } from "@neondatabase/serverless";
 import sgMail from "@sendgrid/mail";
 import crypto from "crypto";
+import { sendGa4PurchaseEvent } from "./ga4.js";
 
 function generatePassCode(sessionId, length = 12) {
   return crypto
@@ -21,6 +22,15 @@ const sql = neon(process.env.NETLIFY_DATABASE_URL);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const config = { api: { bodyParser: false } };
+
+function logAnalyticsResult(label, transactionId, result) {
+  console.log(label, {
+    transactionId,
+    configured: result.configured,
+    sent: result.sent,
+    retryable: result.retryable,
+  });
+}
 
 // Helper to read ReadableStream into a Buffer
 async function getRawBody(stream) {
@@ -53,7 +63,6 @@ export default async (req) => {
   let event;
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
-    console.log(rawBody);
   } catch (err) {
     console.log(`⚠️  Webhook signature verification failed.`, err.message);
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
@@ -62,13 +71,13 @@ export default async (req) => {
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
-      console.log(
-        "[webhook] Stripe session object:",
-        JSON.stringify(session, null, 2),
-      );
 
       // Fetch Stripe receipt URL from PaymentIntent
       let receiptUrl = null;
+      let paymentIntentId =
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : session.payment_intent?.id || "";
       // Retrieve full session with expanded payment_intent + charges
       try {
         const fullSession = await stripe.checkout.sessions.retrieve(
@@ -78,9 +87,12 @@ export default async (req) => {
           },
         );
         const paymentIntent = fullSession.payment_intent;
+        paymentIntentId =
+          typeof paymentIntent === "string"
+            ? paymentIntent
+            : paymentIntent?.id || paymentIntentId;
         const charge = paymentIntent?.charges?.data?.[0];
         receiptUrl = charge?.receipt_url || null;
-        console.log("[webhook] Stripe receipt URL:", receiptUrl);
       } catch (err) {
         console.error(
           "[webhook] Error expanding session for receipt_url:",
@@ -105,7 +117,6 @@ export default async (req) => {
       let smartLink = null;
       // Generate passkitPassId from session id
       const passkitPassId = generatePassCode(stripeSessionId, 12);
-      console.log("Generated pass code:", passkitPassId);
       // Format expiry for PassKit as ISO-8601 with timezone offset (Asia/Colombo +05:30)
       function toColomboIsoString(date) {
         // Asia/Colombo is UTC+5:30
@@ -152,7 +163,6 @@ export default async (req) => {
             },
           },
         );
-        console.log("[webhook] PassKit API response:", response.data);
         smartLink = response.data?.url || response.data || null;
       } catch (err) {
         console.error("[webhook] PassKit smart link error:", err.message);
@@ -169,15 +179,36 @@ export default async (req) => {
           ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', pass_holder_name = ${name || "-"}, smart_link_url = ${smartLink}, passkit_pass_id = ${passkitPassId}, receipt_url = ${receiptUrl}
         `;
       } catch (err) {
-        console.error("[webhook] DB insert error:", err.message, err);
+        console.error("[webhook] DB insert error:", err.message);
       }
 
-      // Send email to customer
-      // Log values before sending email
-      console.log("[webhook] Email send debug:", {
-        customerEmail: email,
-        smartLinkUrl: smartLink,
+      const transactionId = paymentIntentId || stripeSessionId;
+      const analyticsResult = await sendGa4PurchaseEvent({
+        clientId: metadata?.ga_client_id || `${transactionId}.fallback`,
+        params: {
+          transaction_id: transactionId,
+          value: Number(((session.amount_total || 0) / 100).toFixed(2)),
+          currency: session.currency?.toUpperCase() || "",
+          stripe_session_id: stripeSessionId,
+          pass_type: pass_type || "",
+          qr_source: metadata?.qr_source || "",
+          qr_medium: metadata?.qr_medium || "",
+          qr_campaign: metadata?.qr_campaign || "",
+          qr_content: metadata?.qr_content || "",
+          qr_goal: metadata?.qr_goal || "",
+          qr_venue: metadata?.qr_venue || "",
+          qr_surface: metadata?.qr_surface || "",
+          qr_creative: metadata?.qr_creative || "",
+          qr_landing_page: metadata?.qr_landing_page || "",
+        },
       });
+      logAnalyticsResult(
+        "[webhook] purchase analytics result",
+        transactionId,
+        analyticsResult,
+      );
+
+      // Send email to customer
       try {
         const emailModule = await import("./EmailComponent.js");
         await emailModule.sendAhangamaPassEmail({
@@ -191,7 +222,7 @@ export default async (req) => {
           passkitPassId: passkitPassId,
         });
       } catch (err) {
-        console.error("[webhook] Email send error:", err.message, err);
+        console.error("[webhook] Email send error:", err.message);
       }
       break;
     }

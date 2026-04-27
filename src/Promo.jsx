@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { getStoredAttribution } from "./attribution.js";
 
 function getTimeZoneDateString(timeZone) {
   const formatter = new Intl.DateTimeFormat("en-CA", {
@@ -343,12 +344,25 @@ function Promo() {
                   setError("");
 
                   try {
+                    const attribution = getStoredAttribution() || {};
                     const response = await fetch(
                       "/.netlify/functions/create-promo-checkout-session",
                       {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ startDate }),
+                        body: JSON.stringify({
+                          startDate,
+                          utm_source: attribution.utm_source || "",
+                          utm_medium: attribution.utm_medium || "",
+                          utm_campaign: attribution.utm_campaign || "",
+                          utm_content: attribution.utm_content || "",
+                          utm_term: attribution.utm_term || "",
+                          qr_venue: attribution.qr_venue || "",
+                          qr_surface: attribution.qr_surface || "",
+                          qr_creative: attribution.qr_creative || "",
+                          qr_landing_page: attribution.qr_landing_page || "",
+                          ga_client_id: attribution.ga_client_id || "",
+                        }),
                       },
                     );
                     const data = await response.json();

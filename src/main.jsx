@@ -3,11 +3,14 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
+import { captureAttribution } from "./attribution.js";
 import Comp from "./Comp.jsx";
 import Promo from "./Promo.jsx";
 import PromoVerify from "./PromoVerify.jsx";
 import Success from "./Success.jsx";
 import Verify from "./Verify.jsx";
+
+captureAttribution();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

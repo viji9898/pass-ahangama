@@ -1,4 +1,8 @@
 import Stripe from "stripe";
+import {
+  buildStripeAttributionMetadata,
+  getAttributionFromBody,
+} from "./attribution.js";
 
 const stripe = new Stripe(
   process.env.NODE_ENV === "development"
@@ -73,7 +77,9 @@ export default async (req) => {
       return json(405, { error: "Method not allowed" });
     }
 
-    const { startDate } = await req.json();
+    const body = await req.json();
+    const { startDate } = body;
+    const attribution = getAttributionFromBody(body);
     const parsedStart = parseYmd(startDate);
     if (!parsedStart) {
       return json(400, { error: "Invalid startDate" });
@@ -121,6 +127,7 @@ export default async (req) => {
         planned_cancel_at: cancelAt.toISOString(),
         paid_end_date: formatYmd(paidEndDate),
         timezone: PROMO_TIMEZONE,
+        ...buildStripeAttributionMetadata(attribution),
       },
       subscription_data: {
         trial_end: Math.floor(firstChargeAt.getTime() / 1000),
@@ -134,6 +141,7 @@ export default async (req) => {
           planned_cancel_at: cancelAt.toISOString(),
           paid_end_date: formatYmd(paidEndDate),
           timezone: PROMO_TIMEZONE,
+          ...buildStripeAttributionMetadata(attribution),
         },
       },
     });

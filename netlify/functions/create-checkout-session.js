@@ -1,4 +1,8 @@
 import Stripe from "stripe";
+import {
+  buildStripeAttributionMetadata,
+  getAttributionFromBody,
+} from "./attribution.js";
 
 const stripe = new Stripe(
   process.env.NODE_ENV === "development"
@@ -52,7 +56,9 @@ export default async (req) => {
     if (req.method !== "POST")
       return json(405, { error: "Method not allowed" });
 
-    const { passType, startDate, mobile } = await req.json();
+    const body = await req.json();
+    const { passType, startDate, mobile } = body;
+    const attribution = getAttributionFromBody(body);
 
     const cfg = PASS_CONFIG[passType];
     if (!cfg) return json(400, { error: "Invalid passType" });
@@ -86,6 +92,7 @@ export default async (req) => {
         start_date: startDate,
         validity_days: String(cfg.days),
         mobile: mobile || "",
+        ...buildStripeAttributionMetadata(attribution),
       },
     });
 

@@ -5,6 +5,7 @@ import {
   sendPromoPaidEmail,
   sendPromoTrialEmail,
 } from "./PromoEmailComponent.js";
+import { sendGa4PurchaseEvent } from "./ga4.js";
 
 const stripe = new Stripe(
   process.env.NODE_ENV === "development"
@@ -17,6 +18,15 @@ const PASSKIT_SMARTPASS_SECRET = process.env.PASSKIT_SMARTPASS_SECRET;
 const PASS_EXTERNAL_BASE_URL = "https://pass.ahangama.com";
 
 export const config = { api: { bodyParser: false } };
+
+function logAnalyticsResult(label, transactionId, result) {
+  console.log(label, {
+    transactionId,
+    configured: result.configured,
+    sent: result.sent,
+    retryable: result.retryable,
+  });
+}
 
 async function getRawBody(stream) {
   const reader = stream.getReader();
@@ -313,7 +323,7 @@ async function upsertCheckoutCompleted(session) {
         return updated[0] || record;
       }
     } catch (error) {
-      console.error("promo webhook smart link creation error:", error);
+      console.error("promo webhook smart link creation error:", error.message);
     }
   }
 
@@ -340,6 +350,7 @@ async function updateFromInvoice(invoice, billingStatus, accessStatus) {
     WHERE stripe_subscription_id = ${subscriptionId}
     RETURNING
       id,
+      stripe_checkout_session_id,
       customer_email,
       pass_holder_name,
       smart_link_url,
@@ -434,6 +445,35 @@ export default async (req) => {
             "active_paid",
             "active",
           );
+          const subscription = await retrieveSubscription(
+            typeof invoice.subscription === "string" ? invoice.subscription : null,
+          );
+          const metadata = subscription?.metadata || {};
+          const transactionId = invoice.id;
+          const analyticsResult = await sendGa4PurchaseEvent({
+            clientId: metadata.ga_client_id || `${invoice.id}.fallback`,
+            params: {
+              transaction_id: transactionId,
+              value: Number(((invoice.amount_paid || 0) / 100).toFixed(2)),
+              currency: invoice.currency?.toUpperCase() || "",
+              stripe_session_id: record?.stripe_checkout_session_id || "",
+              promo_type: metadata.promo_type || "promo_15_trial",
+              qr_source: metadata.qr_source || "",
+              qr_medium: metadata.qr_medium || "",
+              qr_campaign: metadata.qr_campaign || "",
+              qr_content: metadata.qr_content || "",
+              qr_goal: metadata.qr_goal || "",
+              qr_venue: metadata.qr_venue || "",
+              qr_surface: metadata.qr_surface || "",
+              qr_creative: metadata.qr_creative || "",
+              qr_landing_page: metadata.qr_landing_page || "",
+            },
+          });
+          logAnalyticsResult(
+            "promo webhook analytics result",
+            transactionId,
+            analyticsResult,
+          );
           if (
             record?.customer_email &&
             record?.smart_link_url &&
@@ -474,7 +514,7 @@ export default async (req) => {
         console.log(`promo webhook ignored event type ${event.type}`);
     }
   } catch (error) {
-    console.error("promo webhook handler error:", error);
+    console.error("promo webhook handler error:", error.message);
     return json(500, { error: error.message || "Unknown error" });
   }
 
