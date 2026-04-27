@@ -23,12 +23,13 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const config = { api: { bodyParser: false } };
 
-function logAnalyticsResult(label, transactionId, result) {
+function logAnalyticsResult(label, transactionId, result, details = {}) {
   console.log(label, {
     transactionId,
     configured: result.configured,
     sent: result.sent,
     retryable: result.retryable,
+    ...details,
   });
 }
 
@@ -168,15 +169,17 @@ export default async (req) => {
         console.error("[webhook] PassKit smart link error:", err.message);
       }
 
+      const priceUsd = Number(((session.amount_total || 0) / 100).toFixed(2));
+
       // Upsert purchase with smart link
       try {
         await sql`
           INSERT INTO purchases (
-            stripe_session_id, customer_email, customer_phone, pass_type, price_usd, start_date, expiry_date, status, created_at, pass_holder_name, smart_link_url, passkit_pass_id, receipt_url
+            stripe_session_id, stripe_payment_intent_id, customer_email, customer_phone, pass_type, price_usd, start_date, expiry_date, status, created_at, pass_holder_name, smart_link_url, passkit_pass_id, receipt_url
           ) VALUES (
-            ${stripeSessionId}, ${email}, ${phone}, ${pass_type}, 0, ${start_date}, ${expiryDate.toISOString()}, 'paid', NOW(), ${name || "-"}, ${smartLink}, ${passkitPassId}, ${receiptUrl}
+            ${stripeSessionId}, ${paymentIntentId || null}, ${email}, ${phone}, ${pass_type}, ${priceUsd}, ${start_date}, ${expiryDate.toISOString()}, 'paid', NOW(), ${name || "-"}, ${smartLink}, ${passkitPassId}, ${receiptUrl}
           )
-          ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', pass_holder_name = ${name || "-"}, smart_link_url = ${smartLink}, passkit_pass_id = ${passkitPassId}, receipt_url = ${receiptUrl}
+          ON CONFLICT (stripe_session_id) DO UPDATE SET status = 'paid', stripe_payment_intent_id = ${paymentIntentId || null}, price_usd = ${priceUsd}, pass_holder_name = ${name || "-"}, smart_link_url = ${smartLink}, passkit_pass_id = ${passkitPassId}, receipt_url = ${receiptUrl}
         `;
       } catch (err) {
         console.error("[webhook] DB insert error:", err.message);
@@ -187,7 +190,7 @@ export default async (req) => {
         clientId: metadata?.ga_client_id || `${transactionId}.fallback`,
         params: {
           transaction_id: transactionId,
-          value: Number(((session.amount_total || 0) / 100).toFixed(2)),
+          value: priceUsd,
           currency: session.currency?.toUpperCase() || "",
           stripe_session_id: stripeSessionId,
           pass_type: pass_type || "",
@@ -206,6 +209,10 @@ export default async (req) => {
         "[webhook] purchase analytics result",
         transactionId,
         analyticsResult,
+        {
+          stripePaymentIntentId: paymentIntentId || null,
+          priceUsd,
+        },
       );
 
       // Send email to customer
