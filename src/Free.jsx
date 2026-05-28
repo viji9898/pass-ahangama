@@ -414,9 +414,11 @@ function Free() {
                       overflow: "hidden",
                       borderRadius: 30,
                       background: "#faf8f8",
-                      display: "grid",
-                      justifyItems: "center",
-                      alignItems: "start",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                      paddingTop: isMobile ? 34 : 44,
+                      boxSizing: "border-box",
                     }}
                   >
                     <img
@@ -424,11 +426,11 @@ function Free() {
                       alt="Ahangama Pass preview inside an iPhone frame"
                       style={{
                         display: "block",
-                        width: "88%",
-                        height: "88%",
+                        width: isMobile ? "78%" : "84%",
+                        height: "auto",
+                        maxHeight: isMobile ? "calc(100% - 42px)" : "calc(100% - 56px)",
                         objectFit: "contain",
                         objectPosition: "center top",
-                        marginTop: "60px",
                       }}
                     />
                   </div>
@@ -1122,54 +1124,63 @@ function Free() {
                       </div>
                     </div>
 
-                    {previewIndex === 0 ? (
-                      <div
-                        style={{
-                          display: "grid",
-                          gap: 8,
-                          justifyItems: "center",
-                        }}
-                      >
-                        <img
-                          src={addToAppleWallet}
-                          alt="Add to Apple Wallet"
+                    <div
+                      style={{
+                        minHeight: 56,
+                        display: "grid",
+                        alignItems: "center",
+                        justifyItems: "center",
+                      }}
+                    >
+                      {previewIndex === 0 ? (
+                        <div
                           style={{
-                            width: isMobile ? 145 : 154,
-                            height: "auto",
-                            display: "block",
+                            display: "grid",
+                            gap: 5,
+                            justifyItems: "center",
                           }}
-                        />
-                        <img
-                          src={addToGoogleWallet}
-                          alt="Add to Google Wallet"
+                        >
+                          <img
+                            src={addToAppleWallet}
+                            alt="Add to Apple Wallet"
+                            style={{
+                              width: isMobile ? 116 : 126,
+                              height: "auto",
+                              display: "block",
+                            }}
+                          />
+                          <img
+                            src={addToGoogleWallet}
+                            alt="Add to Google Wallet"
+                            style={{
+                              width: isMobile ? 122 : 132,
+                              height: "auto",
+                              display: "block",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <a
+                          href={GUIDE_URL}
+                          target="_blank"
+                          rel="noreferrer"
                           style={{
-                            width: isMobile ? 152 : 162,
-                            height: "auto",
-                            display: "block",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            minHeight: 44,
+                            padding: "0.8rem 1rem",
+                            borderRadius: 14,
+                            background: "rgba(139, 77, 36, 0.1)",
+                            color: "#6d3412",
+                            textDecoration: "none",
+                            fontWeight: 700,
                           }}
-                        />
-                      </div>
-                    ) : (
-                      <a
-                        href={GUIDE_URL}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          minHeight: 44,
-                          padding: "0.8rem 1rem",
-                          borderRadius: 14,
-                          background: "rgba(139, 77, 36, 0.1)",
-                          color: "#6d3412",
-                          textDecoration: "none",
-                          fontWeight: 700,
-                        }}
-                      >
-                        Open the guide
-                      </a>
-                    )}
+                        >
+                          Open the guide
+                        </a>
+                      )}
+                    </div>
 
                     <div style={previewDotsStyle}>
                       {[0, 1].map((dotIndex) => (
