@@ -448,7 +448,7 @@ function Free() {
               style={{
                 display: "grid",
                 gridTemplateColumns: isMobile
-                  ? "1fr"
+                  ? "repeat(3, minmax(0, 1fr))"
                   : "repeat(3, minmax(0, 1fr))",
                 gap: 0,
                 minWidth: 0,
@@ -468,24 +468,20 @@ function Free() {
                     justifyItems: "center",
                     alignContent: "start",
                     textAlign: "center",
-                    gap: 8,
-                    padding: isMobile ? "1.2rem 1rem" : "1.35rem 1.1rem",
+                    gap: isMobile ? 6 : 8,
+                    padding: isMobile ? "0.95rem 0.4rem" : "1.35rem 1.1rem",
                     minWidth: 0,
                     position: "relative",
                     borderRight:
-                      !isMobile && index < featureItems.length - 1
-                        ? "1px solid rgba(170, 112, 69, 0.14)"
-                        : "none",
-                    borderBottom:
-                      isMobile && index < featureItems.length - 1
+                      index < featureItems.length - 1
                         ? "1px solid rgba(170, 112, 69, 0.14)"
                         : "none",
                   }}
                 >
                   <div
                     style={{
-                      width: 64,
-                      height: 64,
+                      width: isMobile ? 48 : 64,
+                      height: isMobile ? 48 : 64,
                       borderRadius: "50%",
                       display: "grid",
                       placeItems: "center",
@@ -502,16 +498,16 @@ function Free() {
                         src={item.iconSrc}
                         alt=""
                         aria-hidden="true"
-                        style={{ width: 24, height: 24 }}
+                        style={{ width: isMobile ? 18 : 24, height: isMobile ? 18 : 24 }}
                       />
                     ) : (
                       item.badge
                     )}
                   </div>
-                  <div style={{ maxWidth: 170 }}>
+                  <div style={{ maxWidth: isMobile ? 92 : 170 }}>
                     <div
                       style={{
-                        fontSize: isMobile ? 16 : 17,
+                        fontSize: isMobile ? 13 : 17,
                         fontWeight: 700,
                         color: "#2f1709",
                         lineHeight: 1.05,
@@ -522,10 +518,10 @@ function Free() {
                     </div>
                     <div
                       style={{
-                        fontSize: isMobile ? 14 : 15,
+                        fontSize: isMobile ? 11 : 15,
                         color: "#6d4f3a",
-                        marginTop: 6,
-                        lineHeight: 1.25,
+                        marginTop: isMobile ? 4 : 6,
+                        lineHeight: isMobile ? 1.15 : 1.25,
                       }}
                     >
                       {item.subtitle}
@@ -679,9 +675,9 @@ function Free() {
                 style={{
                   display: "grid",
                   gridTemplateColumns: isMobile
-                    ? "1fr"
+                    ? "repeat(3, minmax(0, 1fr))"
                     : "repeat(3, minmax(0, 1fr))",
-                  gap: isMobile ? 18 : 12,
+                  gap: isMobile ? 6 : 12,
                   alignItems: "start",
                   minWidth: 0,
                 }}
@@ -692,7 +688,7 @@ function Free() {
                     style={{
                       textAlign: "center",
                       position: "relative",
-                      padding: isMobile ? "0.4rem 0" : "0 0.5rem",
+                      padding: isMobile ? "0.2rem 0.15rem" : "0 0.5rem",
                     }}
                   >
                     {!isMobile && index < steps.length - 1 && (
@@ -711,9 +707,9 @@ function Free() {
                     <div
                       style={{
                         position: "relative",
-                        width: 108,
-                        margin: "0 auto 16px",
-                        paddingTop: 10,
+                        width: isMobile ? 72 : 108,
+                        margin: isMobile ? "0 auto 10px" : "0 auto 16px",
+                        paddingTop: isMobile ? 8 : 10,
                       }}
                     >
                       <div
@@ -722,15 +718,15 @@ function Free() {
                           top: 0,
                           left: "50%",
                           transform: "translateX(-50%)",
-                          width: 34,
-                          height: 34,
+                          width: isMobile ? 24 : 34,
+                          height: isMobile ? 24 : 34,
                           borderRadius: "50%",
                           display: "grid",
                           placeItems: "center",
                           background: "#f4e2d2",
                           color: "#b96b2d",
                           fontWeight: 700,
-                          fontSize: 18,
+                          fontSize: isMobile ? 13 : 18,
                           boxShadow: "0 8px 18px rgba(191, 137, 90, 0.18)",
                           zIndex: 2,
                         }}
@@ -739,9 +735,9 @@ function Free() {
                       </div>
                       <div
                         style={{
-                          width: 86,
-                          height: 86,
-                          margin: "18px auto 0",
+                          width: isMobile ? 58 : 86,
+                          height: isMobile ? 58 : 86,
+                          margin: isMobile ? "12px auto 0" : "18px auto 0",
                           borderRadius: "50%",
                           display: "grid",
                           placeItems: "center",
@@ -755,16 +751,18 @@ function Free() {
                             aria-hidden="true"
                             style={{
                               display: "grid",
-                              gridTemplateColumns: "repeat(5, 8px)",
-                              gap: 3,
+                              gridTemplateColumns: isMobile
+                                ? "repeat(5, 5px)"
+                                : "repeat(5, 8px)",
+                              gap: isMobile ? 2 : 3,
                             }}
                           >
                             {qrPattern.map((filled, patternIndex) => (
                               <span
                                 key={patternIndex}
                                 style={{
-                                  width: 8,
-                                  height: 8,
+                                  width: isMobile ? 5 : 8,
+                                  height: isMobile ? 5 : 8,
                                   borderRadius: 2,
                                   background: filled ? "#4a2310" : "#f7efe7",
                                   border: filled
@@ -780,7 +778,7 @@ function Free() {
                             src={item.iconSrc}
                             alt=""
                             aria-hidden="true"
-                            style={{ width: 34, height: 34 }}
+                            style={{ width: isMobile ? 22 : 34, height: isMobile ? 22 : 34 }}
                           />
                         )}
                       </div>
@@ -788,20 +786,21 @@ function Free() {
 
                     <div
                       style={{
-                        fontSize: isMobile ? 18 : 17,
+                        fontSize: isMobile ? 13 : 17,
                         fontWeight: 700,
                         color: "#2f1709",
-                        lineHeight: 1.2,
+                        lineHeight: isMobile ? 1.08 : 1.2,
+                        whiteSpace: "pre-line",
                       }}
                     >
                       {item.title}
                     </div>
                     <div
                       style={{
-                        marginTop: 5,
-                        fontSize: isMobile ? 15 : 14,
+                        marginTop: isMobile ? 3 : 5,
+                        fontSize: isMobile ? 11 : 14,
                         color: "#6d4f3a",
-                        lineHeight: 1.35,
+                        lineHeight: isMobile ? 1.15 : 1.35,
                       }}
                     >
                       {item.subtitle}
