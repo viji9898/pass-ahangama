@@ -1,4 +1,16 @@
 import React from "react";
+import addToAppleWallet from "./assets/add_to_apple_wallet.png";
+import addToGoogleWallet from "./assets/add_to_google_wallet.png";
+import bookIcon from "./assets/book-icon.svg";
+import emailIcon from "./assets/email-icon.svg";
+import giftIcon from "./assets/gift-icon.svg";
+import lightningIcon from "./assets/lightning-icon.svg";
+import lockIcon from "./assets/lock-icon.svg";
+import mapPinIcon from "./assets/map-pin-icon.svg";
+import paperPlaneIcon from "./assets/paper-plane-icon.svg";
+import pencilIcon from "./assets/pencil-icon.svg";
+import phoneIcon from "./assets/phone-icon.svg";
+import userIcon from "./assets/user-icon.svg";
 
 const GUIDE_URL = "https://guide.ahangama.com";
 
@@ -92,7 +104,7 @@ function Free() {
       <div
         style={{
           width: "100%",
-          maxWidth: 1080,
+          maxWidth: 1120,
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           gap: 24,
@@ -101,88 +113,344 @@ function Free() {
       >
         <section
           style={{
-            background: "rgba(109, 52, 18, 0.95)",
-            color: "#fff6ef",
-            borderRadius: 28,
-            padding: "2.2rem 1.6rem",
-            boxShadow: "0 18px 60px rgba(74, 40, 9, 0.15)",
+            position: "relative",
+            overflow: "hidden",
+            background:
+              "radial-gradient(circle at top right, rgba(153, 92, 43, 0.14), transparent 28%), radial-gradient(circle at bottom left, rgba(201, 93, 26, 0.12), transparent 35%), linear-gradient(180deg, rgba(255, 251, 246, 0.98) 0%, rgba(249, 241, 231, 0.98) 100%)",
+            color: "#5f3719",
+            borderRadius: 32,
+            padding: "1.8rem 1.3rem",
+            boxShadow: "0 20px 60px rgba(74, 40, 9, 0.08)",
+            border: "1px solid rgba(170, 112, 69, 0.16)",
           }}
         >
           <div
             style={{
-              display: "inline-block",
-              borderRadius: 999,
-              padding: "0.35rem 0.8rem",
-              background: "rgba(255, 239, 224, 0.16)",
-              color: "#ffe8d6",
-              fontWeight: 700,
-              fontSize: 12,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
+              position: "absolute",
+              top: -28,
+              right: -12,
+              width: 190,
+              height: 190,
+              borderRadius: "50% 0 50% 50%",
+              background:
+                "radial-gradient(circle, rgba(160, 115, 73, 0.18) 0%, rgba(160, 115, 73, 0) 70%)",
+              pointerEvents: "none",
             }}
-          >
-            Free Of Charge
-          </div>
-          <h1 style={{ margin: "16px 0 12px", fontSize: 42, lineHeight: 1.05 }}>
-            Get the Ahangama Pass
-          </h1>
-          <p style={{ margin: 0, fontSize: 18, lineHeight: 1.6, color: "#f7d7be" }}>
-            Unlock perks and privileges across 100+ venues in Ahangama and
-            get the 2026/2027 Ahangama Guide at no cost.
-          </p>
-
+          />
           <div
             style={{
-              marginTop: 24,
+              position: "relative",
+              zIndex: 1,
               display: "grid",
-              gap: 14,
+              gap: 16,
+              minWidth: 0,
             }}
           >
-            {highlights.map((item) => (
-              <div
-                key={item.title}
-                style={{
-                  borderRadius: 18,
-                  background: "rgba(255, 255, 255, 0.08)",
-                  padding: "1rem 1.05rem",
-                }}
-              >
-                <div style={{ fontWeight: 700, fontSize: 16 }}>{item.title}</div>
+              <div style={{ textAlign: "center" }}>
                 <div
                   style={{
-                    marginTop: 4,
-                    color: "#f7d7be",
-                    fontSize: 14,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    maxWidth: "100%",
+                    borderRadius: 999,
+                    padding: "0.45rem 1rem",
+                    background: "linear-gradient(135deg, #9b531f, #7f3c14)",
+                    color: "#fff6ef",
+                    fontWeight: 700,
+                    fontSize: 12,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    boxShadow: "0 10px 22px rgba(127, 60, 20, 0.18)",
+                  }}
+                >
+                  <span>Free</span>
+                  <span style={{ opacity: 0.7 }}>•</span>
+                  <span>30 Day Access</span>
+                </div>
+                <h1
+                  style={{
+                    margin: "14px 0 10px",
+                    fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                    fontSize: "clamp(2.7rem, 6vw, 4.4rem)",
+                    lineHeight: 0.98,
+                    letterSpacing: "-0.04em",
+                    color: "#4a2310",
+                  }}
+                >
+                  Get the
+                  <br />
+                  Ahangama Pass
+                </h1>
+                <p
+                  style={{
+                    maxWidth: 540,
+                    margin: "0 auto",
+                    padding: "0 0.25rem",
+                    color: "#785842",
+                    fontSize: 16,
                     lineHeight: 1.5,
                   }}
                 >
-                  {item.description}
+                  Unlock perks at 100+ cafes, wellness spots, surf venues,
+                  stays and more.
+                </p>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+                  gap: 12,
+                  minWidth: 0,
+                }}
+              >
+                {featureItems.map((item) => (
+                  <div
+                    key={item.title}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      borderRadius: 18,
+                      padding: "0.8rem 0.75rem",
+                      background: "rgba(255, 255, 255, 0.72)",
+                      border: "1px solid rgba(170, 112, 69, 0.14)",
+                      minWidth: 0,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        display: "grid",
+                        placeItems: "center",
+                        background: "#f5e5d3",
+                        color: "#8b4d24",
+                        fontWeight: 700,
+                        fontSize: 12,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {item.iconSrc ? (
+                        <img
+                          src={item.iconSrc}
+                          alt=""
+                          aria-hidden="true"
+                          style={{ width: 18, height: 18 }}
+                        />
+                      ) : (
+                        item.badge
+                      )}
+                    </div>
+                    <div>
+                      <div
+                        style={{ fontSize: 14, fontWeight: 700, color: "#4a2310" }}
+                      >
+                        {item.title}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "#7b5d47",
+                          marginTop: 2,
+                        }}
+                      >
+                        {item.subtitle}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ textAlign: "center" }}>
+                <a href="#free-pass-form" style={heroCtaStyle}>
+                  Get My Free Pass
+                </a>
+                <div
+                  style={{
+                    marginTop: 10,
+                    color: "#8a6a53",
+                    fontSize: 13,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                  }}
+                >
+                  <img
+                    src={lockIcon}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ width: 14, height: 14, opacity: 0.8 }}
+                  />
+                  100% free. No payment. No hidden fees.
                 </div>
               </div>
-            ))}
-          </div>
 
-          <div
-            style={{
-              marginTop: 24,
-              borderRadius: 18,
-              background: "#fff6ef",
-              color: "#5f3719",
-              padding: "1rem 1.05rem",
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 8 }}>
-              What you receive
-            </div>
-            <div style={{ display: "grid", gap: 8, fontSize: 14 }}>
-              <span>Digital Ahangama Pass generated instantly</span>
-              <span>Guide access at guide.ahangama.com</span>
-              <span>Pass link ready to share on WhatsApp</span>
-            </div>
+              <div
+                style={{
+                  borderRadius: 24,
+                  background: "rgba(255, 251, 246, 0.9)",
+                  border: "1px solid rgba(170, 112, 69, 0.18)",
+                  padding: "1rem 0.9rem",
+                  boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.7)",
+                }}
+              >
+                <div
+                  style={{
+                    textAlign: "center",
+                    fontFamily:
+                      "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                    color: "#6f3e1b",
+                    fontSize: 18,
+                    fontWeight: 700,
+                    marginBottom: 12,
+                  }}
+                >
+                  Your pass. Your perks.
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                    gap: 8,
+                    minWidth: 0,
+                  }}
+                >
+                  {proofItems.map((item) => (
+                    <div
+                      key={item.title}
+                      style={{
+                        borderRadius: 16,
+                        background: "#fffdf9",
+                        padding: "0.8rem 0.55rem",
+                        textAlign: "center",
+                        border: "1px solid rgba(170, 112, 69, 0.12)",
+                        minWidth: 0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          minWidth: 76,
+                          justifyContent: "center",
+                          borderRadius: 10,
+                          padding: item.logoSrc ? "0" : "0.35rem 0.5rem",
+                          background: item.logoSrc ? "transparent" : item.accent,
+                          color: item.accentColor,
+                          fontSize: 11,
+                          fontWeight: 700,
+                          letterSpacing: "0.02em",
+                        }}
+                      >
+                        {item.logoSrc ? (
+                          <img
+                            src={item.logoSrc}
+                            alt={item.logoAlt}
+                            style={{
+                              display: "block",
+                              width: item.logoWidth || 112,
+                              maxWidth: "100%",
+                              height: "auto",
+                            }}
+                          />
+                        ) : (
+                          item.label
+                        )}
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 10,
+                          fontSize: 13,
+                          fontWeight: 700,
+                          color: "#4a2310",
+                        }}
+                      >
+                        {item.title}
+                      </div>
+                      <div
+                        style={{ marginTop: 3, fontSize: 12, color: "#7b5d47" }}
+                      >
+                        {item.subtitle}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "#5f3719",
+                    fontSize: 16,
+                    fontWeight: 700,
+                    marginBottom: 10,
+                  }}
+                >
+                  How it works
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                    gap: 8,
+                    alignItems: "start",
+                    minWidth: 0,
+                  }}
+                >
+                  {steps.map((item, index) => (
+                    <div
+                      key={item.title}
+                      style={{ textAlign: "center", position: "relative" }}
+                    >
+                      <div
+                        style={{
+                          width: 34,
+                          height: 34,
+                          margin: "0 auto 8px",
+                          borderRadius: "50%",
+                          display: "grid",
+                          placeItems: "center",
+                          background: "#f5e5d3",
+                          color: "#8b4d24",
+                          fontWeight: 700,
+                          fontSize: 14,
+                        }}
+                      >
+                        {item.iconSrc ? (
+                          <img
+                            src={item.iconSrc}
+                            alt=""
+                            aria-hidden="true"
+                            style={{ width: 16, height: 16 }}
+                          />
+                        ) : (
+                          index + 1
+                        )}
+                      </div>
+                      <div
+                        style={{ fontSize: 13, fontWeight: 700, color: "#4a2310" }}
+                      >
+                        {item.title}
+                      </div>
+                      <div
+                        style={{ marginTop: 3, fontSize: 12, color: "#7b5d47" }}
+                      >
+                        {item.subtitle}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
           </div>
         </section>
 
         <section
+          id="free-pass-form"
           style={{
             background: "rgba(255, 255, 255, 0.94)",
             borderRadius: 28,
@@ -210,7 +478,10 @@ function Free() {
               }}
             >
               <label style={labelStyle}>
-                First Name
+                <span style={labelContentStyle}>
+                  <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                  First Name
+                </span>
                 <input
                   type="text"
                   required
@@ -222,7 +493,10 @@ function Free() {
               </label>
 
               <label style={labelStyle}>
-                Last Name
+                <span style={labelContentStyle}>
+                  <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                  Last Name
+                </span>
                 <input
                   type="text"
                   required
@@ -235,7 +509,10 @@ function Free() {
             </div>
 
             <label style={labelStyle}>
-              Email
+              <span style={labelContentStyle}>
+                <img src={emailIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                Email
+              </span>
               <input
                 type="email"
                 required
@@ -247,7 +524,10 @@ function Free() {
             </label>
 
             <label style={labelStyle}>
-              Mobile WhatsApp
+              <span style={labelContentStyle}>
+                <img src={phoneIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                Mobile WhatsApp
+              </span>
               <input
                 type="tel"
                 required
@@ -394,21 +674,72 @@ function buildWhatsAppUrl(smartLinkUrl) {
   return `https://wa.me/?text=${encodeURIComponent(message)}`;
 }
 
-const highlights = [
+const featureItems = [
   {
-    title: "Perks across Ahangama",
-    description:
-      "Use your pass across 100+ participating venues for curated local benefits.",
+    badge: "100+",
+    iconSrc: giftIcon,
+    title: "100+ venues",
+    subtitle: "Exclusive perks",
   },
   {
-    title: "Guide included",
-    description:
-      "Get the 2026/2027 Ahangama Guide with places, planning ideas, and local recommendations.",
+    badge: "NOW",
+    iconSrc: lightningIcon,
+    title: "Instant access",
+    subtitle: "Delivered instantly",
   },
   {
-    title: "WhatsApp-ready delivery",
-    description:
-      "Your pass is generated instantly with a smart link you can open or share on WhatsApp.",
+    badge: "GUIDE",
+    iconSrc: bookIcon,
+    title: "Free guide",
+    subtitle: "2026/27 edition",
+  },
+];
+
+const proofItems = [
+  {
+    label: "Wallet",
+    logoSrc: addToAppleWallet,
+    logoAlt: "Add to Apple Wallet",
+    logoWidth: 118,
+    title: "Apple Wallet ready",
+    subtitle: "Pass added in one tap",
+    accent: "#111111",
+    accentColor: "#ffffff",
+  },
+  {
+    label: "Google",
+    logoSrc: addToGoogleWallet,
+    logoAlt: "Add to Google Wallet",
+    logoWidth: 124,
+    title: "Google Wallet ready",
+    subtitle: "Save it to your phone",
+    accent: "#ffffff",
+    accentColor: "#4a2310",
+  },
+  {
+    label: "Proof",
+    title: "Used by travellers",
+    subtitle: "Across Ahangama",
+    accent: "#f2e5d8",
+    accentColor: "#8b4d24",
+  },
+];
+
+const steps = [
+  {
+    title: "Enter details",
+    subtitle: "Takes 10 seconds",
+    iconSrc: pencilIcon,
+  },
+  {
+    title: "Receive instantly",
+    subtitle: "On WhatsApp",
+    iconSrc: paperPlaneIcon,
+  },
+  {
+    title: "Enjoy the perks",
+    subtitle: "Across Ahangama",
+    iconSrc: mapPinIcon,
   },
 ];
 
@@ -417,6 +748,18 @@ const labelStyle = {
   color: "#6d3412",
   fontWeight: 700,
   fontSize: 14,
+};
+
+const labelContentStyle = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 8,
+};
+
+const labelIconStyle = {
+  width: 14,
+  height: 14,
+  opacity: 0.9,
 };
 
 const inputStyle = {
@@ -442,6 +785,22 @@ const resultRowStyle = {
   gap: 16,
   padding: "0.35rem 0",
   fontSize: 14,
+};
+
+const heroCtaStyle = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  maxWidth: 420,
+  minHeight: 76,
+  borderRadius: 22,
+  background: "linear-gradient(135deg, #b25c22, #8B4513)",
+  color: "#fff",
+  textDecoration: "none",
+  fontWeight: 700,
+  fontSize: 18,
+  boxShadow: "0 16px 30px rgba(139, 69, 19, 0.18)",
 };
 
 const primaryActionStyle = {
