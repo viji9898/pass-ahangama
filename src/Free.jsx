@@ -1,6 +1,7 @@
 import React from "react";
 import addToAppleWallet from "./assets/add_to_apple_wallet.png";
 import addToGoogleWallet from "./assets/add_to_google_wallet.png";
+import ahangamaGuideHero from "./assets/ahangama_guide_hero.jpg";
 import bookIcon from "./assets/book-icon.svg";
 import emailIcon from "./assets/email-icon.svg";
 import giftIcon from "./assets/gift-icon.svg";
@@ -101,6 +102,11 @@ function Free() {
     .map((value) => value.trim())
     .filter(Boolean)
     .join(" ");
+
+  const passesIssuedToday = React.useMemo(
+    () => Math.floor(Math.random() * 101) + 50,
+    [],
+  );
 
   return (
     <div
@@ -323,69 +329,27 @@ function Free() {
                 <div
                   style={{
                     position: "absolute",
-                    right: isMobile ? 14 : -6,
-                    bottom: isMobile ? 4 : 8,
+                    right: isMobile ? 18 : 10,
+                    bottom: isMobile ? 10 : 20,
                     width: isMobile ? 156 : 176,
                     height: isMobile ? 236 : 264,
+                    zIndex: 3,
                     borderRadius: 24,
-                    background:
-                      "linear-gradient(180deg, #77a4bf 0%, #4c7a96 100%)",
                     boxShadow: "0 22px 44px rgba(49, 80, 101, 0.2)",
                     transform: isMobile ? "rotate(7deg)" : "rotate(8deg)",
                     overflow: "hidden",
                   }}
                 >
-                  <div
+                  <img
+                    src={ahangamaGuideHero}
+                    alt="Ahangama Guide 2026/27"
                     style={{
-                      position: "absolute",
-                      inset: 0,
-                      background:
-                        "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.08))",
+                      display: "block",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
                     }}
                   />
-                  <div
-                    style={{
-                      position: "relative",
-                      zIndex: 1,
-                      padding: "1.15rem 1rem",
-                      color: "#f5f8fb",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 12,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        opacity: 0.8,
-                        fontWeight: 700,
-                      }}
-                    >
-                      Ahangama
-                    </div>
-                    <div
-                      style={{
-                        marginTop: 6,
-                        fontSize: 34,
-                        lineHeight: 0.95,
-                        fontFamily:
-                          "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-                        fontWeight: 700,
-                      }}
-                    >
-                      Guide
-                    </div>
-                    <div
-                      style={{
-                        marginTop: 10,
-                        fontSize: 12,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        opacity: 0.9,
-                      }}
-                    >
-                      2026/27 Edition
-                    </div>
-                  </div>
                 </div>
 
                 <div
@@ -425,7 +389,8 @@ function Free() {
                       borderRadius: 30,
                       background: "#faf8f8",
                       display: "grid",
-                      placeItems: "center",
+                      justifyItems: "center",
+                      alignItems: "start",
                     }}
                   >
                     <img
@@ -436,7 +401,8 @@ function Free() {
                         width: "88%",
                         height: "88%",
                         objectFit: "contain",
-                        objectPosition: "center center",
+                        objectPosition: "center top",
+                        marginTop: "60px",
                       }}
                     />
                   </div>
@@ -612,7 +578,7 @@ function Free() {
                         fontSize: isMobile ? 15 : 16,
                       }}
                     >
-                      12,000+ happy pass holders
+                      {passesIssuedToday} Pass Issued Today!
                     </div>
                   </div>
                 </div>
