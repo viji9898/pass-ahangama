@@ -48,9 +48,11 @@ function Free() {
 
   const [formData, setFormData] = React.useState(initialFormData);
   const [agreedToDelivery, setAgreedToDelivery] = React.useState(true);
+  const [previewIndex, setPreviewIndex] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [result, setResult] = React.useState(null);
+  const previewTouchStartX = React.useRef(null);
 
   function handleChange(field) {
     return (event) => {
@@ -96,6 +98,30 @@ function Free() {
     setAgreedToDelivery(true);
     setResult(null);
     setError("");
+  }
+
+  function handlePreviewTouchStart(event) {
+    previewTouchStartX.current = event.touches[0]?.clientX ?? null;
+  }
+
+  function handlePreviewTouchEnd(event) {
+    if (previewTouchStartX.current == null) return;
+
+    const touchEndX = event.changedTouches[0]?.clientX;
+    if (typeof touchEndX !== "number") {
+      previewTouchStartX.current = null;
+      return;
+    }
+
+    const deltaX = touchEndX - previewTouchStartX.current;
+    if (Math.abs(deltaX) > 40) {
+      setPreviewIndex((current) => {
+        if (deltaX < 0) return Math.min(current + 1, 1);
+        return Math.max(current - 1, 0);
+      });
+    }
+
+    previewTouchStartX.current = null;
   }
 
   const passHolderName = [formData.firstName, formData.lastName]
@@ -1014,6 +1040,8 @@ function Free() {
                       gap: 14,
                       boxShadow: "inset 0 1px 0 rgba(255,255,255,0.78)",
                     }}
+                    onTouchStart={handlePreviewTouchStart}
+                    onTouchEnd={handlePreviewTouchEnd}
                   >
                     <div
                       style={{
@@ -1024,68 +1052,140 @@ function Free() {
                         lineHeight: 1.35,
                       }}
                     >
-                      This is how your pass
-                      <br />
-                      will look
+                      {previewIndex === 0 ? (
+                        <>
+                          This is how your pass
+                          <br />
+                          will look
+                        </>
+                      ) : (
+                        <>
+                          Swipe to see the
+                          <br />
+                          Ahangama Guide
+                        </>
+                      )}
                     </div>
 
                     <div
                       style={{
                         width: isMobile ? 170 : 190,
+                        height: isMobile ? 258 : 290,
                         borderRadius: 18,
                         overflow: "hidden",
                         boxShadow: "0 18px 30px rgba(107, 54, 22, 0.16)",
-                        background: "#9a5829",
+                        background: "#f4ebe2",
+                        touchAction: "pan-y",
                       }}
                     >
-                      <img
-                        src={heroPassAppleWallet}
-                        alt="Ahangama Pass preview"
+                      <div
                         style={{
-                          display: "block",
-                          width: "100%",
-                          height: "auto",
+                          display: "flex",
+                          width: "200%",
+                          height: "100%",
+                          transform: `translateX(-${previewIndex * 50}%)`,
+                          transition: "transform 220ms ease",
                         }}
-                      />
+                      >
+                        <div
+                          style={{
+                            width: "50%",
+                            height: "100%",
+                            flexShrink: 0,
+                            display: "grid",
+                            placeItems: "center",
+                            background: "#f4ebe2",
+                          }}
+                        >
+                          <img
+                            src={heroPassAppleWallet}
+                            alt="Ahangama Pass preview"
+                            style={{
+                              display: "block",
+                              width: "88%",
+                              height: "88%",
+                              objectFit: "contain",
+                            }}
+                          />
+                        </div>
+                        <img
+                          src={ahangamaGuideHero}
+                          alt="Ahangama Guide preview"
+                          style={{
+                            display: "block",
+                            width: "50%",
+                            height: "100%",
+                            flexShrink: 0,
+                            objectFit: "cover",
+                          }}
+                        />
+                      </div>
                     </div>
 
-                    <div
-                      style={{
-                        display: "grid",
-                        gap: 8,
-                        justifyItems: "center",
-                      }}
-                    >
-                      <img
-                        src={addToAppleWallet}
-                        alt="Add to Apple Wallet"
+                    {previewIndex === 0 ? (
+                      <div
                         style={{
-                          width: isMobile ? 145 : 154,
-                          height: "auto",
-                          display: "block",
+                          display: "grid",
+                          gap: 8,
+                          justifyItems: "center",
                         }}
-                      />
-                      <img
-                        src={addToGoogleWallet}
-                        alt="Add to Google Wallet"
+                      >
+                        <img
+                          src={addToAppleWallet}
+                          alt="Add to Apple Wallet"
+                          style={{
+                            width: isMobile ? 145 : 154,
+                            height: "auto",
+                            display: "block",
+                          }}
+                        />
+                        <img
+                          src={addToGoogleWallet}
+                          alt="Add to Google Wallet"
+                          style={{
+                            width: isMobile ? 152 : 162,
+                            height: "auto",
+                            display: "block",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <a
+                        href={GUIDE_URL}
+                        target="_blank"
+                        rel="noreferrer"
                         style={{
-                          width: isMobile ? 152 : 162,
-                          height: "auto",
-                          display: "block",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          minHeight: 44,
+                          padding: "0.8rem 1rem",
+                          borderRadius: 14,
+                          background: "rgba(139, 77, 36, 0.1)",
+                          color: "#6d3412",
+                          textDecoration: "none",
+                          fontWeight: 700,
                         }}
-                      />
-                    </div>
+                      >
+                        Open the guide
+                      </a>
+                    )}
 
                     <div style={previewDotsStyle}>
-                      {[0, 1, 2, 3].map((dotIndex) => (
-                        <span
+                      {[0, 1].map((dotIndex) => (
+                        <button
+                          type="button"
                           key={dotIndex}
+                          onClick={() => setPreviewIndex(dotIndex)}
                           style={{
                             width: dotIndex === 0 ? 12 : 10,
                             height: dotIndex === 0 ? 12 : 10,
                             borderRadius: "50%",
+                            border: "none",
+                            padding: 0,
+                            cursor: "pointer",
                             background:
-                              dotIndex === 0
+                              previewIndex === dotIndex
                                 ? "#8b4d24"
                                 : "rgba(139, 77, 36, 0.18)",
                           }}
