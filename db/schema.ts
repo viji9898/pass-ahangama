@@ -24,7 +24,7 @@ export const purchases = pgTable("purchases", {
   customerEmail: text("customer_email").notNull(),
   customerPhone: text("customer_phone"),
 
-  passType: text("pass_type").notNull(), // pass_15 | pass_30 | pass_90
+  passType: text("pass_type").notNull(), // pass_15 | pass_30 | pass_90 | pass_365 | comp_7 | comp_14 | comp_30 | free_30
   priceUsd: numeric("price_usd", { precision: 10, scale: 2 }).notNull(),
 
   startDate: timestamp("start_date", { withTimezone: true }),

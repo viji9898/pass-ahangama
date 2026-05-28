@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { captureAttribution } from "./attribution.js";
 import Comp from "./Comp.jsx";
+import Free from "./Free.jsx";
 import Promo from "./Promo.jsx";
 import PromoVerify from "./PromoVerify.jsx";
 import Success from "./Success.jsx";
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/comp" element={<Comp />} />
+        <Route path="/free" element={<Free />} />
         <Route path="/promo" element={<Promo />} />
         <Route path="/pv" element={<PromoVerify />} />
         <Route path="/success" element={<Success />} />
