@@ -46,6 +46,7 @@ function Free() {
   );
 
   const [formData, setFormData] = React.useState(initialFormData);
+  const [agreedToDelivery, setAgreedToDelivery] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
   const [result, setResult] = React.useState(null);
@@ -91,6 +92,7 @@ function Free() {
 
   function handleReset() {
     setFormData(initialFormData);
+    setAgreedToDelivery(true);
     setResult(null);
     setError("");
   }
@@ -236,8 +238,11 @@ function Free() {
                     style={{
                       margin: 0,
                       maxWidth: 420,
-                      fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-                      fontSize: isMobile ? "clamp(2.7rem, 13vw, 4rem)" : "clamp(3rem, 8vw, 5.2rem)",
+                      fontFamily:
+                        "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                      fontSize: isMobile
+                        ? "clamp(2.7rem, 13vw, 4rem)"
+                        : "clamp(3rem, 8vw, 5.2rem)",
                       lineHeight: 0.93,
                       letterSpacing: "-0.05em",
                       color: "#2f1709",
@@ -261,7 +266,9 @@ function Free() {
                   </p>
                 </div>
 
-                <div style={{ display: "grid", gap: 10, justifyItems: "start" }}>
+                <div
+                  style={{ display: "grid", gap: 10, justifyItems: "start" }}
+                >
                   <a
                     href="#free-pass-form"
                     style={{
@@ -276,7 +283,11 @@ function Free() {
                       src={giftIcon}
                       alt=""
                       aria-hidden="true"
-                      style={{ width: 18, height: 18, filter: "brightness(0) invert(1)" }}
+                      style={{
+                        width: 18,
+                        height: 18,
+                        filter: "brightness(0) invert(1)",
+                      }}
                     />
                     <span>Get My Free Pass</span>
                   </a>
@@ -303,10 +314,10 @@ function Free() {
               <div
                 style={{
                   position: "relative",
-                    minHeight: isMobile ? 300 : 360,
+                  minHeight: isMobile ? 300 : 360,
                   display: "grid",
                   placeItems: "center",
-                    marginTop: isMobile ? 8 : 0,
+                  marginTop: isMobile ? 8 : 0,
                 }}
               >
                 <div
@@ -356,7 +367,8 @@ function Free() {
                         marginTop: 6,
                         fontSize: 34,
                         lineHeight: 0.95,
-                        fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                        fontFamily:
+                          "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
                         fontWeight: 700,
                       }}
                     >
@@ -384,7 +396,8 @@ function Free() {
                     aspectRatio: "1 / 2.16",
                     padding: "8px",
                     borderRadius: 38,
-                    background: "linear-gradient(180deg, #232323 0%, #111111 100%)",
+                    background:
+                      "linear-gradient(180deg, #232323 0%, #111111 100%)",
                     boxShadow: "0 26px 46px rgba(31, 22, 17, 0.24)",
                     transform: isMobile ? "rotate(-6deg)" : "rotate(-8deg)",
                     border: "1px solid rgba(255,255,255,0.35)",
@@ -410,7 +423,9 @@ function Free() {
                       height: "100%",
                       overflow: "hidden",
                       borderRadius: 30,
-                      background: "#d7d7d7",
+                      background: "#faf8f8",
+                      display: "grid",
+                      placeItems: "center",
                     }}
                   >
                     <img
@@ -418,10 +433,10 @@ function Free() {
                       alt="Ahangama Pass preview inside an iPhone frame"
                       style={{
                         display: "block",
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        objectPosition: "center top",
+                        width: "88%",
+                        height: "88%",
+                        objectFit: "contain",
+                        objectPosition: "center center",
                       }}
                     />
                   </div>
@@ -429,619 +444,775 @@ function Free() {
               </div>
             </div>
 
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: isMobile
+                  ? "1fr"
+                  : "repeat(3, minmax(0, 1fr))",
+                gap: 0,
+                minWidth: 0,
+                marginTop: 6,
+                borderRadius: 28,
+                overflow: "hidden",
+                background: "rgba(255, 255, 255, 0.94)",
+                border: "1px solid rgba(170, 112, 69, 0.12)",
+                boxShadow: "0 18px 34px rgba(74, 40, 9, 0.06)",
+              }}
+            >
+              {featureItems.map((item, index) => (
+                <div
+                  key={item.title}
+                  style={{
+                    display: "grid",
+                    justifyItems: "center",
+                    alignContent: "start",
+                    textAlign: "center",
+                    gap: 8,
+                    padding: isMobile ? "1.2rem 1rem" : "1.35rem 1.1rem",
+                    minWidth: 0,
+                    position: "relative",
+                    borderRight:
+                      !isMobile && index < featureItems.length - 1
+                        ? "1px solid rgba(170, 112, 69, 0.14)"
+                        : "none",
+                    borderBottom:
+                      isMobile && index < featureItems.length - 1
+                        ? "1px solid rgba(170, 112, 69, 0.14)"
+                        : "none",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 64,
+                      height: 64,
+                      borderRadius: "50%",
+                      display: "grid",
+                      placeItems: "center",
+                      background: "#f7ecdf",
+                      color: "#8b4d24",
+                      fontWeight: 700,
+                      fontSize: 12,
+                      flexShrink: 0,
+                      boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                    }}
+                  >
+                    {item.iconSrc ? (
+                      <img
+                        src={item.iconSrc}
+                        alt=""
+                        aria-hidden="true"
+                        style={{ width: 24, height: 24 }}
+                      />
+                    ) : (
+                      item.badge
+                    )}
+                  </div>
+                  <div style={{ maxWidth: 170 }}>
+                    <div
+                      style={{
+                        fontSize: isMobile ? 16 : 17,
+                        fontWeight: 700,
+                        color: "#2f1709",
+                        lineHeight: 1.05,
+                        whiteSpace: "pre-line",
+                      }}
+                    >
+                      {item.title}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: isMobile ? 14 : 15,
+                        color: "#6d4f3a",
+                        marginTop: 6,
+                        lineHeight: 1.25,
+                      }}
+                    >
+                      {item.subtitle}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div
+              style={{
+                borderRadius: 28,
+                background: "rgba(255, 252, 248, 0.94)",
+                border: "1px solid rgba(170, 112, 69, 0.16)",
+                padding: isMobile ? "1rem 0.9rem" : "1rem 1.1rem",
+                boxShadow:
+                  "0 12px 34px rgba(74, 40, 9, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+              }}
+            >
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: isMobile ? "1fr" : "repeat(3, minmax(0, 1fr))",
-                  gap: 0,
-                  minWidth: 0,
-                  marginTop: 6,
-                  borderRadius: 28,
-                  overflow: "hidden",
-                  background: "rgba(255, 255, 255, 0.94)",
-                  border: "1px solid rgba(170, 112, 69, 0.12)",
-                  boxShadow: "0 18px 34px rgba(74, 40, 9, 0.06)",
-                }}
-              >
-                {featureItems.map((item, index) => (
-                  <div
-                    key={item.title}
-                    style={{
-                      display: "grid",
-                      justifyItems: "center",
-                      alignContent: "start",
-                      textAlign: "center",
-                      gap: 8,
-                      padding: isMobile ? "1.2rem 1rem" : "1.35rem 1.1rem",
-                      minWidth: 0,
-                      position: "relative",
-                      borderRight:
-                        !isMobile && index < featureItems.length - 1
-                          ? "1px solid rgba(170, 112, 69, 0.14)"
-                          : "none",
-                      borderBottom:
-                        isMobile && index < featureItems.length - 1
-                          ? "1px solid rgba(170, 112, 69, 0.14)"
-                          : "none",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 64,
-                        height: 64,
-                        borderRadius: "50%",
-                        display: "grid",
-                        placeItems: "center",
-                        background: "#f7ecdf",
-                        color: "#8b4d24",
-                        fontWeight: 700,
-                        fontSize: 12,
-                        flexShrink: 0,
-                        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
-                      }}
-                    >
-                      {item.iconSrc ? (
-                        <img
-                          src={item.iconSrc}
-                          alt=""
-                          aria-hidden="true"
-                          style={{ width: 24, height: 24 }}
-                        />
-                      ) : (
-                        item.badge
-                      )}
-                    </div>
-                    <div style={{ maxWidth: 170 }}>
-                      <div
-                        style={{
-                          fontSize: isMobile ? 16 : 17,
-                          fontWeight: 700,
-                          color: "#2f1709",
-                          lineHeight: 1.05,
-                          whiteSpace: "pre-line",
-                        }}
-                      >
-                        {item.title}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: isMobile ? 14 : 15,
-                          color: "#6d4f3a",
-                          marginTop: 6,
-                          lineHeight: 1.25,
-                        }}
-                      >
-                        {item.subtitle}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div
-                style={{
-                  borderRadius: 28,
-                  background: "rgba(255, 252, 248, 0.94)",
-                  border: "1px solid rgba(170, 112, 69, 0.16)",
-                  padding: isMobile ? "1rem 0.9rem" : "1rem 1.1rem",
-                  boxShadow: "0 12px 34px rgba(74, 40, 9, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                  gridTemplateColumns: isMobile
+                    ? "1fr"
+                    : "minmax(0, 1.1fr) minmax(0, 1fr)",
+                  gap: isMobile ? 14 : 18,
+                  alignItems: "center",
                 }}
               >
                 <div
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: isMobile
-                      ? "1fr"
-                      : "minmax(0, 1.1fr) minmax(0, 1fr)",
-                    gap: isMobile ? 14 : 18,
+                    display: "flex",
+                    flexWrap: isMobile ? "wrap" : "nowrap",
                     alignItems: "center",
+                    gap: 14,
+                    minWidth: 0,
                   }}
                 >
                   <div
                     style={{
                       display: "flex",
-                      flexWrap: isMobile ? "wrap" : "nowrap",
                       alignItems: "center",
-                      gap: 14,
                       minWidth: 0,
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", minWidth: 0 }}>
-                      {travellerAvatars.map((item, index) => (
-                        <div
-                          key={item.initials}
-                          aria-hidden="true"
-                          style={{
-                            width: isMobile ? 48 : 58,
-                            height: isMobile ? 48 : 58,
-                            marginLeft: index === 0 ? 0 : -10,
-                            borderRadius: "50%",
-                            display: "grid",
-                            placeItems: "center",
-                            color: "#fff",
-                            fontSize: isMobile ? 14 : 16,
-                            fontWeight: 700,
-                            letterSpacing: "0.02em",
-                            background: item.background,
-                            border: "3px solid rgba(255, 252, 248, 1)",
-                            boxShadow: "0 6px 18px rgba(47, 23, 9, 0.12)",
-                          }}
-                        >
-                          {item.initials}
-                        </div>
-                      ))}
+                    {travellerAvatars.map((item, index) => (
+                      <div
+                        key={item.initials}
+                        aria-hidden="true"
+                        style={{
+                          width: isMobile ? 48 : 58,
+                          height: isMobile ? 48 : 58,
+                          marginLeft: index === 0 ? 0 : -10,
+                          borderRadius: "50%",
+                          display: "grid",
+                          placeItems: "center",
+                          color: "#fff",
+                          fontSize: isMobile ? 14 : 16,
+                          fontWeight: 700,
+                          letterSpacing: "0.02em",
+                          background: item.background,
+                          border: "3px solid rgba(255, 252, 248, 1)",
+                          boxShadow: "0 6px 18px rgba(47, 23, 9, 0.12)",
+                        }}
+                      >
+                        {item.initials}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{ minWidth: 0 }}>
+                    <div
+                      style={{
+                        color: "#2f1709",
+                        fontSize: isMobile ? 24 : 28,
+                        lineHeight: 1.05,
+                        fontWeight: 700,
+                        fontFamily:
+                          "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                      }}
+                    >
+                      Loved by travellers in Ahangama
+                    </div>
+                    <div
+                      style={{
+                        marginTop: 6,
+                        color: "#6f513d",
+                        fontSize: isMobile ? 15 : 16,
+                      }}
+                    >
+                      12,000+ happy pass holders
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: isMobile ? "flex-start" : "flex-end",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  {venueLogos.map((item) => (
+                    <div
+                      key={item.name}
+                      style={{
+                        minWidth: item.minWidth,
+                        padding: item.padding || "0.65rem 0.9rem",
+                        borderRadius: 999,
+                        background: "rgba(255,255,255,0.72)",
+                        border: "1px solid rgba(170, 112, 69, 0.14)",
+                        color: "#3c2010",
+                        textAlign: "center",
+                        fontFamily: item.fontFamily,
+                        fontSize: item.fontSize,
+                        fontWeight: item.fontWeight,
+                        letterSpacing: item.letterSpacing || "0.04em",
+                        textTransform: item.textTransform || "none",
+                        boxShadow: "0 4px 14px rgba(74, 40, 9, 0.04)",
+                      }}
+                    >
+                      {item.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              style={{
+                padding: isMobile ? "0.4rem 0" : "0.5rem 0 0.1rem",
+              }}
+            >
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#2f1709",
+                  fontSize: isMobile ? 32 : 38,
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  marginBottom: isMobile ? 18 : 24,
+                  fontFamily:
+                    "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                }}
+              >
+                How it works
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: isMobile
+                    ? "1fr"
+                    : "repeat(3, minmax(0, 1fr))",
+                  gap: isMobile ? 18 : 12,
+                  alignItems: "start",
+                  minWidth: 0,
+                }}
+              >
+                {steps.map((item, index) => (
+                  <div
+                    key={item.title}
+                    style={{
+                      textAlign: "center",
+                      position: "relative",
+                      padding: isMobile ? "0.4rem 0" : "0 0.5rem",
+                    }}
+                  >
+                    {!isMobile && index < steps.length - 1 && (
+                      <div
+                        aria-hidden="true"
+                        style={{
+                          position: "absolute",
+                          top: 56,
+                          left: "calc(50% + 48px)",
+                          width: "calc(100% - 96px)",
+                          borderTop: "3px dotted rgba(203, 181, 161, 0.9)",
+                        }}
+                      />
+                    )}
+
+                    <div
+                      style={{
+                        position: "relative",
+                        width: 108,
+                        margin: "0 auto 16px",
+                        paddingTop: 10,
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: 34,
+                          height: 34,
+                          borderRadius: "50%",
+                          display: "grid",
+                          placeItems: "center",
+                          background: "#f4e2d2",
+                          color: "#b96b2d",
+                          fontWeight: 700,
+                          fontSize: 18,
+                          boxShadow: "0 8px 18px rgba(191, 137, 90, 0.18)",
+                          zIndex: 2,
+                        }}
+                      >
+                        {index + 1}
+                      </div>
+                      <div
+                        style={{
+                          width: 86,
+                          height: 86,
+                          margin: "18px auto 0",
+                          borderRadius: "50%",
+                          display: "grid",
+                          placeItems: "center",
+                          background: "rgba(255, 253, 250, 0.96)",
+                          border: "1px solid rgba(220, 205, 192, 0.8)",
+                          boxShadow: "0 8px 24px rgba(74, 40, 9, 0.05)",
+                        }}
+                      >
+                        {item.iconType === "qr" ? (
+                          <div
+                            aria-hidden="true"
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "repeat(5, 8px)",
+                              gap: 3,
+                            }}
+                          >
+                            {qrPattern.map((filled, patternIndex) => (
+                              <span
+                                key={patternIndex}
+                                style={{
+                                  width: 8,
+                                  height: 8,
+                                  borderRadius: 2,
+                                  background: filled ? "#4a2310" : "#f7efe7",
+                                  border: filled
+                                    ? "1px solid #4a2310"
+                                    : "1px solid rgba(74, 35, 16, 0.08)",
+                                  boxSizing: "border-box",
+                                }}
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <img
+                            src={item.iconSrc}
+                            alt=""
+                            aria-hidden="true"
+                            style={{ width: 34, height: 34 }}
+                          />
+                        )}
+                      </div>
                     </div>
 
-                    <div style={{ minWidth: 0 }}>
-                      <div
-                        style={{
-                          color: "#2f1709",
-                          fontSize: isMobile ? 24 : 28,
-                          lineHeight: 1.05,
-                          fontWeight: 700,
-                          fontFamily:
-                            "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-                        }}
-                      >
-                        Loved by travellers in Ahangama
-                      </div>
-                      <div
-                        style={{
-                          marginTop: 6,
-                          color: "#6f513d",
-                          fontSize: isMobile ? 15 : 16,
-                        }}
-                      >
-                        12,000+ happy pass holders
-                      </div>
+                    <div
+                      style={{
+                        fontSize: isMobile ? 18 : 17,
+                        fontWeight: 700,
+                        color: "#2f1709",
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {item.title}
                     </div>
+                    <div
+                      style={{
+                        marginTop: 5,
+                        fontSize: isMobile ? 15 : 14,
+                        color: "#6d4f3a",
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      {item.subtitle}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div
+              id="free-pass-form"
+              style={{
+                marginTop: isMobile ? 18 : 20,
+                background:
+                  "linear-gradient(180deg, rgba(255, 253, 250, 0.98) 0%, rgba(249, 243, 236, 0.98) 100%)",
+                borderRadius: 32,
+                boxShadow: "0 20px 56px rgba(74, 40, 9, 0.08)",
+                padding: isMobile ? "1.1rem 1rem" : "1.55rem 1.45rem",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(170, 112, 69, 0.12)",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: -42,
+                  right: -24,
+                  width: 150,
+                  height: 150,
+                  borderRadius: "50%",
+                  background:
+                    "radial-gradient(circle, rgba(193, 136, 84, 0.16) 0%, rgba(193, 136, 84, 0) 72%)",
+                  pointerEvents: "none",
+                }}
+              />
+              <div
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  display: "grid",
+                  gap: 18,
+                }}
+              >
+                <div style={{ marginBottom: 2 }}>
+                  <h2
+                    style={{
+                      color: "#2f1709",
+                      margin: 0,
+                      fontSize: isMobile ? 34 : 52,
+                      lineHeight: 0.98,
+                      fontFamily:
+                        "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                    }}
+                  >
+                    Claim your free pass
+                  </h2>
+                  <p
+                    style={{
+                      color: "#8a6a53",
+                      margin: "10px 0 0",
+                      fontSize: isMobile ? 18 : 17,
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    Takes less than 10 seconds.
+                  </p>
+                </div>
+
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: isMobile
+                      ? "1fr"
+                      : "minmax(0, 1.45fr) minmax(250px, 0.72fr)",
+                    gap: isMobile ? 18 : 24,
+                    alignItems: "start",
+                  }}
+                >
+                  <form
+                    onSubmit={handleSubmit}
+                    style={{ display: "grid", gap: 16 }}
+                  >
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: isMobile
+                          ? "1fr"
+                          : "repeat(2, minmax(0, 1fr))",
+                        gap: 14,
+                      }}
+                    >
+                      <label style={labelStyle}>
+                        <span>First Name</span>
+                        <span style={fieldShellStyle}>
+                          <img
+                            src={userIcon}
+                            alt=""
+                            aria-hidden="true"
+                            style={fieldIconStyle}
+                          />
+                          <input
+                            type="text"
+                            required
+                            value={formData.firstName}
+                            onChange={handleChange("firstName")}
+                            placeholder="Your first name"
+                            style={formInputStyle}
+                          />
+                        </span>
+                      </label>
+
+                      <label style={labelStyle}>
+                        <span>Last Name</span>
+                        <span style={fieldShellStyle}>
+                          <img
+                            src={userIcon}
+                            alt=""
+                            aria-hidden="true"
+                            style={fieldIconStyle}
+                          />
+                          <input
+                            type="text"
+                            required
+                            value={formData.lastName}
+                            onChange={handleChange("lastName")}
+                            placeholder="Your last name"
+                            style={formInputStyle}
+                          />
+                        </span>
+                      </label>
+                    </div>
+
+                    <label style={labelStyle}>
+                      <span>Email</span>
+                      <span style={fieldShellStyle}>
+                        <img
+                          src={emailIcon}
+                          alt=""
+                          aria-hidden="true"
+                          style={fieldIconStyle}
+                        />
+                        <input
+                          type="email"
+                          required
+                          value={formData.customerEmail}
+                          onChange={handleChange("customerEmail")}
+                          placeholder="you@example.com"
+                          style={formInputStyle}
+                        />
+                      </span>
+                    </label>
+
+                    <label style={labelStyle}>
+                      <span>WhatsApp Number</span>
+                      <span style={fieldShellStyle}>
+                        <img
+                          src={phoneIcon}
+                          alt=""
+                          aria-hidden="true"
+                          style={fieldIconStyle}
+                        />
+                        <input
+                          type="tel"
+                          required
+                          value={formData.customerPhone}
+                          onChange={handleChange("customerPhone")}
+                          placeholder="+94 7X XXX XXXX"
+                          style={formInputStyle}
+                        />
+                      </span>
+                    </label>
+
+                    <label style={consentRowStyle}>
+                      <input
+                        type="checkbox"
+                        checked={agreedToDelivery}
+                        onChange={(event) =>
+                          setAgreedToDelivery(event.target.checked)
+                        }
+                        required
+                        style={checkboxStyle}
+                      />
+                      <span>
+                        I agree to receive my Ahangama Pass and guide access.
+                      </span>
+                    </label>
+
+                    <div
+                      style={{
+                        borderRadius: 18,
+                        background: "rgba(245, 232, 220, 0.62)",
+                        padding: "0.95rem 1rem",
+                        color: "#7e5a43",
+                        fontSize: 14,
+                        lineHeight: 1.5,
+                        border: "1px solid rgba(170, 112, 69, 0.12)",
+                      }}
+                    >
+                      Pass holder:{" "}
+                      <strong>
+                        {passHolderName || "Your name will appear here"}
+                      </strong>
+                      <br />
+                      Your free pass starts today and is valid for 30 days.
+                    </div>
+
+                    {error && (
+                      <div style={{ color: "#b42318", fontWeight: 700 }}>
+                        {error}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      style={{
+                        width: "100%",
+                        border: "none",
+                        borderRadius: 18,
+                        background: "linear-gradient(135deg, #c95d1a, #8B4513)",
+                        color: "#fff",
+                        padding: "1rem",
+                        fontSize: 17,
+                        fontWeight: 700,
+                        opacity: loading ? 0.7 : 1,
+                        boxShadow: "0 14px 28px rgba(139, 69, 19, 0.16)",
+                      }}
+                    >
+                      {loading
+                        ? "Creating Your Pass..."
+                        : "Get My Free Ahangama Pass"}
+                    </button>
+                  </form>
+
+                  <div
+                    style={{
+                      borderRadius: 28,
+                      background:
+                        "linear-gradient(180deg, rgba(250, 244, 237, 0.95) 0%, rgba(245, 236, 227, 0.95) 100%)",
+                      border: "1px solid rgba(170, 112, 69, 0.1)",
+                      padding: isMobile ? "1rem 0.95rem" : "1rem",
+                      display: "grid",
+                      justifyItems: "center",
+                      gap: 14,
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.78)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: "#2f1709",
+                        fontSize: 16,
+                        fontWeight: 700,
+                        textAlign: "center",
+                        lineHeight: 1.35,
+                      }}
+                    >
+                      This is how your pass
+                      <br />
+                      will look
+                    </div>
+
+                    <div
+                      style={{
+                        width: isMobile ? 170 : 190,
+                        borderRadius: 18,
+                        overflow: "hidden",
+                        boxShadow: "0 18px 30px rgba(107, 54, 22, 0.16)",
+                        background: "#9a5829",
+                      }}
+                    >
+                      <img
+                        src={heroPassAppleWallet}
+                        alt="Ahangama Pass preview"
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          height: "auto",
+                        }}
+                      />
+                    </div>
+
+                    <div
+                      style={{
+                        display: "grid",
+                        gap: 8,
+                        justifyItems: "center",
+                      }}
+                    >
+                      <img
+                        src={addToAppleWallet}
+                        alt="Add to Apple Wallet"
+                        style={{
+                          width: isMobile ? 145 : 154,
+                          height: "auto",
+                          display: "block",
+                        }}
+                      />
+                      <img
+                        src={addToGoogleWallet}
+                        alt="Add to Google Wallet"
+                        style={{
+                          width: isMobile ? 152 : 162,
+                          height: "auto",
+                          display: "block",
+                        }}
+                      />
+                    </div>
+
+                    <div style={previewDotsStyle}>
+                      {[0, 1, 2, 3].map((dotIndex) => (
+                        <span
+                          key={dotIndex}
+                          style={{
+                            width: dotIndex === 0 ? 12 : 10,
+                            height: dotIndex === 0 ? 12 : 10,
+                            borderRadius: "50%",
+                            background:
+                              dotIndex === 0
+                                ? "#8b4d24"
+                                : "rgba(139, 77, 36, 0.18)",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {result && (
+                <div
+                  style={{
+                    marginTop: 18,
+                    borderRadius: 18,
+                    border: "1px solid #d9c7b5",
+                    padding: "1rem",
+                    background: "#fffaf5",
+                    color: "#5f3719",
+                  }}
+                >
+                  <h3 style={{ marginTop: 0, marginBottom: 12, fontSize: 22 }}>
+                    Your free Ahangama Pass is ready
+                  </h3>
+                  <div style={resultRowStyle}>
+                    <strong>Pass Holder</strong>
+                    <span>{result.passHolderName}</span>
+                  </div>
+                  <div style={resultRowStyle}>
+                    <strong>Email</strong>
+                    <span>{result.customerEmail}</span>
+                  </div>
+                  <div style={resultRowStyle}>
+                    <strong>WhatsApp</strong>
+                    <span>{result.customerPhone}</span>
+                  </div>
+                  <div style={resultRowStyle}>
+                    <strong>Valid From</strong>
+                    <span>{formatDate(result.startDate)}</span>
+                  </div>
+                  <div style={resultRowStyle}>
+                    <strong>Valid Until</strong>
+                    <span>{formatDate(result.expiryDate)}</span>
+                  </div>
+                  <div style={resultRowStyle}>
+                    <strong>Pass ID</strong>
+                    <span>{result.passkitPassId}</span>
                   </div>
 
                   <div
                     style={{
                       display: "flex",
                       flexWrap: "wrap",
-                      justifyContent: isMobile ? "flex-start" : "flex-end",
-                      alignItems: "center",
                       gap: 10,
+                      marginTop: 16,
                     }}
                   >
-                    {venueLogos.map((item) => (
-                      <div
-                        key={item.name}
-                        style={{
-                          minWidth: item.minWidth,
-                          padding: item.padding || "0.65rem 0.9rem",
-                          borderRadius: 999,
-                          background: "rgba(255,255,255,0.72)",
-                          border: "1px solid rgba(170, 112, 69, 0.14)",
-                          color: "#3c2010",
-                          textAlign: "center",
-                          fontFamily: item.fontFamily,
-                          fontSize: item.fontSize,
-                          fontWeight: item.fontWeight,
-                          letterSpacing: item.letterSpacing || "0.04em",
-                          textTransform: item.textTransform || "none",
-                          boxShadow: "0 4px 14px rgba(74, 40, 9, 0.04)",
-                        }}
-                      >
-                        {item.name}
-                      </div>
-                    ))}
+                    <a
+                      href={result.smartLinkUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={primaryActionStyle}
+                    >
+                      Open Digital Pass
+                    </a>
+                    <a
+                      href={buildWhatsAppUrl(result.smartLinkUrl)}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={secondaryActionStyle}
+                    >
+                      Share Pass on WhatsApp
+                    </a>
+                    <a
+                      href={result.guideUrl || GUIDE_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={secondaryActionStyle}
+                    >
+                      Open 2026/2027 Guide
+                    </a>
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                      style={ghostButtonStyle}
+                    >
+                      Create Another Pass
+                    </button>
                   </div>
                 </div>
-              </div>
-
-              <div
-                style={{
-                  padding: isMobile ? "0.4rem 0" : "0.5rem 0 0.1rem",
-                }}
-              >
-                <div
-                  style={{
-                    textAlign: "center",
-                    color: "#2f1709",
-                    fontSize: isMobile ? 32 : 38,
-                    fontWeight: 700,
-                    lineHeight: 1,
-                    marginBottom: isMobile ? 18 : 24,
-                    fontFamily:
-                      "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-                  }}
-                >
-                  How it works
-                </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: isMobile ? "1fr" : "repeat(3, minmax(0, 1fr))",
-                    gap: isMobile ? 18 : 12,
-                    alignItems: "start",
-                    minWidth: 0,
-                  }}
-                >
-                  {steps.map((item, index) => (
-                    <div
-                      key={item.title}
-                      style={{
-                        textAlign: "center",
-                        position: "relative",
-                        padding: isMobile ? "0.4rem 0" : "0 0.5rem",
-                      }}
-                    >
-                      {!isMobile && index < steps.length - 1 && (
-                        <div
-                          aria-hidden="true"
-                          style={{
-                            position: "absolute",
-                            top: 56,
-                            left: "calc(50% + 48px)",
-                            width: "calc(100% - 96px)",
-                            borderTop: "3px dotted rgba(203, 181, 161, 0.9)",
-                          }}
-                        />
-                      )}
-
-                      <div
-                        style={{
-                          position: "relative",
-                          width: 108,
-                          margin: "0 auto 16px",
-                          paddingTop: 10,
-                        }}
-                      >
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            left: "50%",
-                            transform: "translateX(-50%)",
-                            width: 34,
-                            height: 34,
-                            borderRadius: "50%",
-                            display: "grid",
-                            placeItems: "center",
-                            background: "#f4e2d2",
-                            color: "#b96b2d",
-                            fontWeight: 700,
-                            fontSize: 18,
-                            boxShadow: "0 8px 18px rgba(191, 137, 90, 0.18)",
-                            zIndex: 2,
-                          }}
-                        >
-                          {index + 1}
-                        </div>
-                        <div
-                          style={{
-                            width: 86,
-                            height: 86,
-                            margin: "18px auto 0",
-                            borderRadius: "50%",
-                            display: "grid",
-                            placeItems: "center",
-                            background: "rgba(255, 253, 250, 0.96)",
-                            border: "1px solid rgba(220, 205, 192, 0.8)",
-                            boxShadow: "0 8px 24px rgba(74, 40, 9, 0.05)",
-                          }}
-                        >
-                          {item.iconType === "qr" ? (
-                            <div
-                              aria-hidden="true"
-                              style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(5, 8px)",
-                                gap: 3,
-                              }}
-                            >
-                              {qrPattern.map((filled, patternIndex) => (
-                                <span
-                                  key={patternIndex}
-                                  style={{
-                                    width: 8,
-                                    height: 8,
-                                    borderRadius: 2,
-                                    background: filled ? "#4a2310" : "#f7efe7",
-                                    border: filled
-                                      ? "1px solid #4a2310"
-                                      : "1px solid rgba(74, 35, 16, 0.08)",
-                                    boxSizing: "border-box",
-                                  }}
-                                />
-                              ))}
-                            </div>
-                          ) : (
-                            <img
-                              src={item.iconSrc}
-                              alt=""
-                              aria-hidden="true"
-                              style={{ width: 34, height: 34 }}
-                            />
-                          )}
-                        </div>
-                      </div>
-
-                      <div
-                        style={{
-                          fontSize: isMobile ? 18 : 17,
-                          fontWeight: 700,
-                          color: "#2f1709",
-                          lineHeight: 1.2,
-                        }}
-                      >
-                        {item.title}
-                      </div>
-                      <div
-                        style={{
-                          marginTop: 5,
-                          fontSize: isMobile ? 15 : 14,
-                          color: "#6d4f3a",
-                          lineHeight: 1.35,
-                        }}
-                      >
-                        {item.subtitle}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div
-                id="free-pass-form"
-                style={{
-                  marginTop: isMobile ? 18 : 20,
-                  background:
-                    "linear-gradient(180deg, rgba(255, 252, 247, 0.82) 0%, rgba(250, 243, 235, 0.9) 100%)",
-                  borderRadius: 26,
-                  boxShadow: "0 18px 48px rgba(74, 40, 9, 0.07)",
-                  padding: isMobile ? "1rem 0.95rem" : "1.4rem 1.15rem",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(170, 112, 69, 0.14)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-          <div
-            style={{
-              position: "absolute",
-              top: -42,
-              right: -24,
-              width: 150,
-              height: 150,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(193, 136, 84, 0.16) 0%, rgba(193, 136, 84, 0) 72%)",
-              pointerEvents: "none",
-            }}
-          />
-          <div style={{ position: "relative", zIndex: 1, display: "grid", gap: 16 }}>
-            <div style={{ marginBottom: 2 }}>
-              <div style={formEyebrowStyle}>Fast signup</div>
-              <h2 style={{ color: "#6d3412", margin: "8px 0 8px", fontSize: 30 }}>
-                Claim your free pass
-              </h2>
-              <p style={{ color: "#7e5a43", margin: 0, fontSize: 15, lineHeight: 1.6 }}>
-                Enter four details. Your pass and guide arrive instantly.
-              </p>
-            </div>
-
-            <div style={formPreviewStripStyle}>
-              <div style={{ display: "grid", gap: 4 }}>
-                <div style={formPreviewLabelStyle}>How your pass arrives</div>
-                <div style={formPreviewValueStyle}>{passHolderName || "Your Ahangama Pass"}</div>
-              </div>
-              <div style={formPreviewBadgesStyle}>
-                <img
-                  src={addToAppleWallet}
-                  alt="Add to Apple Wallet"
-                  style={{ width: isMobile ? 118 : 132, height: "auto", display: "block" }}
-                />
-                <img
-                  src={addToGoogleWallet}
-                  alt="Add to Google Wallet"
-                  style={{ width: isMobile ? 124 : 140, height: "auto", display: "block" }}
-                />
-              </div>
-            </div>
-
-            <div style={formBenefitsRowStyle}>
-              <span style={formBenefitPillStyle}>Free</span>
-              <span style={formBenefitTextStyle}>Instant WhatsApp delivery</span>
-              <span style={formBenefitTextStyle}>No card required</span>
-            </div>
-
-            <form onSubmit={handleSubmit} style={{ display: "grid", gap: 14 }}>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: isMobile
-                    ? "1fr"
-                    : "repeat(2, minmax(0, 1fr))",
-                  gap: 12,
-                }}
-              >
-                <label style={labelStyle}>
-                  <span style={labelContentStyle}>
-                    <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                    First Name
-                  </span>
-                  <input
-                    type="text"
-                    required
-                    value={formData.firstName}
-                    onChange={handleChange("firstName")}
-                    placeholder="First name"
-                    style={inputStyle}
-                  />
-                </label>
-
-                <label style={labelStyle}>
-                  <span style={labelContentStyle}>
-                    <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                    Last Name
-                  </span>
-                  <input
-                    type="text"
-                    required
-                    value={formData.lastName}
-                    onChange={handleChange("lastName")}
-                    placeholder="Last name"
-                    style={inputStyle}
-                  />
-                </label>
-              </div>
-
-              <label style={labelStyle}>
-                <span style={labelContentStyle}>
-                  <img src={emailIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                  Email
-                </span>
-                <input
-                  type="email"
-                  required
-                  value={formData.customerEmail}
-                  onChange={handleChange("customerEmail")}
-                  placeholder="name@example.com"
-                  style={inputStyle}
-                />
-              </label>
-
-              <label style={labelStyle}>
-                <span style={labelContentStyle}>
-                  <img src={phoneIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                  Mobile WhatsApp
-                </span>
-                <input
-                  type="tel"
-                  required
-                  value={formData.customerPhone}
-                  onChange={handleChange("customerPhone")}
-                  placeholder="+94..."
-                  style={inputStyle}
-                />
-              </label>
-
-              <div
-                style={{
-                  borderRadius: 18,
-                  background: "rgba(245, 232, 220, 0.78)",
-                  padding: "0.95rem 1rem",
-                  color: "#7e5a43",
-                  fontSize: 14,
-                  lineHeight: 1.5,
-                  border: "1px solid rgba(170, 112, 69, 0.12)",
-                }}
-              >
-                Pass holder: <strong>{passHolderName || "Your name will appear here"}</strong>
-                <br />
-                Your free pass starts today and is valid for 30 days.
-              </div>
-
-              {error && (
-                <div style={{ color: "#b42318", fontWeight: 700 }}>{error}</div>
               )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  width: "100%",
-                  border: "none",
-                  borderRadius: 18,
-                  background: "linear-gradient(135deg, #c95d1a, #8B4513)",
-                  color: "#fff",
-                  padding: "1rem",
-                  fontSize: 17,
-                  fontWeight: 700,
-                  opacity: loading ? 0.7 : 1,
-                  boxShadow: "0 14px 28px rgba(139, 69, 19, 0.16)",
-                }}
-              >
-                {loading ? "Creating Your Pass..." : "Get My Free Ahangama Pass"}
-              </button>
-            </form>
-          </div>
-
-          {result && (
-            <div
-              style={{
-                marginTop: 18,
-                borderRadius: 18,
-                border: "1px solid #d9c7b5",
-                padding: "1rem",
-                background: "#fffaf5",
-                color: "#5f3719",
-              }}
-            >
-              <h3 style={{ marginTop: 0, marginBottom: 12, fontSize: 22 }}>
-                Your free Ahangama Pass is ready
-              </h3>
-              <div style={resultRowStyle}>
-                <strong>Pass Holder</strong>
-                <span>{result.passHolderName}</span>
-              </div>
-              <div style={resultRowStyle}>
-                <strong>Email</strong>
-                <span>{result.customerEmail}</span>
-              </div>
-              <div style={resultRowStyle}>
-                <strong>WhatsApp</strong>
-                <span>{result.customerPhone}</span>
-              </div>
-              <div style={resultRowStyle}>
-                <strong>Valid From</strong>
-                <span>{formatDate(result.startDate)}</span>
-              </div>
-              <div style={resultRowStyle}>
-                <strong>Valid Until</strong>
-                <span>{formatDate(result.expiryDate)}</span>
-              </div>
-              <div style={resultRowStyle}>
-                <strong>Pass ID</strong>
-                <span>{result.passkitPassId}</span>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 10,
-                  marginTop: 16,
-                }}
-              >
-                <a
-                  href={result.smartLinkUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={primaryActionStyle}
-                >
-                  Open Digital Pass
-                </a>
-                <a
-                  href={buildWhatsAppUrl(result.smartLinkUrl)}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={secondaryActionStyle}
-                >
-                  Share Pass on WhatsApp
-                </a>
-                <a
-                  href={result.guideUrl || GUIDE_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={secondaryActionStyle}
-                >
-                  Open 2026/2027 Guide
-                </a>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  style={ghostButtonStyle}
-                >
-                  Create Another Pass
-                </button>
-              </div>
             </div>
-          )}
-              </div>
           </div>
         </section>
       </div>
@@ -1158,114 +1329,75 @@ const steps = [
 ];
 
 const qrPattern = [
-  1, 1, 0, 1, 1,
-  1, 0, 1, 0, 1,
-  0, 1, 1, 1, 0,
-  1, 0, 1, 0, 1,
-  1, 1, 0, 1, 1,
+  1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1,
 ];
 
 const labelStyle = {
-  display: "block",
+  display: "grid",
+  gap: 8,
   color: "#6d3412",
   fontWeight: 700,
   fontSize: 14,
 };
 
-const labelContentStyle = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 8,
-};
-
-const labelIconStyle = {
-  width: 14,
-  height: 14,
-  opacity: 0.9,
-};
-
-const formEyebrowStyle = {
-  display: "inline-flex",
-  alignItems: "center",
-  padding: "0.3rem 0.55rem",
-  borderRadius: 999,
-  background: "rgba(155, 83, 31, 0.08)",
-  color: "#8b4d24",
-  fontSize: 11,
-  fontWeight: 700,
-  letterSpacing: "0.06em",
-  textTransform: "uppercase",
-};
-
-const formPreviewStripStyle = {
-  display: "grid",
-  gap: 10,
-  padding: "0.95rem 1rem",
-  borderRadius: 20,
-  background: "rgba(255, 255, 255, 0.62)",
-  border: "1px solid rgba(170, 112, 69, 0.12)",
-};
-
-const formPreviewLabelStyle = {
-  fontSize: 11,
-  fontWeight: 700,
-  textTransform: "uppercase",
-  letterSpacing: "0.06em",
-  color: "#9a6a46",
-};
-
-const formPreviewValueStyle = {
-  fontSize: 18,
-  fontWeight: 700,
-  color: "#4a2310",
-  fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-};
-
-const formPreviewBadgesStyle = {
+const fieldShellStyle = {
   display: "flex",
-  flexWrap: "wrap",
-  gap: 8,
   alignItems: "center",
-};
-
-const formBenefitsRowStyle = {
-  display: "flex",
-  flexWrap: "wrap",
-  gap: 8,
-  alignItems: "center",
-};
-
-const formBenefitPillStyle = {
-  padding: "0.24rem 0.5rem",
-  borderRadius: 999,
-  background: "rgba(155, 83, 31, 0.12)",
-  color: "#8b4d24",
-  fontSize: 11,
-  fontWeight: 700,
-  textTransform: "uppercase",
-  letterSpacing: "0.06em",
-};
-
-const formBenefitTextStyle = {
-  fontSize: 12,
-  color: "#7b5d47",
-};
-
-const inputStyle = {
+  gap: 12,
   width: "100%",
-  maxWidth: "100%",
   minWidth: 0,
-  marginTop: 6,
-  padding: "0.85rem 0.95rem",
-  borderRadius: 14,
-  border: "1px solid #d9c7b5",
+  padding: "0 0.95rem",
+  borderRadius: 16,
+  border: "1px solid rgba(205, 196, 187, 0.95)",
+  background: "rgba(255,255,255,0.94)",
   boxSizing: "border-box",
+  boxShadow: "inset 0 1px 1px rgba(255,255,255,0.9)",
+};
+
+const fieldIconStyle = {
+  width: 18,
+  height: 18,
+  opacity: 0.48,
+  flexShrink: 0,
+};
+
+const formInputStyle = {
+  width: "100%",
+  minWidth: 0,
+  border: "none",
+  padding: "1rem 0",
   fontSize: 16,
-  background: "#fff",
-  color: "#000",
-  caretColor: "#000",
-  WebkitTextFillColor: "#000",
+  lineHeight: 1.2,
+  background: "transparent",
+  color: "#2f1709",
+  outline: "none",
+  boxSizing: "border-box",
+  caretColor: "#2f1709",
+  WebkitTextFillColor: "#2f1709",
   colorScheme: "light",
+};
+
+const consentRowStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: 10,
+  color: "#6d4f3a",
+  fontSize: 14,
+  lineHeight: 1.4,
+};
+
+const checkboxStyle = {
+  width: 18,
+  height: 18,
+  margin: 0,
+  accentColor: "#8b4d24",
+  flexShrink: 0,
+};
+
+const previewDotsStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
 };
 
 const resultRowStyle = {
