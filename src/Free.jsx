@@ -4,9 +4,9 @@ import addToGoogleWallet from "./assets/add_to_google_wallet.png";
 import bookIcon from "./assets/book-icon.svg";
 import emailIcon from "./assets/email-icon.svg";
 import giftIcon from "./assets/gift-icon.svg";
+import heroPassAppleWallet from "./assets/hero_pass_apple_wallet.png";
 import lightningIcon from "./assets/lightning-icon.svg";
 import lockIcon from "./assets/lock-icon.svg";
-import mapPinIcon from "./assets/map-pin-icon.svg";
 import paperPlaneIcon from "./assets/paper-plane-icon.svg";
 import pencilIcon from "./assets/pencil-icon.svg";
 import phoneIcon from "./assets/phone-icon.svg";
@@ -15,6 +15,21 @@ import userIcon from "./assets/user-icon.svg";
 const GUIDE_URL = "https://guide.ahangama.com";
 
 function Free() {
+  const [isMobile, setIsMobile] = React.useState(() => {
+    if (typeof window === "undefined") return true;
+    return window.innerWidth <= 768;
+  });
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const todayStr = React.useMemo(
     () => new Date().toISOString().split("T")[0],
     [],
@@ -94,7 +109,7 @@ function Free() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "2rem 1rem",
+        padding: isMobile ? "1rem 0.85rem 2rem" : "2rem 1rem",
         boxSizing: "border-box",
         background:
           "radial-gradient(circle at top, rgba(210, 105, 30, 0.16), transparent 30%), linear-gradient(160deg, #f7efe6 0%, #f3e6d7 42%, #efe8df 100%)",
@@ -104,11 +119,7 @@ function Free() {
       <div
         style={{
           width: "100%",
-          maxWidth: 1120,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: 24,
-          alignItems: "stretch",
+          maxWidth: 960,
         }}
       >
         <section
@@ -119,7 +130,7 @@ function Free() {
               "radial-gradient(circle at top right, rgba(153, 92, 43, 0.14), transparent 28%), radial-gradient(circle at bottom left, rgba(201, 93, 26, 0.12), transparent 35%), linear-gradient(180deg, rgba(255, 251, 246, 0.98) 0%, rgba(249, 241, 231, 0.98) 100%)",
             color: "#5f3719",
             borderRadius: 32,
-            padding: "1.8rem 1.3rem",
+            padding: isMobile ? "1.15rem 1rem 1.25rem" : "1.8rem 1.3rem",
             boxShadow: "0 20px 60px rgba(74, 40, 9, 0.08)",
             border: "1px solid rgba(170, 112, 69, 0.16)",
           }}
@@ -146,92 +157,327 @@ function Free() {
               minWidth: 0,
             }}
           >
-              <div style={{ textAlign: "center" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: isMobile
+                  ? "1fr"
+                  : "minmax(0, 0.96fr) minmax(260px, 0.9fr)",
+                gap: isMobile ? 14 : 20,
+                alignItems: "center",
+              }}
+            >
+              <div style={{ display: "grid", gap: 14, minWidth: 0 }}>
                 <div
                   style={{
-                    display: "inline-flex",
+                    display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                    maxWidth: "100%",
-                    borderRadius: 999,
-                    padding: "0.45rem 1rem",
-                    background: "linear-gradient(135deg, #9b531f, #7f3c14)",
-                    color: "#fff6ef",
-                    fontWeight: 700,
-                    fontSize: 12,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    boxShadow: "0 10px 22px rgba(127, 60, 20, 0.18)",
+                    justifyContent: "space-between",
+                    gap: 10,
+                    flexWrap: "wrap",
                   }}
                 >
-                  <span>Free</span>
-                  <span style={{ opacity: 0.7 }}>•</span>
-                  <span>30 Day Access</span>
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8,
+                      maxWidth: "100%",
+                      borderRadius: 999,
+                      padding: "0.45rem 1rem",
+                      background: "rgba(255, 251, 246, 0.88)",
+                      color: "#8b4d24",
+                      fontWeight: 700,
+                      fontSize: 12,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      border: "1px solid rgba(170, 112, 69, 0.28)",
+                    }}
+                  >
+                    <span>Free</span>
+                    <span style={{ opacity: 0.7 }}>•</span>
+                    <span>30 Day Access</span>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "0.45rem 0.9rem",
+                      borderRadius: 999,
+                      background: "rgba(255, 251, 246, 0.8)",
+                      border: "1px solid rgba(170, 112, 69, 0.18)",
+                      color: "#6d3412",
+                      fontSize: 13,
+                    }}
+                  >
+                    <span>Why it&apos;s free?</span>
+                    <span
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        display: "grid",
+                        placeItems: "center",
+                        border: "1px solid rgba(109, 52, 18, 0.28)",
+                        fontSize: 11,
+                        fontWeight: 700,
+                      }}
+                    >
+                      i
+                    </span>
+                  </div>
                 </div>
-                <h1
-                  style={{
-                    margin: "14px 0 10px",
-                    fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-                    fontSize: "clamp(2.7rem, 6vw, 4.4rem)",
-                    lineHeight: 0.98,
-                    letterSpacing: "-0.04em",
-                    color: "#4a2310",
-                  }}
-                >
-                  Get the
-                  <br />
-                  Ahangama Pass
-                </h1>
-                <p
-                  style={{
-                    maxWidth: 540,
-                    margin: "0 auto",
-                    padding: "0 0.25rem",
-                    color: "#785842",
-                    fontSize: 16,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Unlock perks at 100+ cafes, wellness spots, surf venues,
-                  stays and more.
-                </p>
+
+                <div>
+                  <h1
+                    style={{
+                      margin: 0,
+                      maxWidth: 420,
+                      fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                      fontSize: isMobile ? "clamp(2.7rem, 13vw, 4rem)" : "clamp(3rem, 8vw, 5.2rem)",
+                      lineHeight: 0.93,
+                      letterSpacing: "-0.05em",
+                      color: "#2f1709",
+                    }}
+                  >
+                    Get the
+                    <br />
+                    Ahangama Pass
+                  </h1>
+                  <p
+                    style={{
+                      maxWidth: 380,
+                      margin: "16px 0 0",
+                      color: "#6f513d",
+                      fontSize: 17,
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    Unlock perks across cafes, surf, wellness, stays and
+                    experiences.
+                  </p>
+                </div>
+
+                <div style={{ display: "grid", gap: 10, justifyItems: "start" }}>
+                  <a
+                    href="#free-pass-form"
+                    style={{
+                      ...heroCtaStyle,
+                      maxWidth: 320,
+                      minHeight: 68,
+                      justifyContent: "center",
+                      gap: 10,
+                    }}
+                  >
+                    <img
+                      src={giftIcon}
+                      alt=""
+                      aria-hidden="true"
+                      style={{ width: 18, height: 18, filter: "brightness(0) invert(1)" }}
+                    />
+                    <span>Get My Free Pass</span>
+                  </a>
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 8,
+                      color: "#8a6a53",
+                      fontSize: 14,
+                    }}
+                  >
+                    <img
+                      src={lockIcon}
+                      alt=""
+                      aria-hidden="true"
+                      style={{ width: 15, height: 15, opacity: 0.8 }}
+                    />
+                    <span>No payment required. 100% free.</span>
+                  </div>
+                </div>
               </div>
 
               <div
                 style={{
+                  position: "relative",
+                    minHeight: isMobile ? 300 : 360,
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
-                  gap: 12,
-                  minWidth: 0,
+                  placeItems: "center",
+                    marginTop: isMobile ? 8 : 0,
                 }}
               >
-                {featureItems.map((item) => (
+                <div
+                  style={{
+                    position: "absolute",
+                    right: isMobile ? 14 : -6,
+                    bottom: isMobile ? 4 : 8,
+                    width: isMobile ? 156 : 176,
+                    height: isMobile ? 236 : 264,
+                    borderRadius: 24,
+                    background:
+                      "linear-gradient(180deg, #77a4bf 0%, #4c7a96 100%)",
+                    boxShadow: "0 22px 44px rgba(49, 80, 101, 0.2)",
+                    transform: isMobile ? "rotate(7deg)" : "rotate(8deg)",
+                    overflow: "hidden",
+                  }}
+                >
                   <div
-                    key={item.title}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      borderRadius: 18,
-                      padding: "0.8rem 0.75rem",
-                      background: "rgba(255, 255, 255, 0.72)",
-                      border: "1px solid rgba(170, 112, 69, 0.14)",
-                      minWidth: 0,
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.08))",
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "relative",
+                      zIndex: 1,
+                      padding: "1.15rem 1rem",
+                      color: "#f5f8fb",
                     }}
                   >
                     <div
                       style={{
-                        width: 40,
-                        height: 40,
+                        fontSize: 12,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        opacity: 0.8,
+                        fontWeight: 700,
+                      }}
+                    >
+                      Ahangama
+                    </div>
+                    <div
+                      style={{
+                        marginTop: 6,
+                        fontSize: 34,
+                        lineHeight: 0.95,
+                        fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                        fontWeight: 700,
+                      }}
+                    >
+                      Guide
+                    </div>
+                    <div
+                      style={{
+                        marginTop: 10,
+                        fontSize: 12,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        opacity: 0.9,
+                      }}
+                    >
+                      2026/27 Edition
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 2,
+                    width: isMobile ? 214 : 238,
+                    aspectRatio: "1 / 2.16",
+                    padding: "8px",
+                    borderRadius: 38,
+                    background: "linear-gradient(180deg, #232323 0%, #111111 100%)",
+                    boxShadow: "0 26px 46px rgba(31, 22, 17, 0.24)",
+                    transform: isMobile ? "rotate(-6deg)" : "rotate(-8deg)",
+                    border: "1px solid rgba(255,255,255,0.35)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: 92,
+                      height: 23,
+                      borderRadius: 999,
+                      background: "#0a0a0a",
+                      zIndex: 3,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      overflow: "hidden",
+                      borderRadius: 30,
+                      background: "#d7d7d7",
+                    }}
+                  >
+                    <img
+                      src={heroPassAppleWallet}
+                      alt="Ahangama Pass preview inside an iPhone frame"
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center top",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: isMobile ? "1fr" : "repeat(3, minmax(0, 1fr))",
+                  gap: 0,
+                  minWidth: 0,
+                  marginTop: 6,
+                  borderRadius: 28,
+                  overflow: "hidden",
+                  background: "rgba(255, 255, 255, 0.94)",
+                  border: "1px solid rgba(170, 112, 69, 0.12)",
+                  boxShadow: "0 18px 34px rgba(74, 40, 9, 0.06)",
+                }}
+              >
+                {featureItems.map((item, index) => (
+                  <div
+                    key={item.title}
+                    style={{
+                      display: "grid",
+                      justifyItems: "center",
+                      alignContent: "start",
+                      textAlign: "center",
+                      gap: 8,
+                      padding: isMobile ? "1.2rem 1rem" : "1.35rem 1.1rem",
+                      minWidth: 0,
+                      position: "relative",
+                      borderRight:
+                        !isMobile && index < featureItems.length - 1
+                          ? "1px solid rgba(170, 112, 69, 0.14)"
+                          : "none",
+                      borderBottom:
+                        isMobile && index < featureItems.length - 1
+                          ? "1px solid rgba(170, 112, 69, 0.14)"
+                          : "none",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 64,
+                        height: 64,
                         borderRadius: "50%",
                         display: "grid",
                         placeItems: "center",
-                        background: "#f5e5d3",
+                        background: "#f7ecdf",
                         color: "#8b4d24",
                         fontWeight: 700,
                         fontSize: 12,
                         flexShrink: 0,
+                        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
                       }}
                     >
                       {item.iconSrc ? (
@@ -239,23 +485,30 @@ function Free() {
                           src={item.iconSrc}
                           alt=""
                           aria-hidden="true"
-                          style={{ width: 18, height: 18 }}
+                          style={{ width: 24, height: 24 }}
                         />
                       ) : (
                         item.badge
                       )}
                     </div>
-                    <div>
+                    <div style={{ maxWidth: 170 }}>
                       <div
-                        style={{ fontSize: 14, fontWeight: 700, color: "#4a2310" }}
+                        style={{
+                          fontSize: isMobile ? 16 : 17,
+                          fontWeight: 700,
+                          color: "#2f1709",
+                          lineHeight: 1.05,
+                          whiteSpace: "pre-line",
+                        }}
                       >
                         {item.title}
                       </div>
                       <div
                         style={{
-                          fontSize: 12,
-                          color: "#7b5d47",
-                          marginTop: 2,
+                          fontSize: isMobile ? 14 : 15,
+                          color: "#6d4f3a",
+                          marginTop: 6,
+                          lineHeight: 1.25,
                         }}
                       >
                         {item.subtitle}
@@ -265,130 +518,135 @@ function Free() {
                 ))}
               </div>
 
-              <div style={{ textAlign: "center" }}>
-                <a href="#free-pass-form" style={heroCtaStyle}>
-                  Get My Free Pass
-                </a>
+              <div
+                style={{
+                  borderRadius: 28,
+                  background: "rgba(255, 252, 248, 0.94)",
+                  border: "1px solid rgba(170, 112, 69, 0.16)",
+                  padding: isMobile ? "1rem 0.9rem" : "1rem 1.1rem",
+                  boxShadow: "0 12px 34px rgba(74, 40, 9, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+                }}
+              >
                 <div
                   style={{
-                    marginTop: 10,
-                    color: "#8a6a53",
-                    fontSize: 13,
-                    display: "inline-flex",
+                    display: "grid",
+                    gridTemplateColumns: isMobile
+                      ? "1fr"
+                      : "minmax(0, 1.1fr) minmax(0, 1fr)",
+                    gap: isMobile ? 14 : 18,
                     alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6,
                   }}
                 >
-                  <img
-                    src={lockIcon}
-                    alt=""
-                    aria-hidden="true"
-                    style={{ width: 14, height: 14, opacity: 0.8 }}
-                  />
-                  100% free. No payment. No hidden fees.
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: isMobile ? "wrap" : "nowrap",
+                      alignItems: "center",
+                      gap: 14,
+                      minWidth: 0,
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", minWidth: 0 }}>
+                      {travellerAvatars.map((item, index) => (
+                        <div
+                          key={item.initials}
+                          aria-hidden="true"
+                          style={{
+                            width: isMobile ? 48 : 58,
+                            height: isMobile ? 48 : 58,
+                            marginLeft: index === 0 ? 0 : -10,
+                            borderRadius: "50%",
+                            display: "grid",
+                            placeItems: "center",
+                            color: "#fff",
+                            fontSize: isMobile ? 14 : 16,
+                            fontWeight: 700,
+                            letterSpacing: "0.02em",
+                            background: item.background,
+                            border: "3px solid rgba(255, 252, 248, 1)",
+                            boxShadow: "0 6px 18px rgba(47, 23, 9, 0.12)",
+                          }}
+                        >
+                          {item.initials}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{ minWidth: 0 }}>
+                      <div
+                        style={{
+                          color: "#2f1709",
+                          fontSize: isMobile ? 24 : 28,
+                          lineHeight: 1.05,
+                          fontWeight: 700,
+                          fontFamily:
+                            "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+                        }}
+                      >
+                        Loved by travellers in Ahangama
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 6,
+                          color: "#6f513d",
+                          fontSize: isMobile ? 15 : 16,
+                        }}
+                      >
+                        12,000+ happy pass holders
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: isMobile ? "flex-start" : "flex-end",
+                      alignItems: "center",
+                      gap: 10,
+                    }}
+                  >
+                    {venueLogos.map((item) => (
+                      <div
+                        key={item.name}
+                        style={{
+                          minWidth: item.minWidth,
+                          padding: item.padding || "0.65rem 0.9rem",
+                          borderRadius: 999,
+                          background: "rgba(255,255,255,0.72)",
+                          border: "1px solid rgba(170, 112, 69, 0.14)",
+                          color: "#3c2010",
+                          textAlign: "center",
+                          fontFamily: item.fontFamily,
+                          fontSize: item.fontSize,
+                          fontWeight: item.fontWeight,
+                          letterSpacing: item.letterSpacing || "0.04em",
+                          textTransform: item.textTransform || "none",
+                          boxShadow: "0 4px 14px rgba(74, 40, 9, 0.04)",
+                        }}
+                      >
+                        {item.name}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               <div
                 style={{
-                  borderRadius: 24,
-                  background: "rgba(255, 251, 246, 0.9)",
-                  border: "1px solid rgba(170, 112, 69, 0.18)",
-                  padding: "1rem 0.9rem",
-                  boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.7)",
+                  padding: isMobile ? "0.4rem 0" : "0.5rem 0 0.1rem",
                 }}
               >
                 <div
                   style={{
                     textAlign: "center",
+                    color: "#2f1709",
+                    fontSize: isMobile ? 32 : 38,
+                    fontWeight: 700,
+                    lineHeight: 1,
+                    marginBottom: isMobile ? 18 : 24,
                     fontFamily:
                       "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
-                    color: "#6f3e1b",
-                    fontSize: 18,
-                    fontWeight: 700,
-                    marginBottom: 12,
-                  }}
-                >
-                  Your pass. Your perks.
-                </div>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-                    gap: 8,
-                    minWidth: 0,
-                  }}
-                >
-                  {proofItems.map((item) => (
-                    <div
-                      key={item.title}
-                      style={{
-                        borderRadius: 16,
-                        background: "#fffdf9",
-                        padding: "0.8rem 0.55rem",
-                        textAlign: "center",
-                        border: "1px solid rgba(170, 112, 69, 0.12)",
-                        minWidth: 0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "inline-flex",
-                          minWidth: 76,
-                          justifyContent: "center",
-                          borderRadius: 10,
-                          padding: item.logoSrc ? "0" : "0.35rem 0.5rem",
-                          background: item.logoSrc ? "transparent" : item.accent,
-                          color: item.accentColor,
-                          fontSize: 11,
-                          fontWeight: 700,
-                          letterSpacing: "0.02em",
-                        }}
-                      >
-                        {item.logoSrc ? (
-                          <img
-                            src={item.logoSrc}
-                            alt={item.logoAlt}
-                            style={{
-                              display: "block",
-                              width: item.logoWidth || 112,
-                              maxWidth: "100%",
-                              height: "auto",
-                            }}
-                          />
-                        ) : (
-                          item.label
-                        )}
-                      </div>
-                      <div
-                        style={{
-                          marginTop: 10,
-                          fontSize: 13,
-                          fontWeight: 700,
-                          color: "#4a2310",
-                        }}
-                      >
-                        {item.title}
-                      </div>
-                      <div
-                        style={{ marginTop: 3, fontSize: 12, color: "#7b5d47" }}
-                      >
-                        {item.subtitle}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div
-                  style={{
-                    textAlign: "center",
-                    color: "#5f3719",
-                    fontSize: 16,
-                    fontWeight: 700,
-                    marginBottom: 10,
                   }}
                 >
                   How it works
@@ -396,8 +654,8 @@ function Free() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-                    gap: 8,
+                    gridTemplateColumns: isMobile ? "1fr" : "repeat(3, minmax(0, 1fr))",
+                    gap: isMobile ? 18 : 12,
                     alignItems: "start",
                     minWidth: 0,
                   }}
@@ -405,40 +663,120 @@ function Free() {
                   {steps.map((item, index) => (
                     <div
                       key={item.title}
-                      style={{ textAlign: "center", position: "relative" }}
+                      style={{
+                        textAlign: "center",
+                        position: "relative",
+                        padding: isMobile ? "0.4rem 0" : "0 0.5rem",
+                      }}
                     >
+                      {!isMobile && index < steps.length - 1 && (
+                        <div
+                          aria-hidden="true"
+                          style={{
+                            position: "absolute",
+                            top: 56,
+                            left: "calc(50% + 48px)",
+                            width: "calc(100% - 96px)",
+                            borderTop: "3px dotted rgba(203, 181, 161, 0.9)",
+                          }}
+                        />
+                      )}
+
                       <div
                         style={{
-                          width: 34,
-                          height: 34,
-                          margin: "0 auto 8px",
-                          borderRadius: "50%",
-                          display: "grid",
-                          placeItems: "center",
-                          background: "#f5e5d3",
-                          color: "#8b4d24",
-                          fontWeight: 700,
-                          fontSize: 14,
+                          position: "relative",
+                          width: 108,
+                          margin: "0 auto 16px",
+                          paddingTop: 10,
                         }}
                       >
-                        {item.iconSrc ? (
-                          <img
-                            src={item.iconSrc}
-                            alt=""
-                            aria-hidden="true"
-                            style={{ width: 16, height: 16 }}
-                          />
-                        ) : (
-                          index + 1
-                        )}
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: 34,
+                            height: 34,
+                            borderRadius: "50%",
+                            display: "grid",
+                            placeItems: "center",
+                            background: "#f4e2d2",
+                            color: "#b96b2d",
+                            fontWeight: 700,
+                            fontSize: 18,
+                            boxShadow: "0 8px 18px rgba(191, 137, 90, 0.18)",
+                            zIndex: 2,
+                          }}
+                        >
+                          {index + 1}
+                        </div>
+                        <div
+                          style={{
+                            width: 86,
+                            height: 86,
+                            margin: "18px auto 0",
+                            borderRadius: "50%",
+                            display: "grid",
+                            placeItems: "center",
+                            background: "rgba(255, 253, 250, 0.96)",
+                            border: "1px solid rgba(220, 205, 192, 0.8)",
+                            boxShadow: "0 8px 24px rgba(74, 40, 9, 0.05)",
+                          }}
+                        >
+                          {item.iconType === "qr" ? (
+                            <div
+                              aria-hidden="true"
+                              style={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(5, 8px)",
+                                gap: 3,
+                              }}
+                            >
+                              {qrPattern.map((filled, patternIndex) => (
+                                <span
+                                  key={patternIndex}
+                                  style={{
+                                    width: 8,
+                                    height: 8,
+                                    borderRadius: 2,
+                                    background: filled ? "#4a2310" : "#f7efe7",
+                                    border: filled
+                                      ? "1px solid #4a2310"
+                                      : "1px solid rgba(74, 35, 16, 0.08)",
+                                    boxSizing: "border-box",
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          ) : (
+                            <img
+                              src={item.iconSrc}
+                              alt=""
+                              aria-hidden="true"
+                              style={{ width: 34, height: 34 }}
+                            />
+                          )}
+                        </div>
                       </div>
+
                       <div
-                        style={{ fontSize: 13, fontWeight: 700, color: "#4a2310" }}
+                        style={{
+                          fontSize: isMobile ? 18 : 17,
+                          fontWeight: 700,
+                          color: "#2f1709",
+                          lineHeight: 1.2,
+                        }}
                       >
                         {item.title}
                       </div>
                       <div
-                        style={{ marginTop: 3, fontSize: 12, color: "#7b5d47" }}
+                        style={{
+                          marginTop: 5,
+                          fontSize: isMobile ? 15 : 14,
+                          color: "#6d4f3a",
+                          lineHeight: 1.35,
+                        }}
                       >
                         {item.subtitle}
                       </div>
@@ -446,135 +784,181 @@ function Free() {
                   ))}
                 </div>
               </div>
-          </div>
-        </section>
+              <div
+                id="free-pass-form"
+                style={{
+                  marginTop: isMobile ? 18 : 20,
+                  background:
+                    "linear-gradient(180deg, rgba(255, 252, 247, 0.82) 0%, rgba(250, 243, 235, 0.9) 100%)",
+                  borderRadius: 26,
+                  boxShadow: "0 18px 48px rgba(74, 40, 9, 0.07)",
+                  padding: isMobile ? "1rem 0.95rem" : "1.4rem 1.15rem",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(170, 112, 69, 0.14)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+          <div
+            style={{
+              position: "absolute",
+              top: -42,
+              right: -24,
+              width: 150,
+              height: 150,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(193, 136, 84, 0.16) 0%, rgba(193, 136, 84, 0) 72%)",
+              pointerEvents: "none",
+            }}
+          />
+          <div style={{ position: "relative", zIndex: 1, display: "grid", gap: 16 }}>
+            <div style={{ marginBottom: 2 }}>
+              <div style={formEyebrowStyle}>Fast signup</div>
+              <h2 style={{ color: "#6d3412", margin: "8px 0 8px", fontSize: 30 }}>
+                Claim your free pass
+              </h2>
+              <p style={{ color: "#7e5a43", margin: 0, fontSize: 15, lineHeight: 1.6 }}>
+                Enter four details. Your pass and guide arrive instantly.
+              </p>
+            </div>
 
-        <section
-          id="free-pass-form"
-          style={{
-            background: "rgba(255, 255, 255, 0.94)",
-            borderRadius: 28,
-            boxShadow: "0 18px 60px rgba(74, 40, 9, 0.12)",
-            padding: "2rem 1.4rem",
-            backdropFilter: "blur(10px)",
-          }}
-        >
-          <div style={{ marginBottom: 18 }}>
-            <h2 style={{ color: "#6d3412", margin: "0 0 8px", fontSize: 30 }}>
-              Claim your free pass
-            </h2>
-            <p style={{ color: "#7e5a43", margin: 0, fontSize: 15, lineHeight: 1.6 }}>
-              We collect your first name, last name, email, and WhatsApp mobile
-              so we can generate your Ahangama Pass and send your guide access.
-            </p>
-          </div>
+            <div style={formPreviewStripStyle}>
+              <div style={{ display: "grid", gap: 4 }}>
+                <div style={formPreviewLabelStyle}>How your pass arrives</div>
+                <div style={formPreviewValueStyle}>{passHolderName || "Your Ahangama Pass"}</div>
+              </div>
+              <div style={formPreviewBadgesStyle}>
+                <img
+                  src={addToAppleWallet}
+                  alt="Add to Apple Wallet"
+                  style={{ width: isMobile ? 118 : 132, height: "auto", display: "block" }}
+                />
+                <img
+                  src={addToGoogleWallet}
+                  alt="Add to Google Wallet"
+                  style={{ width: isMobile ? 124 : 140, height: "auto", display: "block" }}
+                />
+              </div>
+            </div>
 
-          <form onSubmit={handleSubmit} style={{ display: "grid", gap: 14 }}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: 12,
-              }}
-            >
+            <div style={formBenefitsRowStyle}>
+              <span style={formBenefitPillStyle}>Free</span>
+              <span style={formBenefitTextStyle}>Instant WhatsApp delivery</span>
+              <span style={formBenefitTextStyle}>No card required</span>
+            </div>
+
+            <form onSubmit={handleSubmit} style={{ display: "grid", gap: 14 }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: isMobile
+                    ? "1fr"
+                    : "repeat(2, minmax(0, 1fr))",
+                  gap: 12,
+                }}
+              >
+                <label style={labelStyle}>
+                  <span style={labelContentStyle}>
+                    <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                    First Name
+                  </span>
+                  <input
+                    type="text"
+                    required
+                    value={formData.firstName}
+                    onChange={handleChange("firstName")}
+                    placeholder="First name"
+                    style={inputStyle}
+                  />
+                </label>
+
+                <label style={labelStyle}>
+                  <span style={labelContentStyle}>
+                    <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                    Last Name
+                  </span>
+                  <input
+                    type="text"
+                    required
+                    value={formData.lastName}
+                    onChange={handleChange("lastName")}
+                    placeholder="Last name"
+                    style={inputStyle}
+                  />
+                </label>
+              </div>
+
               <label style={labelStyle}>
                 <span style={labelContentStyle}>
-                  <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                  First Name
+                  <img src={emailIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                  Email
                 </span>
                 <input
-                  type="text"
+                  type="email"
                   required
-                  value={formData.firstName}
-                  onChange={handleChange("firstName")}
-                  placeholder="First name"
+                  value={formData.customerEmail}
+                  onChange={handleChange("customerEmail")}
+                  placeholder="name@example.com"
                   style={inputStyle}
                 />
               </label>
 
               <label style={labelStyle}>
                 <span style={labelContentStyle}>
-                  <img src={userIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                  Last Name
+                  <img src={phoneIcon} alt="" aria-hidden="true" style={labelIconStyle} />
+                  Mobile WhatsApp
                 </span>
                 <input
-                  type="text"
+                  type="tel"
                   required
-                  value={formData.lastName}
-                  onChange={handleChange("lastName")}
-                  placeholder="Last name"
+                  value={formData.customerPhone}
+                  onChange={handleChange("customerPhone")}
+                  placeholder="+94..."
                   style={inputStyle}
                 />
               </label>
-            </div>
 
-            <label style={labelStyle}>
-              <span style={labelContentStyle}>
-                <img src={emailIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                Email
-              </span>
-              <input
-                type="email"
-                required
-                value={formData.customerEmail}
-                onChange={handleChange("customerEmail")}
-                placeholder="name@example.com"
-                style={inputStyle}
-              />
-            </label>
+              <div
+                style={{
+                  borderRadius: 18,
+                  background: "rgba(245, 232, 220, 0.78)",
+                  padding: "0.95rem 1rem",
+                  color: "#7e5a43",
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  border: "1px solid rgba(170, 112, 69, 0.12)",
+                }}
+              >
+                Pass holder: <strong>{passHolderName || "Your name will appear here"}</strong>
+                <br />
+                Your free pass starts today and is valid for 30 days.
+              </div>
 
-            <label style={labelStyle}>
-              <span style={labelContentStyle}>
-                <img src={phoneIcon} alt="" aria-hidden="true" style={labelIconStyle} />
-                Mobile WhatsApp
-              </span>
-              <input
-                type="tel"
-                required
-                value={formData.customerPhone}
-                onChange={handleChange("customerPhone")}
-                placeholder="+94..."
-                style={inputStyle}
-              />
-            </label>
+              {error && (
+                <div style={{ color: "#b42318", fontWeight: 700 }}>{error}</div>
+              )}
 
-            <div
-              style={{
-                borderRadius: 16,
-                background: "#f8f2eb",
-                padding: "0.9rem 1rem",
-                color: "#7e5a43",
-                fontSize: 14,
-                lineHeight: 1.5,
-              }}
-            >
-              Pass holder: <strong>{passHolderName || "Your name will appear here"}</strong>
-              <br />
-              Your free pass starts today and is valid for 30 days.
-            </div>
-
-            {error && (
-              <div style={{ color: "#b42318", fontWeight: 700 }}>{error}</div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: "100%",
-                border: "none",
-                borderRadius: 16,
-                background: "linear-gradient(135deg, #c95d1a, #8B4513)",
-                color: "#fff",
-                padding: "1rem",
-                fontSize: 17,
-                fontWeight: 700,
-                opacity: loading ? 0.7 : 1,
-              }}
-            >
-              {loading ? "Creating Your Pass..." : "Get My Free Ahangama Pass"}
-            </button>
-          </form>
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  width: "100%",
+                  border: "none",
+                  borderRadius: 18,
+                  background: "linear-gradient(135deg, #c95d1a, #8B4513)",
+                  color: "#fff",
+                  padding: "1rem",
+                  fontSize: 17,
+                  fontWeight: 700,
+                  opacity: loading ? 0.7 : 1,
+                  boxShadow: "0 14px 28px rgba(139, 69, 19, 0.16)",
+                }}
+              >
+                {loading ? "Creating Your Pass..." : "Get My Free Ahangama Pass"}
+              </button>
+            </form>
+          </div>
 
           {result && (
             <div
@@ -657,6 +1041,8 @@ function Free() {
               </div>
             </div>
           )}
+              </div>
+          </div>
         </section>
       </div>
     </div>
@@ -695,33 +1081,59 @@ const featureItems = [
   },
 ];
 
-const proofItems = [
+const travellerAvatars = [
   {
-    label: "Wallet",
-    logoSrc: addToAppleWallet,
-    logoAlt: "Add to Apple Wallet",
-    logoWidth: 118,
-    title: "Apple Wallet ready",
-    subtitle: "Pass added in one tap",
-    accent: "#111111",
-    accentColor: "#ffffff",
+    initials: "AL",
+    background: "linear-gradient(180deg, #d8c1ab 0%, #b48a6e 100%)",
   },
   {
-    label: "Google",
-    logoSrc: addToGoogleWallet,
-    logoAlt: "Add to Google Wallet",
-    logoWidth: 124,
-    title: "Google Wallet ready",
-    subtitle: "Save it to your phone",
-    accent: "#ffffff",
-    accentColor: "#4a2310",
+    initials: "MK",
+    background: "linear-gradient(180deg, #8a6a45 0%, #4f3925 100%)",
   },
   {
-    label: "Proof",
-    title: "Used by travellers",
-    subtitle: "Across Ahangama",
-    accent: "#f2e5d8",
-    accentColor: "#8b4d24",
+    initials: "SR",
+    background: "linear-gradient(180deg, #c59a7d 0%, #8a5d46 100%)",
+  },
+  {
+    initials: "JN",
+    background: "linear-gradient(180deg, #95a4b1 0%, #546372 100%)",
+  },
+];
+
+const venueLogos = [
+  {
+    name: "CRAVE",
+    minWidth: 102,
+    fontFamily: "Avenir Next, Helvetica, Arial, sans-serif",
+    fontSize: 19,
+    fontWeight: 500,
+    letterSpacing: "0.18em",
+  },
+  {
+    name: "SOKO",
+    minWidth: 94,
+    fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+    fontSize: 20,
+    fontWeight: 700,
+    letterSpacing: "0.08em",
+  },
+  {
+    name: "PALM CLUB",
+    minWidth: 112,
+    fontFamily: "Georgia, serif",
+    fontSize: 15,
+    fontWeight: 700,
+    letterSpacing: "0.08em",
+  },
+  {
+    name: "unsung",
+    minWidth: 100,
+    fontFamily: "Brush Script MT, Snell Roundhand, cursive",
+    fontSize: 23,
+    fontWeight: 400,
+    letterSpacing: "0.02em",
+    textTransform: "lowercase",
+    padding: "0.55rem 0.9rem",
   },
 ];
 
@@ -730,17 +1142,27 @@ const steps = [
     title: "Enter details",
     subtitle: "Takes 10 seconds",
     iconSrc: pencilIcon,
+    iconType: "image",
   },
   {
     title: "Receive instantly",
     subtitle: "On WhatsApp",
     iconSrc: paperPlaneIcon,
+    iconType: "image",
   },
   {
-    title: "Enjoy the perks",
-    subtitle: "Across Ahangama",
-    iconSrc: mapPinIcon,
+    title: "Show & save",
+    subtitle: "Enjoy perks everywhere",
+    iconType: "qr",
   },
+];
+
+const qrPattern = [
+  1, 1, 0, 1, 1,
+  1, 0, 1, 0, 1,
+  0, 1, 1, 1, 0,
+  1, 0, 1, 0, 1,
+  1, 1, 0, 1, 1,
 ];
 
 const labelStyle = {
@@ -760,6 +1182,73 @@ const labelIconStyle = {
   width: 14,
   height: 14,
   opacity: 0.9,
+};
+
+const formEyebrowStyle = {
+  display: "inline-flex",
+  alignItems: "center",
+  padding: "0.3rem 0.55rem",
+  borderRadius: 999,
+  background: "rgba(155, 83, 31, 0.08)",
+  color: "#8b4d24",
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+};
+
+const formPreviewStripStyle = {
+  display: "grid",
+  gap: 10,
+  padding: "0.95rem 1rem",
+  borderRadius: 20,
+  background: "rgba(255, 255, 255, 0.62)",
+  border: "1px solid rgba(170, 112, 69, 0.12)",
+};
+
+const formPreviewLabelStyle = {
+  fontSize: 11,
+  fontWeight: 700,
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
+  color: "#9a6a46",
+};
+
+const formPreviewValueStyle = {
+  fontSize: 18,
+  fontWeight: 700,
+  color: "#4a2310",
+  fontFamily: "Iowan Old Style, Baskerville, Palatino, Georgia, serif",
+};
+
+const formPreviewBadgesStyle = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: 8,
+  alignItems: "center",
+};
+
+const formBenefitsRowStyle = {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: 8,
+  alignItems: "center",
+};
+
+const formBenefitPillStyle = {
+  padding: "0.24rem 0.5rem",
+  borderRadius: 999,
+  background: "rgba(155, 83, 31, 0.12)",
+  color: "#8b4d24",
+  fontSize: 11,
+  fontWeight: 700,
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
+};
+
+const formBenefitTextStyle = {
+  fontSize: 12,
+  color: "#7b5d47",
 };
 
 const inputStyle = {
