@@ -6,12 +6,12 @@ import { getStoredAttribution } from "./attribution.js";
 import arrowRightIcon from "./assets/arrow-right-icon.svg";
 import addToAppleWallet from "./assets/add_to_apple_wallet.png";
 import addToGoogleWallet from "./assets/add_to_google_wallet.png";
-import ahangamaGuideHero from "./assets/ahangama_guide_hero.jpg";
 import phoneIcon from "./assets/phone-icon.svg";
 
 function App() {
-  const GUIDE_URL = "https://guide.ahangama.com";
-  const MAP_URL = "https://ahangama.com";
+  const WHATSAPP_NUMBER = "94777908790";
+  const GUIDE_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Send me the guide")}`;
+  const MAP_WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Send me the map")}`;
   const todayStr = new Date().toISOString().split("T")[0];
   const [startDate, setStartDate] = React.useState(todayStr);
   const [loading, setLoading] = React.useState(false);
@@ -125,11 +125,54 @@ function App() {
               <aside className="offerings-aside">
                 <div className="offerings-aside-intro">
                   <p className="offerings-aside-lead">
-                    Your key to Ahangama&apos;s best stays, eats and experiences.
+                    Your key to Ahangama&apos;s best stays, eats and
+                    experiences.
                   </p>
                 </div>
 
                 <div className="offerings-aside-divider" />
+
+                <div className="offerings-aside-links">
+                  <a
+                    className="offerings-resource-card"
+                    href={GUIDE_WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="offerings-resource-iconWrap">
+                      <img src={phoneIcon} alt="" aria-hidden="true" />
+                    </span>
+                    <span className="offerings-resource-text">
+                      Get the Ahangama Guide 2026/27 season issue
+                    </span>
+                    <img
+                      className="offerings-resource-arrow"
+                      src={arrowRightIcon}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+
+                  <a
+                    className="offerings-resource-card"
+                    href={MAP_WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="offerings-resource-iconWrap">
+                      <img src={phoneIcon} alt="" aria-hidden="true" />
+                    </span>
+                    <span className="offerings-resource-text">
+                      Get the Ahangama Map
+                    </span>
+                    <img
+                      className="offerings-resource-arrow"
+                      src={arrowRightIcon}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+                </div>
 
                 <div className="offerings-aside-wallets">
                   <div className="offerings-aside-kicker">Digital Pass</div>
@@ -150,59 +193,17 @@ function App() {
                   </div>
                 </div>
 
-                <div className="offerings-aside-links">
-                  <a
-                    className="offerings-resource-card"
-                    href={GUIDE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="offerings-resource-iconWrap">
-                      <img src={phoneIcon} alt="" aria-hidden="true" />
-                    </span>
-                    <span className="offerings-resource-text">
-                      Get the Ahangama Guide 2026/27 season issue
-                    </span>
-                    <img
-                      className="offerings-resource-arrow"
-                      src={arrowRightIcon}
-                      alt=""
-                      aria-hidden="true"
-                    />
-                  </a>
-
-                  <a
-                    className="offerings-resource-card"
-                    href={MAP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <span className="offerings-resource-iconWrap">
-                      <img src={phoneIcon} alt="" aria-hidden="true" />
-                    </span>
-                    <span className="offerings-resource-text">
-                      Get the Ahangama Map
-                    </span>
-                    <img
-                      className="offerings-resource-arrow"
-                      src={arrowRightIcon}
-                      alt=""
-                      aria-hidden="true"
-                    />
-                  </a>
+                <div className="offerings-aside-coords">
+                  6.2783° N 80.1525° E
                 </div>
-
-                <img
-                  className="offerings-aside-image"
-                  src={ahangamaGuideHero}
-                  alt="Ahangama beach scene"
-                />
-                <div className="offerings-aside-coords">6.2783° N 80.1525° E</div>
               </aside>
 
               <div className="offerings-main">
                 <div className="hero-date-block offerings-date-block">
-                  <label className="hero-date-label offerings-date-label" htmlFor="start-date">
+                  <label
+                    className="hero-date-label offerings-date-label"
+                    htmlFor="start-date"
+                  >
                     Start Date
                   </label>
                   <input
@@ -235,17 +236,23 @@ function App() {
                         style={{ borderTopWidth: index === 0 ? 0 : 1 }}
                       >
                         {loading && isSelected ? (
-                          <span className="pass-option-loading">Redirecting...</span>
+                          <span className="pass-option-loading">
+                            Redirecting...
+                          </span>
                         ) : (
                           <div className="pass-option-layout">
                             <div className="pass-option-copyWrap">
-                              <div className="pass-option-desc">{pass.desc}</div>
+                              <div className="pass-option-desc">
+                                {pass.desc}
+                              </div>
                               <div className="pass-option-title">
                                 {pass.passType === "pass_365" ? (
                                   <>
                                     Resident Pass
                                     <br />
-                                    <span className="pass-option-title-sub">(1 Year)</span>
+                                    <span className="pass-option-title-sub">
+                                      (1 Year)
+                                    </span>
                                   </>
                                 ) : (
                                   pass.label
@@ -260,7 +267,10 @@ function App() {
                               </div>
                             </div>
 
-                            <div className="pass-option-arrow" aria-hidden="true">
+                            <div
+                              className="pass-option-arrow"
+                              aria-hidden="true"
+                            >
                               <img src={arrowRightIcon} alt="" />
                             </div>
                           </div>
