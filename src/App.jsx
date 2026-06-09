@@ -73,7 +73,7 @@ function App() {
   const links = [
     {
       label: "View Participating Venues",
-      url: "https://ahangama.com",
+      url: "https://ahangama.com/offers",
       color: "#D2691E",
     },
   ];
