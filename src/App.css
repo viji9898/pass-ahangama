@@ -410,6 +410,80 @@
     background: rgba(60, 52, 45, 0.28);
   }
 
+  .offerings-how-it-works {
+    display: grid;
+    gap: 16px;
+  }
+
+  .offerings-steps-list {
+    display: grid;
+    gap: 18px;
+  }
+
+  .offerings-step {
+    display: grid;
+    grid-template-columns: 52px 44px minmax(0, 1fr);
+    align-items: start;
+    gap: 14px;
+    position: relative;
+  }
+
+  .offerings-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 25px;
+    top: 48px;
+    width: 1px;
+    height: calc(100% + 6px);
+    background: rgba(60, 52, 45, 0.28);
+  }
+
+  .offerings-step-number {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(60, 52, 45, 0.28);
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    color: #43362f;
+    font-size: 0.86rem;
+    letter-spacing: 0.06em;
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .offerings-step-iconWrap {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+  }
+
+  .offerings-step-iconWrap img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    opacity: 0.82;
+  }
+
+  .offerings-step-copy {
+    display: grid;
+    gap: 4px;
+  }
+
+  .offerings-step-title {
+    color: #231a17;
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .offerings-step-text {
+    color: #3a2e25;
+    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+    font-size: 0.96rem;
+    line-height: 1.28;
+  }
+
   .offerings-aside-wallets {
     display: grid;
     gap: 12px;

@@ -6,7 +6,9 @@ import { getStoredAttribution } from "./attribution.js";
 import arrowRightIcon from "./assets/arrow-right-icon.svg";
 import addToAppleWallet from "./assets/add_to_apple_wallet.png";
 import addToGoogleWallet from "./assets/add_to_google_wallet.png";
+import bookIcon from "./assets/book-icon.svg";
 import phoneIcon from "./assets/phone-icon.svg";
+import shieldCheckIcon from "./assets/shield-check-icon.svg";
 
 function App() {
   const WHATSAPP_NUMBER = "94777908790";
@@ -46,6 +48,26 @@ function App() {
     },
   ];
   const [selectedPass, setSelectedPass] = React.useState(passes[0]);
+  const howItWorksSteps = [
+    {
+      number: "01",
+      icon: bookIcon,
+      title: "Purchase Pass",
+      copy: "Choose a pass duration and complete checkout.",
+    },
+    {
+      number: "02",
+      icon: phoneIcon,
+      title: "Add to Wallet",
+      copy: "Add your pass to Apple Wallet or Google Wallet.",
+    },
+    {
+      number: "03",
+      icon: shieldCheckIcon,
+      title: "Show & Enjoy",
+      copy: "Present your pass at participating venues and enjoy.",
+    },
+  ];
 
   // Social/support links
   const links = [
@@ -172,6 +194,24 @@ function App() {
                       aria-hidden="true"
                     />
                   </a>
+                </div>
+
+                <div className="offerings-how-it-works">
+                  <div className="offerings-aside-kicker">How It Works</div>
+                  <div className="offerings-steps-list">
+                    {howItWorksSteps.map((step) => (
+                      <div className="offerings-step" key={step.number}>
+                        <div className="offerings-step-number">{step.number}</div>
+                        <div className="offerings-step-iconWrap">
+                          <img src={step.icon} alt="" aria-hidden="true" />
+                        </div>
+                        <div className="offerings-step-copy">
+                          <div className="offerings-step-title">{step.title}</div>
+                          <div className="offerings-step-text">{step.copy}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="offerings-aside-wallets">
