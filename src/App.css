@@ -17,44 +17,540 @@
     transform: rotate(360deg);
   }
 }
-/* #root {
-  max-width: 1280px;
+
+:root {
+  color: #201a17;
+  background: #111311;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background: #111311;
+}
+
+.app-frame {
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 0 26px;
+}
+
+.homepage-card {
+  overflow: hidden;
+  border-radius: 0;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.hero-panel {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hero-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 12, 11, 0.58) 0%,
+    rgba(10, 12, 11, 0.42) 26%,
+    rgba(10, 12, 11, 0.16) 48%,
+    rgba(10, 12, 11, 0.03) 72%,
+    rgba(10, 12, 11, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.hero-panel-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 18% center;
+  transform: scale(1.08);
+  transform-origin: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 22px;
+  width: min(430px, calc(100% - 40px));
+  min-height: 100vh;
+  padding: 120px 22px 44px;
+  box-sizing: border-box;
+}
+
+.hero-stamp {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 1;
+  width: 104px;
+  height: auto;
+  opacity: 0.88;
+  mix-blend-mode: screen;
+}
+
+.hero-eyebrow {
+  color: rgba(255, 248, 241, 0.92);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  margin: 0;
+  color: #fffaf4;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: clamp(3.4rem, 9vw, 5.8rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+}
+
+.hero-rule {
+  width: 42px;
+  height: 2px;
+  background: rgba(255, 246, 237, 0.9);
+}
+
+.hero-copy {
+  margin: 0;
+  color: rgba(255, 246, 239, 0.94);
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: clamp(1.15rem, 4vw, 1.55rem);
+  line-height: 1.25;
+}
+
+.hero-date-block {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 260px);
+  margin-top: 4px;
+}
+
+.hero-date-label {
+  color: rgba(255, 248, 241, 0.9);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-date-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 246, 237, 0.8);
+  border-radius: 0;
+  background: rgba(18, 20, 19, 0.22);
+  color: #fff9f4;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: clamp(1rem, 3.8vw, 1.15rem);
+  box-sizing: border-box;
+}
+
+.offerings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.offerings-aside {
+  display: none;
+}
+
+.offerings-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.offerings-date-block {
+  padding: 18px 16px 14px;
+  width: min(100%, 320px);
+}
+
+.offerings-date-label {
+  color: #2b221c;
+}
+
+.offerings-date-input {
+  border-color: rgba(54, 48, 41, 0.3);
+  background: #ffffff;
+  color: #1f1715;
+}
+
+.pass-options {
+  border-top: 1px solid rgba(54, 48, 41, 0.24);
+}
+
+.pass-option {
+  width: 100%;
+  border: 0 solid rgba(54, 48, 41, 0.24);
+  border-top-style: solid;
+  background: #ffffff;
+  color: #1f1715;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.pass-option:hover,
+.pass-option:focus-visible,
+.pass-option.is-selected {
+  background: #f7f7f5;
+}
+
+.pass-option-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  min-height: 100px;
+}
+
+.pass-option-copyWrap {
+  min-width: 0;
+  padding: 18px 18px 18px 24px;
+}
+
+.pass-option-desc {
+  margin-bottom: 8px;
+  color: #332d28;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.pass-option-title {
+  color: #231a17;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: clamp(2rem, 7vw, 2.7rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.pass-option-title-sub {
+  font-size: 0.72em;
+}
+
+.pass-option-price {
+  min-width: 86px;
+  padding-right: 12px;
+  color: #231a17;
+}
+
+.pass-option-currency {
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pass-option-amount {
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: clamp(2rem, 6.2vw, 2.9rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+
+.pass-option-arrow {
+  width: 72px;
+  display: grid;
+  place-items: center;
+}
+
+.pass-option-arrow img {
+  width: 22px;
+  height: 22px;
+  opacity: 0.8;
+}
+
+.pass-option-loading {
+  display: block;
+  padding: 28px 20px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.offerings-cta-row {
+  display: grid;
+  gap: 16px;
+  padding: 14px 16px 18px;
+  border-top: 1px solid rgba(54, 48, 41, 0.24);
+}
+
+.offerings-cta-copy {
+  color: #3a2e25;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.hero-links {
+  display: flex;
+}
+
+.hero-link {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  color: #fff9f4;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.hero-link img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+}
+
+.hero-error {
+  padding: 0 16px 18px;
+  color: #9d3528;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.hero-footer {
+  margin-top: 12px;
+  color: rgba(255, 247, 238, 0.78);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   text-align: center;
-} */
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  text-transform: uppercase;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+@media (min-width: 760px) {
+  .app-frame {
+    padding: 0 0 26px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .hero-panel {
+    min-height: 100vh;
+  }
+
+  .hero-panel-image {
+    object-position: 22% 42%;
+  }
+
+  .hero-content {
+    gap: 28px;
+    width: 48%;
+    min-height: 100vh;
+    padding: 140px 44px 56px;
+  }
+
+  .hero-stamp {
+    top: 22px;
+    right: 28px;
+    width: 136px;
+  }
+
+  .hero-copy {
+    max-width: 13ch;
+  }
+
+  .hero-date-block {
+    width: 320px;
+  }
+
+  .hero-date-input {
+    min-height: 62px;
+    font-size: 1.2rem;
+  }
+
+  .offerings-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .offerings-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 26px 22px 20px;
+    border-right: 1px solid rgba(54, 48, 41, 0.24);
+  }
+
+  .offerings-aside-intro {
+    display: grid;
+    gap: 12px;
+  }
+
+  .offerings-aside-lead {
+    margin: 0;
+    color: #2c231e;
+    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.28;
+  }
+
+  .offerings-aside-divider {
+    width: 54px;
+    height: 2px;
+    background: rgba(60, 52, 45, 0.28);
+  }
+
+  .offerings-aside-wallets {
+    display: grid;
+    gap: 12px;
+  }
+
+  .offerings-aside-kicker {
+    color: #332d28;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .offerings-aside-wallet-copy {
+    margin: 0;
+    color: #2c231e;
+    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+    font-size: 1rem;
+    line-height: 1.22;
+  }
+
+  .offerings-aside-wallet-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .offerings-wallet-badge {
+    display: block;
+    width: 210px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .offerings-aside-links {
+    display: grid;
+    gap: 12px;
+  }
+
+  .offerings-resource-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 16px;
+    border: 1px solid rgba(54, 48, 41, 0.18);
+    border-radius: 10px;
+    color: #2b221c;
+    text-decoration: none;
+    background: #fff;
+  }
+
+  .offerings-resource-iconWrap {
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(54, 48, 41, 0.34);
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .offerings-resource-iconWrap img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.82;
+  }
+
+  .offerings-resource-text {
+    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+    font-size: 0.98rem;
+    line-height: 1.18;
+  }
+
+  .offerings-resource-arrow {
+    width: 20px;
+    height: 20px;
+    opacity: 0.72;
+  }
+
+  .offerings-aside-image {
+    display: block;
+    width: 100%;
+    height: 116px;
+    object-fit: cover;
+  }
+
+  .offerings-aside-coords {
+    color: #43362f;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .offerings-cta-row {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+    align-items: center;
+    padding: 22px;
+  }
+
+  .offerings-date-block {
+    padding: 22px 22px 16px;
+    width: 320px;
+  }
+
+  .offerings-cta-copy {
+    max-width: 16ch;
+    padding-left: 2px;
+    font-size: 1.15rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 520px) {
+  .hero-panel-image {
+    object-position: 28% center;
+    transform: scale(1.14);
   }
-}
 
-.card {
-  padding: 2em;
-}
+  .pass-option-layout {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
 
-.read-the-docs {
-  color: #888;
+  .pass-option-price {
+    min-width: 62px;
+    padding-right: 8px;
+  }
+
+  .pass-option-arrow {
+    width: 56px;
+  }
+
+  .pass-option-title {
+    font-size: clamp(1.65rem, 8vw, 2.25rem);
+  }
+
+  .pass-option-amount {
+    font-size: clamp(1.7rem, 7vw, 2.35rem);
+  }
+
+  .hero-link {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
 }

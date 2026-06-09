@@ -3,12 +3,21 @@
 import React from "react";
 import "./App.css";
 import { getStoredAttribution } from "./attribution.js";
+import arrowRightIcon from "./assets/arrow-right-icon.svg";
+import addToAppleWallet from "./assets/add_to_apple_wallet.png";
+import addToGoogleWallet from "./assets/add_to_google_wallet.png";
+import ahangamaGuideHero from "./assets/ahangama_guide_hero.jpg";
+import phoneIcon from "./assets/phone-icon.svg";
 
 function App() {
+  const GUIDE_URL = "https://guide.ahangama.com";
+  const MAP_URL = "https://ahangama.com";
   const todayStr = new Date().toISOString().split("T")[0];
   const [startDate, setStartDate] = React.useState(todayStr);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
+  const heroImageUrl =
+    "https://images.suitcasemag.com/wp-content/uploads/2025/05/01113553/Hero-AhanagamaGuide-SriLanka.jpeg";
 
   const passes = [
     {
@@ -47,267 +56,250 @@ function App() {
     },
   ];
 
+  const handlePassSelection = async (pass) => {
+    setSelectedPass(pass);
+    setError("");
+    setLoading(true);
+    try {
+      const attribution = getStoredAttribution() || {};
+      const res = await fetch("/.netlify/functions/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          passType: pass.passType,
+          startDate,
+          utm_source: attribution.utm_source || "",
+          utm_medium: attribution.utm_medium || "",
+          utm_campaign: attribution.utm_campaign || "",
+          utm_content: attribution.utm_content || "",
+          utm_term: attribution.utm_term || "",
+          qr_venue: attribution.qr_venue || "",
+          qr_surface: attribution.qr_surface || "",
+          qr_creative: attribution.qr_creative || "",
+          qr_landing_page: attribution.qr_landing_page || "",
+          ga_client_id: attribution.ga_client_id || "",
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        setError(data.error || "Failed to create checkout session.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div
-      style={{
-        position: "relative",
-        minHeight: "100vh",
-        minWidth: "100vw",
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: 0,
-          background: `url('/background.jpg') center center / cover no-repeat fixed, #f7f3ef`,
-        }}
-      />
-      <div
-        style={{
-          minHeight: "100vh",
-          minWidth: "100vw",
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "2em 1em 3em 1em",
-          fontFamily: "Inter, Helvetica, Arial, sans-serif",
-          position: "relative",
-          zIndex: 1,
-          boxSizing: "border-box",
-        }}
-      >
-        <div
-          style={{
-            width: "100%",
-            maxWidth: 400,
-            background: "#fff",
-            borderRadius: 18,
-            boxShadow: "0 2px 16px #0001",
-            padding: "2em 1em 1.5em 1em",
-            marginBottom: 24,
-            textAlign: "center",
-          }}
-        >
-          <img
-            src="https://customer-apps-techhq.s3.eu-west-2.amazonaws.com/app-ahangama-demo/ahangama_pass_logo.png"
-            title="Ahangama Pass & Guide to Perks, Privileges and Discounts, Experiences"
-            alt="Ahangama Pass Logo"
-            style={{
-              width: 200,
-              height: "auto",
-              marginBottom: 16,
-              borderRadius: 12,
-              boxShadow: "0 2px 8px #0002",
-            }}
-          />
-          <h1
-            style={{
-              margin: 0,
-              fontWeight: 700,
-              color: "#8B4513",
-              fontSize: 13,
-              marginBottom: 16,
-            }}
-          >
-            Ahangama Pass
-            <br />
-            <small style={{ fontSize: 12 }}>
-              {` Guide to Perks, Privileges and Discounts, Experiences`}
-            </small>
-          </h1>
-
-          <div style={{ marginBottom: 16 }}>
-            <label
-              htmlFor="start-date"
-              style={{
-                color: "#6d4c2b",
-                fontWeight: 500,
-                display: "block",
-                marginBottom: 4,
-              }}
-            >
-              Start Date:
-            </label>
-            <input
-              id="start-date"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              min={todayStr}
-              max={(() => {
-                const d = new Date();
-                d.setDate(d.getDate() + 60);
-                return d.toISOString().split("T")[0];
-              })()}
-              required
-              style={{
-                padding: "0.7em 1em",
-                borderRadius: 8,
-                border: "1px solid #ccc",
-
-                boxSizing: "border-box",
-                fontSize: 18,
-              }}
+    <div className="app-shell">
+      <div className="app-frame">
+        <main className="homepage-card">
+          <section className="hero-panel">
+            <img
+              className="hero-panel-image"
+              src={heroImageUrl}
+              alt="Ahangama beachfront dining scene"
             />
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {passes.map((pass) => (
-              <button
-                key={pass.passType}
-                type="button"
-                disabled={loading}
-                onClick={async () => {
-                  setSelectedPass(pass);
-                  setError("");
-                  setLoading(true);
-                  try {
-                    const attribution = getStoredAttribution() || {};
-                    const res = await fetch(
-                      "/.netlify/functions/create-checkout-session",
-                      {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          passType: pass.passType,
-                          startDate,
-                          utm_source: attribution.utm_source || "",
-                          utm_medium: attribution.utm_medium || "",
-                          utm_campaign: attribution.utm_campaign || "",
-                          utm_content: attribution.utm_content || "",
-                          utm_term: attribution.utm_term || "",
-                          qr_venue: attribution.qr_venue || "",
-                          qr_surface: attribution.qr_surface || "",
-                          qr_creative: attribution.qr_creative || "",
-                          qr_landing_page: attribution.qr_landing_page || "",
-                          ga_client_id: attribution.ga_client_id || "",
-                        }),
-                      },
-                    );
-                    const data = await res.json();
-                    if (res.ok && data.url) {
-                      window.location.href = data.url;
-                    } else {
-                      setError(
-                        data.error || "Failed to create checkout session.",
-                      );
-                    }
-                  } catch (err) {
-                    setError("Network error. Please try again.");
-                  } finally {
-                    setLoading(false);
-                  }
-                }}
-                style={{
-                  background:
-                    selectedPass.passType === pass.passType
-                      ? "#8B4513"
-                      : "#f7f3ef",
-                  color:
-                    selectedPass.passType === pass.passType
-                      ? "#fff"
-                      : "#8B4513",
-                  border: "2px solid #8B4513",
-                  borderRadius: 12,
-                  padding: "1.1em 0",
-                  fontWeight: 600,
-                  fontSize: 18,
-                  cursor: loading ? "not-allowed" : "pointer",
-                  boxShadow:
-                    selectedPass.passType === pass.passType
-                      ? "0 2px 8px #0002"
-                      : "none",
-                  outline: "none",
-                  transition: "background 0.2s, color 0.2s",
-                  opacity: loading ? 0.7 : 1,
-                  marginBottom: 0,
-                }}
-              >
-                {loading && selectedPass.passType === pass.passType ? (
-                  "Redirecting..."
-                ) : (
-                  <>
-                    {pass.label}{" "}
-                    <span style={{ fontWeight: 400, fontSize: 15 }}>
-                      ({pass.price})
-                    </span>
-                    <div
-                      style={{
-                        fontSize: 13,
-                        fontWeight: 400,
-                        color:
-                          selectedPass.passType === pass.passType
-                            ? "#f7e7d7"
-                            : "#8B4513",
-                        marginTop: 2,
-                      }}
-                    >
-                      {pass.desc}
-                    </div>
-                  </>
-                )}
-              </button>
-            ))}
-          </div>
-          {error && (
-            <div style={{ color: "#e74c3c", marginBottom: 16, marginTop: 8 }}>
-              {error}
+
+            <div className="hero-content">
+              <div className="hero-eyebrow">Welcome to</div>
+              <h1 className="hero-title">
+                Ahangama
+                <br />
+                Pass
+              </h1>
+              <div className="hero-rule" />
+              <p className="hero-copy">
+                Guide to perks, privileges
+                <br />
+                and discounts, experiences.
+              </p>
             </div>
-          )}
-        </div>
-        <div
-          style={{
-            width: "100%",
-            maxWidth: 400,
-            marginTop: 0,
-            textAlign: "center",
-          }}
-        >
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "block",
-                width: "100%",
-                margin: "0 auto 1em auto",
-                background: link.color,
-                color: "#fff",
-                fontWeight: 600,
-                fontSize: 18,
-                border: "none",
-                borderRadius: 12,
-                padding: "1em 0",
-                textAlign: "center",
-                textDecoration: "none",
-                boxShadow: "0 2px 8px #0001",
-                transition: "background 0.2s, transform 0.1s",
-              }}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-        <div
-          style={{
-            marginTop: "auto",
-            color: "#bfae9e",
-            fontSize: 13,
-            textAlign: "center",
-          }}
-        >
-          &copy; {new Date().getFullYear()} Ahangama Pass - Viji -
+          </section>
+
+          <section className="offerings-panel">
+            <div className="offerings-grid">
+              <aside className="offerings-aside">
+                <div className="offerings-aside-intro">
+                  <p className="offerings-aside-lead">
+                    Your key to Ahangama&apos;s best stays, eats and experiences.
+                  </p>
+                </div>
+
+                <div className="offerings-aside-divider" />
+
+                <div className="offerings-aside-wallets">
+                  <div className="offerings-aside-kicker">Digital Pass</div>
+                  <p className="offerings-aside-wallet-copy">
+                    Add your pass to your phone&apos;s wallet.
+                  </p>
+                  <div className="offerings-aside-wallet-buttons">
+                    <img
+                      src={addToAppleWallet}
+                      alt="Add to Apple Wallet"
+                      className="offerings-wallet-badge"
+                    />
+                    <img
+                      src={addToGoogleWallet}
+                      alt="Add to Google Wallet"
+                      className="offerings-wallet-badge"
+                    />
+                  </div>
+                </div>
+
+                <div className="offerings-aside-links">
+                  <a
+                    className="offerings-resource-card"
+                    href={GUIDE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="offerings-resource-iconWrap">
+                      <img src={phoneIcon} alt="" aria-hidden="true" />
+                    </span>
+                    <span className="offerings-resource-text">
+                      Get the Ahangama Guide 2026/27 season issue
+                    </span>
+                    <img
+                      className="offerings-resource-arrow"
+                      src={arrowRightIcon}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+
+                  <a
+                    className="offerings-resource-card"
+                    href={MAP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="offerings-resource-iconWrap">
+                      <img src={phoneIcon} alt="" aria-hidden="true" />
+                    </span>
+                    <span className="offerings-resource-text">
+                      Get the Ahangama Map
+                    </span>
+                    <img
+                      className="offerings-resource-arrow"
+                      src={arrowRightIcon}
+                      alt=""
+                      aria-hidden="true"
+                    />
+                  </a>
+                </div>
+
+                <img
+                  className="offerings-aside-image"
+                  src={ahangamaGuideHero}
+                  alt="Ahangama beach scene"
+                />
+                <div className="offerings-aside-coords">6.2783° N 80.1525° E</div>
+              </aside>
+
+              <div className="offerings-main">
+                <div className="hero-date-block offerings-date-block">
+                  <label className="hero-date-label offerings-date-label" htmlFor="start-date">
+                    Start Date
+                  </label>
+                  <input
+                    className="hero-date-input offerings-date-input"
+                    id="start-date"
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    min={todayStr}
+                    max={(() => {
+                      const d = new Date();
+                      d.setDate(d.getDate() + 60);
+                      return d.toISOString().split("T")[0];
+                    })()}
+                    required
+                  />
+                </div>
+
+                <div className="pass-options">
+                  {passes.map((pass, index) => {
+                    const isSelected = selectedPass.passType === pass.passType;
+
+                    return (
+                      <button
+                        key={pass.passType}
+                        type="button"
+                        className={`pass-option ${isSelected ? "is-selected" : ""}`}
+                        disabled={loading}
+                        onClick={() => handlePassSelection(pass)}
+                        style={{ borderTopWidth: index === 0 ? 0 : 1 }}
+                      >
+                        {loading && isSelected ? (
+                          <span className="pass-option-loading">Redirecting...</span>
+                        ) : (
+                          <div className="pass-option-layout">
+                            <div className="pass-option-copyWrap">
+                              <div className="pass-option-desc">{pass.desc}</div>
+                              <div className="pass-option-title">
+                                {pass.passType === "pass_365" ? (
+                                  <>
+                                    Resident Pass
+                                    <br />
+                                    <span className="pass-option-title-sub">(1 Year)</span>
+                                  </>
+                                ) : (
+                                  pass.label
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="pass-option-price">
+                              <div className="pass-option-currency">USD</div>
+                              <div className="pass-option-amount">
+                                {pass.price.replace("USD ", "")}
+                              </div>
+                            </div>
+
+                            <div className="pass-option-arrow" aria-hidden="true">
+                              <img src={arrowRightIcon} alt="" />
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="offerings-cta-row">
+                  <div className="offerings-cta-copy">
+                    Explore participating venues across Ahangama.
+                  </div>
+
+                  <div className="hero-links">
+                    {links.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hero-link"
+                        style={{ background: link.color }}
+                      >
+                        <span>{link.label}</span>
+                        <img src={arrowRightIcon} alt="" aria-hidden="true" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {error && <div className="hero-error">{error}</div>}
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <div className="hero-footer">
+          &copy; {new Date().getFullYear()} Ahangama Pass
         </div>
       </div>
     </div>
