@@ -201,12 +201,16 @@ function App() {
                   <div className="offerings-steps-list">
                     {howItWorksSteps.map((step) => (
                       <div className="offerings-step" key={step.number}>
-                        <div className="offerings-step-number">{step.number}</div>
+                        <div className="offerings-step-number">
+                          {step.number}
+                        </div>
                         <div className="offerings-step-iconWrap">
                           <img src={step.icon} alt="" aria-hidden="true" />
                         </div>
                         <div className="offerings-step-copy">
-                          <div className="offerings-step-title">{step.title}</div>
+                          <div className="offerings-step-title">
+                            {step.title}
+                          </div>
                           <div className="offerings-step-text">{step.copy}</div>
                         </div>
                       </div>

@@ -165,12 +165,195 @@
 }
 
 .offerings-aside {
-  display: none;
+  display: flex;
+  order: 2;
+  flex-direction: column;
+  gap: 22px;
+  padding: 24px 16px 20px;
+  border-top: 1px solid rgba(54, 48, 41, 0.24);
 }
 
 .offerings-main {
   display: flex;
   flex-direction: column;
+  order: 1;
+}
+
+.offerings-aside-intro {
+  display: grid;
+  gap: 12px;
+}
+
+.offerings-aside-lead {
+  margin: 0;
+  color: #2c231e;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.28;
+}
+
+.offerings-aside-divider {
+  width: 54px;
+  height: 2px;
+  background: rgba(60, 52, 45, 0.28);
+}
+
+.offerings-aside-links {
+  display: grid;
+  gap: 12px;
+}
+
+.offerings-resource-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 16px;
+  border: 1px solid rgba(54, 48, 41, 0.18);
+  border-radius: 10px;
+  color: #2b221c;
+  text-decoration: none;
+  background: #fff;
+}
+
+.offerings-resource-iconWrap {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(54, 48, 41, 0.34);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.offerings-resource-iconWrap img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.82;
+}
+
+.offerings-resource-text {
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: 0.98rem;
+  line-height: 1.18;
+}
+
+.offerings-resource-arrow {
+  width: 20px;
+  height: 20px;
+  opacity: 0.72;
+}
+
+.offerings-how-it-works {
+  display: grid;
+  gap: 16px;
+}
+
+.offerings-aside-kicker {
+  color: #332d28;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.offerings-steps-list {
+  display: grid;
+  gap: 18px;
+}
+
+.offerings-step {
+  display: grid;
+  grid-template-columns: 52px 44px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  position: relative;
+}
+
+.offerings-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 25px;
+  top: 48px;
+  width: 1px;
+  height: calc(100% + 6px);
+  background: rgba(60, 52, 45, 0.28);
+}
+
+.offerings-step-number {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(60, 52, 45, 0.28);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #43362f;
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.offerings-step-iconWrap {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+}
+
+.offerings-step-iconWrap img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  opacity: 0.82;
+}
+
+.offerings-step-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.offerings-step-title {
+  color: #231a17;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.offerings-step-text {
+  color: #3a2e25;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: 0.96rem;
+  line-height: 1.28;
+}
+
+.offerings-aside-wallets {
+  display: grid;
+  gap: 12px;
+}
+
+.offerings-aside-wallet-copy {
+  margin: 0;
+  color: #2c231e;
+  font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.22;
+}
+
+.offerings-aside-wallet-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.offerings-wallet-badge {
+  display: block;
+  width: 170px;
+  max-width: 100%;
+  height: auto;
+}
+
+.offerings-aside-coords {
+  display: none;
 }
 
 .offerings-date-block {
@@ -384,198 +567,22 @@
   }
 
   .offerings-aside {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+    order: 0;
     padding: 26px 22px 20px;
+    border-top: none;
     border-right: 1px solid rgba(54, 48, 41, 0.24);
   }
 
-  .offerings-aside-intro {
-    display: grid;
-    gap: 12px;
-  }
-
-  .offerings-aside-lead {
-    margin: 0;
-    color: #2c231e;
-    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
-    font-size: 1.05rem;
-    line-height: 1.28;
-  }
-
-  .offerings-aside-divider {
-    width: 54px;
-    height: 2px;
-    background: rgba(60, 52, 45, 0.28);
-  }
-
-  .offerings-how-it-works {
-    display: grid;
-    gap: 16px;
-  }
-
-  .offerings-steps-list {
-    display: grid;
-    gap: 18px;
-  }
-
-  .offerings-step {
-    display: grid;
-    grid-template-columns: 52px 44px minmax(0, 1fr);
-    align-items: start;
-    gap: 14px;
-    position: relative;
-  }
-
-  .offerings-step:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    left: 25px;
-    top: 48px;
-    width: 1px;
-    height: calc(100% + 6px);
-    background: rgba(60, 52, 45, 0.28);
-  }
-
-  .offerings-step-number {
-    width: 44px;
-    height: 44px;
-    border: 1px solid rgba(60, 52, 45, 0.28);
-    border-radius: 999px;
-    display: grid;
-    place-items: center;
-    color: #43362f;
-    font-size: 0.86rem;
-    letter-spacing: 0.06em;
-    background: rgba(255, 255, 255, 0.9);
-  }
-
-  .offerings-step-iconWrap {
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-  }
-
-  .offerings-step-iconWrap img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    opacity: 0.82;
-  }
-
-  .offerings-step-copy {
-    display: grid;
-    gap: 4px;
-  }
-
-  .offerings-step-title {
-    color: #231a17;
-    font-size: 0.98rem;
-    font-weight: 700;
-    line-height: 1.15;
-  }
-
-  .offerings-step-text {
-    color: #3a2e25;
-    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
-    font-size: 0.96rem;
-    line-height: 1.28;
-  }
-
-  .offerings-aside-wallets {
-    display: grid;
-    gap: 12px;
-  }
-
-  .offerings-aside-kicker {
-    color: #332d28;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-
-  .offerings-aside-wallet-copy {
-    margin: 0;
-    color: #2c231e;
-    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
-    font-size: 1rem;
-    line-height: 1.22;
-  }
-
-  .offerings-aside-wallet-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .offerings-wallet-badge {
-    display: block;
-    width: 210px;
-    max-width: 100%;
-    height: auto;
-  }
-
-  .offerings-aside-links {
-    display: grid;
-    gap: 12px;
-  }
-
-  .offerings-resource-card {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 16px;
-    border: 1px solid rgba(54, 48, 41, 0.18);
-    border-radius: 10px;
-    color: #2b221c;
-    text-decoration: none;
-    background: #fff;
-  }
-
-  .offerings-resource-iconWrap {
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(54, 48, 41, 0.34);
-    border-radius: 999px;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-  }
-
-  .offerings-resource-iconWrap img {
-    width: 20px;
-    height: 20px;
-    opacity: 0.82;
-  }
-
-  .offerings-resource-text {
-    font-family: "Iowan Old Style", Baskerville, Palatino, Georgia, serif;
-    font-size: 0.98rem;
-    line-height: 1.18;
-  }
-
-  .offerings-resource-arrow {
-    width: 20px;
-    height: 20px;
-    opacity: 0.72;
-  }
-
-  .offerings-aside-image {
-    display: block;
-    width: 100%;
-    height: 116px;
-    object-fit: cover;
-  }
-
   .offerings-aside-coords {
+    display: block;
     color: #43362f;
     font-size: 0.78rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .offerings-wallet-badge {
+    width: 210px;
   }
 
   .offerings-cta-row {
