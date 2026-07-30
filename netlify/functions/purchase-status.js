@@ -28,6 +28,8 @@ export default async (req) => {
     status: purchase.status,
     smart_link_url: purchase.smart_link_url || purchase.smartLinkUrl,
     passkit_pass_id: purchase.passkit_pass_id || purchase.passkitPassId,
+    price_usd: Number(purchase.price_usd || purchase.priceUsd || 0),
+    currency: "USD",
     start_date: purchase.start_date || purchase.startDate,
     expiry_date: purchase.expiry_date || purchase.expiryDate,
     pass_type: purchase.pass_type || purchase.passType,

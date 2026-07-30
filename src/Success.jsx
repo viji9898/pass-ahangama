@@ -11,6 +11,7 @@ function Success() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [conversionTracked, setConversionTracked] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -29,6 +30,22 @@ function Success() {
       .catch(() => setError("Failed to fetch order details."))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!session || conversionTracked) {
+      return;
+    }
+
+    const didTrack = window.gtagReportConversion?.({
+      value: session.price_usd,
+      currency: session.currency || "USD",
+      transactionId: session.id,
+    });
+
+    if (didTrack) {
+      setConversionTracked(true);
+    }
+  }, [conversionTracked, session]);
 
   if (loading)
     return (

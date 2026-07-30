@@ -64,6 +64,36 @@
         cookie_domain: "auto",
       });
       gtag("config", "AW-18209868538");
+
+      window.AHANGAMA_GOOGLE_ADS_PURCHASE_LABEL =
+        "AW-18209868538/xq0RCLWB6tgcEPqVkutD";
+      window.gtag_report_conversion = function (optionsOrUrl) {
+        const isUrlArgument = typeof optionsOrUrl === "string";
+        const options =
+          !optionsOrUrl || isUrlArgument ? {} : optionsOrUrl;
+        const redirectUrl = isUrlArgument ? optionsOrUrl : options.url;
+        const callback = function () {
+          if (typeof redirectUrl !== "undefined") {
+            window.location = redirectUrl;
+          }
+          options.eventCallback?.();
+        };
+
+        if (!window.gtag || !window.AHANGAMA_GOOGLE_ADS_PURCHASE_LABEL) {
+          return false;
+        }
+
+        window.gtag("event", "conversion", {
+          send_to: window.AHANGAMA_GOOGLE_ADS_PURCHASE_LABEL,
+          value: options.value ?? 1,
+          currency: options.currency ?? "GBP",
+          transaction_id: options.transactionId,
+          event_callback: callback,
+        });
+
+        return true;
+      };
+      window.gtagReportConversion = window.gtag_report_conversion;
     </script>
   </head>
   <body>
